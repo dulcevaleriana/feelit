@@ -1,5 +1,6 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
+const {validationResult} = require('express-validator');
 //BDA temporal
 let DUMMY_PLACES = [
     {
@@ -38,6 +39,11 @@ const getPlacesByUserId = (req,res,next)=>{
 };
 //post a place
 const postPlace = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         title,
         description,
