@@ -23,6 +23,12 @@ const postUsers = (req,res,next) => {
         password,
         image,
     } = req.body;
+
+    const ifUserEmailExist = DUMMY_USERS.find(u => u.email === email);
+    if(ifUserEmailExist){
+        throw new httpError("could not create user because this email already added",422)
+    }
+
     const createUser = {
         id: uuidv4(),
         name,
@@ -41,9 +47,12 @@ const login = (req,res,next) => {
         password
     } = req.body;
     const identifiedUser = DUMMY_USERS.find(u => u.email === email);
-    if(!identifiedUser){
+
+    if(!identifiedUser || identifiedUser.password !== password){
         throw new httpError("could not identify user, credentials seem to be wrong",401)
     }
+
+    res.json({message: 'logged in!'})
 }
 
 exports.getUsers = getUsers;
