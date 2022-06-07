@@ -65,6 +65,10 @@ const postPlace = (req,res,next)=>{
 }
 //update a place
 const patchPlace = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         title,
         description,
@@ -89,6 +93,9 @@ const patchPlace = (req,res,next) => {
 //delete a place
 const deletePlace = (req,res,next) => {
     const placeId = req.params.pId;
+    if(!DUMMY_PLACES.find(p => p.id === placeId)){
+        throw new httpError('Could not find a place for that id',404)
+    }
     DUMMY_PLACES = DUMMY_PLACES.filter(p => p.id !== placeId);
 
     res.status(200).json({message: 'deleted place'})

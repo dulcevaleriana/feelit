@@ -15,9 +15,17 @@ router.post(
         check('description').isLength({min:5}),
         check('address').not().isEmpty()
     ],
-    placesControllers.postPlace)
+    placesControllers.postPlace);
 //update a place
-router.patch('/:pId',placesControllers.patchPlace);
+router.patch(
+    '/:pId',
+    [
+        check('title').not().isEmpty(),
+        check('description').isLength({min:5}),
+        check('location').not().isEmpty(),
+        check('address').not().isEmpty(),
+    ],
+    placesControllers.patchPlace);
 //delete a place
 router.delete('/:pId',placesControllers.deletePlace);
 

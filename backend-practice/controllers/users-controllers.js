@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const httpError = require('../models/http-error');
-
+const {validationResult} = require('express-validator');
 //BDA TEMPORAL
 let DUMMY_USERS = [
     {
@@ -17,6 +17,12 @@ const getUsers = (req,res,next) => {
 }
 //post a user
 const postUsers = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
+    
     const {
         name,
         email,
