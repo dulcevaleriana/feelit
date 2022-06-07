@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
 const doctorRoutes = require('./routes/doctor-routes');
+const pacienteRoutes = require('./routes/paciente-routes');
 const httpError = require('./models/http-error');
 
 const app = express();
@@ -14,6 +15,8 @@ app.use('/api/places',placesRoutes);
 app.use('/api/users',usersRoutes);
 //doctor module
 app.use('/api/doctor',doctorRoutes);
+//paciente module
+app.use('/api/paciente',pacienteRoutes);
 
 app.use((req,res,next)=>{
    const error = new httpError('Could not find this router',404);

@@ -5,6 +5,8 @@ const doctorControllers = require('../controllers/doctor-controllers');
 
 //get all doctor
 router.get('/',doctorControllers.getAllDoctor)
+//get doctor by id
+router.get('/:dId',doctorControllers.getDoctorById)
 //get doctor by specialty
 router.get('/especiality/:sId',doctorControllers.getAllDoctorBySpecialty)
 //post a doctor

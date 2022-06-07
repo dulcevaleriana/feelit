@@ -28,37 +28,22 @@ let DBA_DOCTOR = [
             address:'calle sadas santo domingo'
         },
         status:true
-    },
-    {
-        id:'dadafgsgfsdgrgfdasa',
-        name:'Juana Perez',
-        password:'dsfdgds',
-        cedula:'402-2234267-0',
-        email:'juanOrtega2@gmail.com',
-        specialty:'obstreta',
-        telefono:'849-654-9687',
-        laborDays:{
-            su:false,
-            mo:true,
-            tu:true,
-            we:true,
-            th:true,
-            fr:true,
-            sa:false
-        },
-        hourStart:'8:00',
-        hourFinish:'17:00',
-        location:{
-            lan:23.42352,
-            lng:43.35453,
-            address:'calle sadas santo domingo'
-        },
-        status:true
     }
 ]
 //get all doctor
 const getAllDoctor = (req,res,next)=>{
     res.json({DBA_DOCTOR})
+};
+//get doctor by id
+const getDoctorById = (req,res,next)=>{
+    const specialtyId = req.params.dId;
+    const resultGetDoctorById = DBA_DOCTOR.filter(p => p.id === specialtyId)
+
+    if(!resultGetDoctorById){
+        throw new httpError('Could not find this specialty',404)
+    }
+
+    res.json({resultGetDoctorById})
 };
 //get doctor by specialty
 const getAllDoctorBySpecialty = (req,res,next)=>{
@@ -193,6 +178,7 @@ const deleteDoctor = (req,res,next) => {
 }
 
 exports.getAllDoctor = getAllDoctor;
+exports.getDoctorById = getDoctorById;
 exports.getAllDoctorBySpecialty = getAllDoctorBySpecialty;
 exports.postDoctor = postDoctor;
 exports.patchDoctor = patchDoctor;
