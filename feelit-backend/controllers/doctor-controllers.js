@@ -73,7 +73,72 @@ const getAllDoctorBySpecialty = (req,res,next)=>{
 };
 //post a doctor
 const postDoctor = (req,res,next)=>{
+    const {
+        name,
+        password,
+        cedula,
+        email,
+        specialty,
+        telefono,
+        laborDays:{
+            su,
+            mo,
+            tu,
+            we,
+            th,
+            fr,
+            sa
+        },
+        hourStart,
+        hourFinish,
+        location:{
+            lan,
+            lng,
+            address
+        }
+    } = req.body;
 
+    const createDoctor = {
+        id: uuidv4(),
+        name:name,
+        password:password,
+        cedula:cedula,
+        email:email,
+        specialty:specialty,
+        telefono:telefono,
+        laborDays:{
+            su:su,
+            mo:mo,
+            tu:tu,
+            we:we,
+            th:th,
+            fr:fr,
+            sa:sa
+        },
+        hourStart:hourStart,
+        hourFinish:hourFinish,
+        location:{
+            lan:lan,
+            lng:lng,
+            address:address
+        },
+        status:true
+    }
+
+    const ifCedulaExist = DBA_DOCTOR.find(p => p.cedula === cedula)
+    const ifEmailExist = DBA_DOCTOR.find(p => p.email === email)
+
+    if(ifCedulaExist){
+        throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
+    }
+
+    if(ifEmailExist){
+        throw new httpError(`a user with this email: ${email} is already exist`,322)
+    }
+
+    DBA_DOCTOR.push(createDoctor);
+
+    res.json({message:'this doctor was created succesfully!!',createDoctor})
 }
 //patch a doctor
 const patchDoctor = (req,res,next) => {

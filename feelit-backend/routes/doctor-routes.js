@@ -8,7 +8,7 @@ router.get('/',doctorControllers.getAllDoctor)
 //get doctor by specialty
 router.get('/especiality/:sId',doctorControllers.getAllDoctorBySpecialty)
 //post a doctor
-router.post('/',doctorControllers.postDoctor)
+router.post('/createDoctor',doctorControllers.postDoctor)
 //patch a doctor
 router.patch('/:dId',doctorControllers.patchDoctor)
 //delete a doctor
