@@ -8,11 +8,11 @@ const httpError = require('./models/http-error');
 const app = express();
 
 app.use(bodyParser.json())
-
+//Place quit
 app.use('/api/places',placesRoutes);
-
+//user Quit
 app.use('/api/users',usersRoutes);
-
+//doctor module
 app.use('/api/doctor',doctorRoutes);
 
 app.use((req,res,next)=>{
