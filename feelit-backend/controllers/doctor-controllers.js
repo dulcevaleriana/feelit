@@ -28,15 +28,48 @@ let DBA_DOCTOR = [
             address:'calle sadas santo domingo'
         },
         status:true
+    },
+    {
+        id:'dadafgsgfsdgrgfdasa',
+        name:'Juana Perez',
+        password:'dsfdgds',
+        cedula:'402-2334268-0',
+        email:'juanOrtega@gmail.com',
+        specialty:'obstreta',
+        telefono:'849-654-9687',
+        laborDays:{
+            su:false,
+            mo:true,
+            tu:true,
+            we:true,
+            th:true,
+            fr:true,
+            sa:false
+        },
+        hourStart:'8:00',
+        hourFinish:'17:00',
+        location:{
+            lan:23.42352,
+            lng:43.35453,
+            address:'calle sadas santo domingo'
+        },
+        status:true
     }
 ]
 //get all doctor
 const getAllDoctor = (req,res,next)=>{
-
+    res.json({DBA_DOCTOR})
 };
 //get doctor by specialty
 const getAllDoctorBySpecialty = (req,res,next)=>{
+    const specialtyId = req.params.sId;
+    const resultGetAllDoctorBySpecialty = DBA_DOCTOR.filter(p => p.specialty === specialtyId)
 
+    if(!resultGetAllDoctorBySpecialty){
+        throw new httpError('Could not find this specialty',404)
+    }
+
+    res.json({resultGetAllDoctorBySpecialty})
 };
 //post a doctor
 const postDoctor = (req,res,next)=>{
