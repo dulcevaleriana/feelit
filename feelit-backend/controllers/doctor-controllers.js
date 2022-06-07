@@ -33,8 +33,8 @@ let DBA_DOCTOR = [
         id:'dadafgsgfsdgrgfdasa',
         name:'Juana Perez',
         password:'dsfdgds',
-        cedula:'402-2334268-0',
-        email:'juanOrtega@gmail.com',
+        cedula:'402-2234267-0',
+        email:'juanOrtega2@gmail.com',
         specialty:'obstreta',
         telefono:'849-654-9687',
         laborDays:{
@@ -80,22 +80,10 @@ const postDoctor = (req,res,next)=>{
         email,
         specialty,
         telefono,
-        laborDays:{
-            su,
-            mo,
-            tu,
-            we,
-            th,
-            fr,
-            sa
-        },
+        laborDays,
         hourStart,
         hourFinish,
-        location:{
-            lan,
-            lng,
-            address
-        }
+        location
     } = req.body;
 
     const createDoctor = {
@@ -106,22 +94,10 @@ const postDoctor = (req,res,next)=>{
         email:email,
         specialty:specialty,
         telefono:telefono,
-        laborDays:{
-            su:su,
-            mo:mo,
-            tu:tu,
-            we:we,
-            th:th,
-            fr:fr,
-            sa:sa
-        },
+        laborDays:laborDays,
         hourStart:hourStart,
         hourFinish:hourFinish,
-        location:{
-            lan:lan,
-            lng:lng,
-            address:address
-        },
+        location:location,
         status:true
     }
 
@@ -142,7 +118,51 @@ const postDoctor = (req,res,next)=>{
 }
 //patch a doctor
 const patchDoctor = (req,res,next) => {
+    const doctorId = req.params.dId;
+    const {
+        name,
+        password,
+        cedula,
+        email,
+        specialty,
+        telefono,
+        laborDays,
+        hourStart,
+        hourFinish,
+        location
+    } = req.body;
 
+    const updateDoctor = {... DBA_DOCTOR.find(p => p.id === doctorId)}
+    const verifyDoctorId = DBA_DOCTOR.findIndex(p => p.id === doctorId)
+
+    if(verifyDoctorId === -1){
+        throw new httpError(`we can't find this doctor`,322)
+    }
+
+    updateDoctor.name = name;
+    updateDoctor.password = password;
+    updateDoctor.cedula = cedula;
+    updateDoctor.email = email;
+    updateDoctor.specialty = specialty;
+    updateDoctor.telefono = telefono;
+    updateDoctor.laborDays = laborDays;
+    updateDoctor.hourStart = hourStart;
+    updateDoctor.hourFinish = hourFinish;
+    updateDoctor.location = location;
+
+    const ifCedulaExist = DBA_DOCTOR.filter(p => p.cedula === cedula)
+    const ifEmailExist = DBA_DOCTOR.filter(p => p.email === email)
+
+    if(ifCedulaExist > 1){
+        throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
+    }
+
+    if(ifEmailExist > 1){
+        throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
+    }
+
+    DBA_DOCTOR[verifyDoctorId] = updateDoctor;
+    res.status(201).json({message:'doctor`s account was succesfull edited: ',updateDoctor})
 }
 //delete a doctor
 const deleteDoctor = (req,res,next) => {
