@@ -166,6 +166,19 @@ const patchDoctor = (req,res,next) => {
 }
 //delete a doctor
 const deleteDoctor = (req,res,next) => {
+    const doctorId = req.params.dId;
+    const findDoctorId = DBA_DOCTOR.find(p => p.id === doctorId)
+    const updateStatusDoctor = {... DBA_DOCTOR.find(p => p.id === doctorId)}
+    const verifyDoctorId = DBA_DOCTOR.findIndex(p => p.id === doctorId)
+
+    if(!findDoctorId){
+        throw new httpError('we can`t find this doctor',404)
+    }
+
+    updateStatusDoctor.status = false;
+    DBA_DOCTOR[verifyDoctorId] = updateStatusDoctor;
+
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${updateStatusDoctor.status}: `,updateStatusDoctor})
 
 }
 
