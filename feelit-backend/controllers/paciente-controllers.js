@@ -60,11 +60,56 @@ const postPaciente = (req,res,next)=>{
 }
 //patch a doctor
 const patchPaciente = (req,res,next) => {
+    const {
+        cedula,
+        email,
+        password,
+        telefono,
+        name
+    } = req.body;
+    const pacienteId = req.params.pId;
 
+    const updatePaciente = {... DBA_PACIENTE.find(p => p.id === pacienteId)};
+    const verifyPacienteId = DBA_PACIENTE.findIndex(p => p.id === pacienteId);
+    const ifCedulaExist = DBA_PACIENTE.filter(p => p.cedula === cedula);
+    const ifEmailExist = DBA_PACIENTE.filter(p => p.email === email);
+    const findPacienteId = DBA_PACIENTE.find(p => p.id === pacienteId);
+
+    if(!findPacienteId){
+        throw new httpError(`we can't find this paciente`,404)
+    }
+    if(ifCedulaExist > 1){
+        throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
+    }
+    if(ifEmailExist > 1){
+        throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
+    }
+
+    updatePaciente.cedula = cedula;
+    updatePaciente.email = email;
+    updatePaciente.password = password;
+    updatePaciente.telefono = telefono;
+    updatePaciente.name = name;
+
+    DBA_PACIENTE[verifyPacienteId] = updatePaciente;
+
+    res.status(201).json({message:'paciente`s account was succesfull edited:',updatePaciente})
 }
 //delete a doctor
 const deletePaciente = (req,res,next) => {
+    const pacienteId = req.params.pId;
+    const findPacienteId = DBA_PACIENTE.find(p => p.id === pacienteId)
+    const updateStatusPaciente = {... DBA_PACIENTE.find(p => p.id === pacienteId)}
+    const verifyPacienteId = DBA_PACIENTE.findIndex(p => p.id === pacienteId)
 
+    if(!findPacienteId){
+        throw new httpError('we can`t find this paciente',404)
+    }
+
+    updateStatusPaciente.status = false;
+    DBA_PACIENTE[verifyPacienteId] = updateStatusPaciente;
+
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${updateStatusPaciente.status}: `,updateStatusPaciente})
 }
 
 exports.getAllPaciente = getAllPaciente;

@@ -129,6 +129,16 @@ const patchDoctor = (req,res,next) => {
 
     const updateDoctor = {... DBA_DOCTOR.find(p => p.id === doctorId)}
     const verifyDoctorId = DBA_DOCTOR.findIndex(p => p.id === doctorId)
+    const ifCedulaExist = DBA_DOCTOR.filter(p => p.cedula === cedula)
+    const ifEmailExist = DBA_DOCTOR.filter(p => p.email === email)
+
+    if(ifCedulaExist > 1){
+        throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
+    }
+
+    if(ifEmailExist > 1){
+        throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
+    }
 
     if(verifyDoctorId === -1){
         throw new httpError(`we can't find this doctor`,322)
@@ -144,17 +154,6 @@ const patchDoctor = (req,res,next) => {
     updateDoctor.hourStart = hourStart;
     updateDoctor.hourFinish = hourFinish;
     updateDoctor.location = location;
-
-    const ifCedulaExist = DBA_DOCTOR.filter(p => p.cedula === cedula)
-    const ifEmailExist = DBA_DOCTOR.filter(p => p.email === email)
-
-    if(ifCedulaExist > 1){
-        throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
-    }
-
-    if(ifEmailExist > 1){
-        throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
-    }
 
     DBA_DOCTOR[verifyDoctorId] = updateDoctor;
     res.status(201).json({message:'doctor`s account was succesfull edited: ',updateDoctor})
@@ -174,7 +173,6 @@ const deleteDoctor = (req,res,next) => {
     DBA_DOCTOR[verifyDoctorId] = updateStatusDoctor;
 
     res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${updateStatusDoctor.status}: `,updateStatusDoctor})
-
 }
 
 exports.getAllDoctor = getAllDoctor;
