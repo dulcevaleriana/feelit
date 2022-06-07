@@ -19,11 +19,44 @@ const getAllPaciente = (req,res,next)=>{
 };
 //get paciente by id
 const getPacienteById = (req,res,next)=>{
-
+    const pacienteId = req.params.pId;
+    const findPacienteById = DBA_PACIENTE.find(p => p.id === pacienteId);
+    if(!findPacienteById){
+        throw new httpError('Could not find this paciente',404)
+    }
+    res.status(201).json({findPacienteById});
 };
 //post a doctor
 const postPaciente = (req,res,next)=>{
+    const {
+        cedula,
+        email,
+        password,
+        telefono,
+        name
+    } = req.body;
+    const createPaciente = {
+        id: uuidv4(),
+        cedula:cedula,
+        email:email,
+        password:password,
+        telefono:telefono,
+        name:name,
+        status:true
+    }
+    
+    const ifCedulaExist = DBA_PACIENTE.find(p => p.id === cedula);
+    const ifEmailExist = DBA_PACIENTE.find(p => p.email === email);
 
+    if(ifCedulaExist){
+        throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
+    }
+    if(ifEmailExist){
+        throw new httpError(`a user with this email: ${email} is already exist`,322)
+    }
+
+    DBA_PACIENTE.push(createPaciente);
+    res.status(201).json({message:"this paciente was succesfull created!",createPaciente});
 }
 //patch a doctor
 const patchPaciente = (req,res,next) => {
