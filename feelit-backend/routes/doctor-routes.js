@@ -15,7 +15,7 @@ router.post(
     [
         check('name').not().isEmpty(),
         check('password').isLength({min:6}),
-        check('cedula').not().isEmpty(),
+        check('cedula').isLength({min:13}),
         check('email').normalizeEmail().isEmail(),
         check('specialty').not().isEmpty(),
         check('telefono').isLength({min:12}),
@@ -31,7 +31,7 @@ router.patch(
     [
         check('name').not().isEmpty(),
         check('password').isLength({min:6}),
-        check('cedula').not().isEmpty(),
+        check('cedula').isLength({min:13}),
         check('email').normalizeEmail().isEmail(),
         check('specialty').not().isEmpty(),
         check('telefono').isLength({min:12}),

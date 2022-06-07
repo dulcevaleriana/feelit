@@ -28,6 +28,11 @@ const getPacienteById = (req,res,next)=>{
 };
 //post a doctor
 const postPaciente = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         cedula,
         email,
@@ -60,6 +65,11 @@ const postPaciente = (req,res,next)=>{
 }
 //patch a doctor
 const patchPaciente = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         cedula,
         email,
