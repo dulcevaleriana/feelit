@@ -73,6 +73,11 @@ const getAllDoctorBySpecialty = (req,res,next)=>{
 };
 //post a doctor
 const postDoctor = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         name,
         password,
@@ -118,6 +123,11 @@ const postDoctor = (req,res,next)=>{
 }
 //patch a doctor
 const patchDoctor = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const doctorId = req.params.dId;
     const {
         name,
