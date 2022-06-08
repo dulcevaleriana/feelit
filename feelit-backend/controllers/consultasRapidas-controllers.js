@@ -21,19 +21,47 @@ const getAllconsultasRapidas = (req,res,next)=>{
 };
 //get consultas rapidas by id
 const getconsultasRapidasById = (req,res,next)=>{
+    const consultaFlashId = req.params.crId;
+    const getConsultasRapidasId = DBA_CONSULTA_RAPIDA.find(p => p.id === consultaFlashId)
 
+    if(!getConsultasRapidasId){
+        throw new httpError('could not find any flash consult',404)
+    }
+
+    res.status(201).json({getConsultasRapidasId})
 };
 //get consultas rapidas by status
 const getconsultasRapidasByStatus = (req,res,next) => {
+    const consultaFlashStatus = req.params.ToF === 'true' ? true : false;
+    const getConsultasRapidasStatus = DBA_CONSULTA_RAPIDA.filter(p => p.status === consultaFlashStatus);
 
+    if(getConsultasRapidasStatus < 1){
+        throw new httpError(`could not find any flash consult with status ${consultaFlashStatus}`,404)
+    }
+
+    res.status(201).json({getConsultasRapidasStatus});
 }
 //get consultas rapidas by doctor
 const getconsultasRapidasByDoctor = (req,res,next) => {
+    const doctorId = req.params.dId;
+    const getConsultasRapidasDoctor = DBA_CONSULTA_RAPIDA.filter(p => p.idDoctor === doctorId);
 
+    if(getConsultasRapidasDoctor < 1){
+        throw new httpError(`could not find any flash consult with this doctor`,404)
+    }
+
+    res.status(201).json({getConsultasRapidasDoctor})
 }
 //get consultas rapidas by date
 const getconsultasRapidasByDate = (req,res,next) => {
+    const consultasRapidasDate = req.params.date;
+    const getConsultasRapidasDate = DBA_CONSULTA_RAPIDA.filter(p => p.dateCreated === consultasRapidasDate)
 
+    if(getConsultasRapidasDate < 1){
+        throw new httpError(`Could not find any with this date`,404)
+    }
+
+    res.status(201).json({getConsultasRapidasDate})
 }
 //post a: consultas rapidas
 const postconsultasRapidas = (req,res,next)=>{
