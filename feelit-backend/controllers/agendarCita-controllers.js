@@ -82,11 +82,11 @@ const postAgendarCita = (req,res,next)=>{
         link: uuidv4()
     }
 
-    const pacienteDates = [... DBA_AGENDAR_CITA.filter(p => p.idPaciente === idPaciente)]
-    const doctorDates = [... DBA_AGENDAR_CITA.filter(p => p.idDoctor === idDoctor)]
+    const pacienteDates = [... DBA_AGENDAR_CITA.filter(p => p.idPaciente === idPaciente)];
+    const doctorDates = [... DBA_AGENDAR_CITA.filter(p => p.idDoctor === idDoctor)];
 
-    const verifyPacienteDates = pacienteDates.find(d => d.date === date)
-    const verifyDoctorDates = doctorDates.find(d => d.date === date)
+    const verifyPacienteDates = pacienteDates.find(d => d.date === date);
+    const verifyDoctorDates = doctorDates.find(d => d.date === date);
 
     if(verifyPacienteDates || verifyDoctorDates){
         const verifyPacienteTime = pacienteDates.find(d => d.time === time)
@@ -99,11 +99,47 @@ const postAgendarCita = (req,res,next)=>{
 
     DBA_AGENDAR_CITA.push(createAgendarCita)
 
-    res.status(201).json({message:'',createAgendarCita})
+    res.status(201).json({message:'your date was already agended!',createAgendarCita})
 }
 //patch a: agendar cita
 const patchAgendarCita = (req,res,next) => {
+    const {
+        idPaciente,
+        idDoctor,
+        date,
+        time,
+        message, 
+    } = req.body;
+    const agendarCitaId = req.params.acId;
+    const verifyAgendaCita = DBA_AGENDAR_CITA.find(p => p.id === agendarCitaId);
+    const updateAgendarCita = {... DBA_AGENDAR_CITA.find(p => p.id === agendarCitaId)};
+    const verifyIndexAC = DBA_AGENDAR_CITA.findIndex(p => p.id === agendarCitaId);
 
+    const pacienteDates = [... DBA_AGENDAR_CITA.filter(p => p.idPaciente === idPaciente)];
+    const doctorDates = [... DBA_AGENDAR_CITA.filter(p => p.idDoctor === idDoctor)];
+    const verifyPacienteDates = pacienteDates.find(d => d.date === date);
+    const verifyDoctorDates = doctorDates.find(d => d.date === date);
+
+    if(verifyPacienteDates || verifyDoctorDates){
+        const verifyPacienteTime = pacienteDates.find(d => d.time === time)
+        const verifyDoctorTime = doctorDates.find(d => d.time === time)
+
+        if(verifyPacienteTime || verifyDoctorTime){
+            throw new httpError(`We can't save this date with the same date and hour`,404)
+        }
+    }
+    
+    if(!verifyAgendaCita){
+        throw new httpError('We can`t find this date',404)
+    }
+
+    updateAgendarCita.date = date;
+    updateAgendarCita.time = time;
+    updateAgendarCita.message = message;
+
+    DBA_AGENDAR_CITA[verifyIndexAC] = updateAgendarCita;
+
+    res.status(201).json({message:'your date was already modified!',updateAgendarCita})
 }
 //delete a: agendar cita
 const deleteAgendarCita = (req,res,next) => {

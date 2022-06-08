@@ -16,7 +16,7 @@ router.get('/date/:date',agendarCitaControllers.getAgendarCitaByDate)
 //post a: agendar cita
 router.post('/createDoctor',agendarCitaControllers.postAgendarCita)
 //patch a: agendar cita
-router.patch('/:dId',agendarCitaControllers.patchAgendarCita)
+router.patch('/:acId',agendarCitaControllers.patchAgendarCita)
 //delete a: agendar cita
 router.delete('/:dId',agendarCitaControllers.deleteAgendarCita)
 
