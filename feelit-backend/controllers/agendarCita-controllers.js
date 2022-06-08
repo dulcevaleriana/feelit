@@ -128,7 +128,7 @@ const patchAgendarCita = (req,res,next) => {
             throw new httpError(`We can't save this date with the same date and hour`,404)
         }
     }
-    
+
     if(!verifyAgendaCita){
         throw new httpError('We can`t find this date',404)
     }
@@ -143,7 +143,16 @@ const patchAgendarCita = (req,res,next) => {
 }
 //delete a: agendar cita
 const deleteAgendarCita = (req,res,next) => {
+    const agendarCitaId = req.params.acId;
+    const deleteAgendaCita = DBA_AGENDAR_CITA.find(p => p.id === agendarCitaId);
 
+    if(!deleteAgendaCita){
+        throw new httpError('We can`t find this date',404)
+    }
+
+    deleteAgendaCita.status = false;
+
+    res.status(201).json({message:'your date was already canceled!',deleteAgendaCita})
 }
 
 exports.getAllAgendarCita = getAllAgendarCita;

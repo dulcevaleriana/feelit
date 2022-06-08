@@ -18,7 +18,7 @@ router.post('/createDoctor',agendarCitaControllers.postAgendarCita)
 //patch a: agendar cita
 router.patch('/:acId',agendarCitaControllers.patchAgendarCita)
 //delete a: agendar cita
-router.delete('/:dId',agendarCitaControllers.deleteAgendarCita)
+router.delete('/:acId',agendarCitaControllers.deleteAgendarCita)
 
 
 module.exports = router;
