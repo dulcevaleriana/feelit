@@ -7,7 +7,7 @@ let DBA_AGENDAR_CITA = [
         id:'dadafgsgfsdgrgf5678',
         idPaciente:'dsfewjboforngboergo',
         idDoctor:'sigr389r23ubru',
-        date:'6-8-2022',
+        date:'2022-6-12',
         time:'11:00',
         status:true,
         message:'hi hi hi hi hi',
@@ -64,6 +64,11 @@ const getAgendarCitaByDate = (req,res,next) => {
 }
 //post a: agendar cita
 const postAgendarCita = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         idPaciente,
         idDoctor,
@@ -103,6 +108,11 @@ const postAgendarCita = (req,res,next)=>{
 }
 //patch a: agendar cita
 const patchAgendarCita = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         idPaciente,
         idDoctor,
@@ -121,10 +131,10 @@ const patchAgendarCita = (req,res,next) => {
     const verifyDoctorDates = doctorDates.find(d => d.date === date);
 
     if(verifyPacienteDates || verifyDoctorDates){
-        const verifyPacienteTime = pacienteDates.find(d => d.time === time)
-        const verifyDoctorTime = doctorDates.find(d => d.time === time)
+        const verifyPacienteTime = pacienteDates.filter(d => d.time === time)
+        const verifyDoctorTime = doctorDates.filter(d => d.time === time)
 
-        if(verifyPacienteTime || verifyDoctorTime){
+        if(verifyPacienteTime > 1 || verifyDoctorTime > 1){
             throw new httpError(`We can't save this date with the same date and hour`,404)
         }
     }

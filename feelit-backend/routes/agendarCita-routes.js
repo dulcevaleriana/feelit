@@ -14,9 +14,28 @@ router.get('/doctor/:dId',agendarCitaControllers.getAgendarCitaByDoctor)
 //get agendar cita by date
 router.get('/date/:date',agendarCitaControllers.getAgendarCitaByDate)
 //post a: agendar cita
-router.post('/createDoctor',agendarCitaControllers.postAgendarCita)
+router.post(
+    '/createDoctor',
+    [
+        check('idPaciente').not().isEmpty(),
+        check('idDoctor').not().isEmpty(),
+        check('date').trim().isDate(),
+        // .withMessage('11111start must be in correct format yyyy:mm:dd hh:mm:ss')
+        check('time').not().isEmpty(),
+        check('message').not().isEmpty()
+    ],
+    agendarCitaControllers.postAgendarCita)
 //patch a: agendar cita
-router.patch('/:acId',agendarCitaControllers.patchAgendarCita)
+router.patch(
+    '/:acId',
+    [
+        check('idPaciente').not().isEmpty(),
+        check('idDoctor').not().isEmpty(),
+        check('date').trim().isDate(),
+        check('time').not().isEmpty(),
+        check('message').not().isEmpty()
+    ],
+    agendarCitaControllers.patchAgendarCita)
 //delete a: agendar cita
 router.delete('/:acId',agendarCitaControllers.deleteAgendarCita)
 
