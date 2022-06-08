@@ -5,6 +5,7 @@ const usersRoutes = require('./routes/users-routes');
 const doctorRoutes = require('./routes/doctor-routes');
 const pacienteRoutes = require('./routes/paciente-routes');
 const agendarCitaRoutes = require('./routes/agendarCita-routes');
+const consultasRapidasRoutes = require('./routes/consultasRapidas-routes')
 const httpError = require('./models/http-error');
 
 const app = express();
@@ -20,6 +21,8 @@ app.use('/api/doctor',doctorRoutes);
 app.use('/api/paciente',pacienteRoutes);
 //agendar cita module
 app.use('/api/agendar-cita',agendarCitaRoutes);
+//consultas rapidas module
+app.use('/api/consultas-rapidas',consultasRapidasRoutes)
 
 app.use((req,res,next)=>{
    const error = new httpError('Could not find this router',404);

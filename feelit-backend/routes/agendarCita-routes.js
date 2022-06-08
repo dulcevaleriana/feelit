@@ -15,7 +15,7 @@ router.get('/doctor/:dId',agendarCitaControllers.getAgendarCitaByDoctor)
 router.get('/date/:date',agendarCitaControllers.getAgendarCitaByDate)
 //post a: agendar cita
 router.post(
-    '/createDoctor',
+    '/createDate',
     [
         check('idPaciente').not().isEmpty(),
         check('idDoctor').not().isEmpty(),
