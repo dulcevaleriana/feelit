@@ -5,11 +5,18 @@ const {validationResult} = require('express-validator');
 let DBA_AGENDAR_CITA = [
     {
         id:'dadafgsgfsdgrgf5678',
+        idPaciente:'dsfewjboforngboergo',
+        idDoctor:'sigr389r23ubru',
+        date:'6/8/2022',
+        time:'11:00',
+        status:true,
+        message:'hi hi hi hi hi',
+        link:'sfnsdnosgohnreignerognvfdng'
     }
 ]
 //get all agendar cita
 const getAllAgendarCita = (req,res,next)=>{
-
+    res.json({DBA_AGENDAR_CITA})
 };
 //get agendar cita by id
 const getAgendarCitaById = (req,res,next)=>{
