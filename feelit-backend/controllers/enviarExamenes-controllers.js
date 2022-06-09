@@ -147,7 +147,16 @@ const patchEnviarExamenesByDoctor = (req,res,next) => {
 }
 //delete a: enviar examenes
 const deleteEnviarExamenes = (req,res,next) => {
+    const enviarExamenesId = req.params.eeId;
+    const deleteEnviarExamenes = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId);
 
+    if(!deleteEnviarExamenes){
+        throw new httpError('We can`t find any exam sended',404)
+    }
+
+    deleteEnviarExamenes.status = false;
+
+    res.status(201).json({message:'your exam sended was already canceled!',deleteEnviarExamenes})
 }
 
 exports.getAllEnviarExamenes = getAllEnviarExamenes;
