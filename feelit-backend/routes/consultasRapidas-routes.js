@@ -14,9 +14,25 @@ router.get('/doctor/:dId',consultasRapidasControllers.getconsultasRapidasByDocto
 //get consultas rapidas by date
 router.get('/date/:date',consultasRapidasControllers.getconsultasRapidasByDate)
 //post a: consultas rapidas
-router.post('/createConsultaRapida',consultasRapidasControllers.postconsultasRapidas)
+router.post(
+    '/createConsultaRapida',
+    [
+        check('idPaciente').not().isEmpty(),
+        check('idDoctor').not().isEmpty(),
+        check('time').not().isEmpty(),
+        check('message').not().isEmpty()
+    ],
+    consultasRapidasControllers.postconsultasRapidas)
 //patch a: consultas rapidas
-router.patch('/:crId',consultasRapidasControllers.patchconsultasRapidas)
+router.patch(
+    '/:crId',
+    [
+        check('idPaciente').not().isEmpty(),
+        check('idDoctor').not().isEmpty(),
+        check('time').not().isEmpty(),
+        check('message').not().isEmpty()
+    ],
+    consultasRapidasControllers.patchconsultasRapidas)
 //delete a: consultas rapidas
 router.delete('/:crId',consultasRapidasControllers.deleteconsultasRapidas)
 

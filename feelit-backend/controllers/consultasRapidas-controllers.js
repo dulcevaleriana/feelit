@@ -65,6 +65,11 @@ const getconsultasRapidasByDate = (req,res,next) => {
 }
 //post a: consultas rapidas
 const postconsultasRapidas = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         idPaciente,
         idDoctor,
@@ -96,6 +101,11 @@ const postconsultasRapidas = (req,res,next)=>{
 }
 //patch a: consultas rapidas
 const patchconsultasRapidas = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         idPaciente,
         idDoctor,
