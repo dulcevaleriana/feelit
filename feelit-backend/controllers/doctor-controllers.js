@@ -132,6 +132,17 @@ const patchDoctor = (req,res,next) => {
     const ifCedulaExist = DBA_DOCTOR.filter(p => p.cedula === cedula)
     const ifEmailExist = DBA_DOCTOR.filter(p => p.email === email)
 
+    updateDoctor.name = name;
+    updateDoctor.password = password;
+    updateDoctor.cedula = cedula;
+    updateDoctor.email = email;
+    updateDoctor.specialty = specialty;
+    updateDoctor.telefono = telefono;
+    updateDoctor.laborDays = laborDays;
+    updateDoctor.hourStart = hourStart;
+    updateDoctor.hourFinish = hourFinish;
+    updateDoctor.location = location;
+
     if(ifCedulaExist > 1){
         throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
     }
@@ -143,17 +154,6 @@ const patchDoctor = (req,res,next) => {
     if(verifyDoctorId === -1){
         throw new httpError(`we can't find this doctor`,322)
     }
-
-    updateDoctor.name = name;
-    updateDoctor.password = password;
-    updateDoctor.cedula = cedula;
-    updateDoctor.email = email;
-    updateDoctor.specialty = specialty;
-    updateDoctor.telefono = telefono;
-    updateDoctor.laborDays = laborDays;
-    updateDoctor.hourStart = hourStart;
-    updateDoctor.hourFinish = hourFinish;
-    updateDoctor.location = location;
 
     DBA_DOCTOR[verifyDoctorId] = updateDoctor;
     res.status(201).json({message:'doctor`s account was succesfull edited: ',updateDoctor})

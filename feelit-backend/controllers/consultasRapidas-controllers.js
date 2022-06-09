@@ -96,7 +96,36 @@ const postconsultasRapidas = (req,res,next)=>{
 }
 //patch a: consultas rapidas
 const patchconsultasRapidas = (req,res,next) => {
+    const {
+        idPaciente,
+        idDoctor,
+        time,
+        message,
+    } = req.body;
+    const consultaFlashId = req.params.crId;
+    const verifyconsultaFlashId = DBA_CONSULTA_RAPIDA.find(p => p.id === consultaFlashId)
+    const verifyconsultaFlashIndex = DBA_CONSULTA_RAPIDA.findIndex(p => p.id === consultaFlashId)
+    const updateConsultaRapida = {... DBA_CONSULTA_RAPIDA.find(p => p.id === consultaFlashId)}
 
+    const pacienteDates = [... DBA_CONSULTA_RAPIDA.filter(p => p.idPaciente === idPaciente)];
+    const doctorDates = [... DBA_CONSULTA_RAPIDA.filter(p => p.idDoctor === idDoctor)];
+    const verifyPacienteTime = pacienteDates.filter(d => d.time === time)
+    const verifyDoctorTime = doctorDates.filter(d => d.time === time)
+
+    updateConsultaRapida.time = time;
+    updateConsultaRapida.message = message;
+
+    if(verifyPacienteTime.length >= 1 || verifyDoctorTime.length >= 1){
+        throw new httpError(`We can't save this date with the same hour`,404)
+    }
+
+    if(!verifyconsultaFlashId){
+        throw new httpError(`We can't find this flash date`,404)
+    }
+
+    DBA_CONSULTA_RAPIDA[verifyconsultaFlashIndex] = updateConsultaRapida;
+
+    res.status(201).json({message:'This flash consult was edited succesfully!!',updateConsultaRapida})
 }
 //delete a: consultas rapidas
 const deleteconsultasRapidas = (req,res,next) => {

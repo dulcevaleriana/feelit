@@ -129,12 +129,16 @@ const patchAgendarCita = (req,res,next) => {
     const doctorDates = [... DBA_AGENDAR_CITA.filter(p => p.idDoctor === idDoctor)];
     const verifyPacienteDates = pacienteDates.find(d => d.date === date);
     const verifyDoctorDates = doctorDates.find(d => d.date === date);
+    
+    updateAgendarCita.date = date;
+    updateAgendarCita.time = time;
+    updateAgendarCita.message = message;
 
     if(verifyPacienteDates || verifyDoctorDates){
         const verifyPacienteTime = pacienteDates.filter(d => d.time === time)
         const verifyDoctorTime = doctorDates.filter(d => d.time === time)
 
-        if(verifyPacienteTime > 1 || verifyDoctorTime > 1){
+        if(verifyPacienteTime.length >= 1 || verifyDoctorTime.length >= 1){
             throw new httpError(`We can't save this date with the same date and hour`,404)
         }
     }
@@ -142,10 +146,6 @@ const patchAgendarCita = (req,res,next) => {
     if(!verifyAgendaCita){
         throw new httpError('We can`t find this date',404)
     }
-
-    updateAgendarCita.date = date;
-    updateAgendarCita.time = time;
-    updateAgendarCita.message = message;
 
     DBA_AGENDAR_CITA[verifyIndexAC] = updateAgendarCita;
 

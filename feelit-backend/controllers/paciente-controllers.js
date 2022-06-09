@@ -85,6 +85,12 @@ const patchPaciente = (req,res,next) => {
     const ifEmailExist = DBA_PACIENTE.filter(p => p.email === email);
     const findPacienteId = DBA_PACIENTE.find(p => p.id === pacienteId);
 
+    updatePaciente.cedula = cedula;
+    updatePaciente.email = email;
+    updatePaciente.password = password;
+    updatePaciente.telefono = telefono;
+    updatePaciente.name = name;
+
     if(!findPacienteId){
         throw new httpError(`we can't find this paciente`,404)
     }
@@ -94,12 +100,6 @@ const patchPaciente = (req,res,next) => {
     if(ifEmailExist > 1){
         throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
     }
-
-    updatePaciente.cedula = cedula;
-    updatePaciente.email = email;
-    updatePaciente.password = password;
-    updatePaciente.telefono = telefono;
-    updatePaciente.name = name;
 
     DBA_PACIENTE[verifyPacienteId] = updatePaciente;
 
