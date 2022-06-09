@@ -71,6 +71,11 @@ const getEnviarExamenesByDate = (req,res,next) => {
 }
 //post a: enviar examenes
 const postEnviarExamenes = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         idPaciente,
         idDoctor,
@@ -94,6 +99,11 @@ const postEnviarExamenes = (req,res,next)=>{
 }
 //patch a: enviar examenes by patience
 const patchEnviarExamenesByPaciente = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         message,
         docUpload
@@ -121,6 +131,11 @@ const patchEnviarExamenesByPaciente = (req,res,next) => {
 }
 //patch a: enviar examenes by doctor
 const patchEnviarExamenesByDoctor = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {
         messageDoctor
     } = req.body;

@@ -14,11 +14,28 @@ router.get('/doctor/:dId',enviarExamenesControllers.getEnviarExamenesByDoctor)
 //get enviar examenes by date
 router.get('/date/:date',enviarExamenesControllers.getEnviarExamenesByDate)
 //post a: enviar examenes
-router.post('/createEnviarExamenes',enviarExamenesControllers.postEnviarExamenes)
+router.post(
+    '/createEnviarExamenes',
+    [
+        check('idPaciente').not().isEmpty(),
+        check('idDoctor').not().isEmpty(),
+        check('message').not().isEmpty(),
+        check('docUpload').not().isEmpty()
+    ],
+    enviarExamenesControllers.postEnviarExamenes)
 //patch a: enviar examenes by patience
-router.patch('/:eeId/:pId',enviarExamenesControllers.patchEnviarExamenesByPaciente)
+router.patch(
+    '/:eeId/:pId',
+    [
+        check('message').not().isEmpty(),
+        check('docUpload').not().isEmpty()
+    ],
+    enviarExamenesControllers.patchEnviarExamenesByPaciente)
 //patch a: enviar examenes by doctor
-router.patch('/doctorMessage/:eeId/:dId',enviarExamenesControllers.patchEnviarExamenesByDoctor)
+router.patch(
+    '/doctorMessage/:eeId/:dId',
+    check('messageDoctor').not().isEmpty(),
+    enviarExamenesControllers.patchEnviarExamenesByDoctor)
 //delete a: enviar examenes
 router.delete('/:eeId',enviarExamenesControllers.deleteEnviarExamenes)
 
