@@ -8,9 +8,9 @@ router.get('/',specialtyControllers.getAllSpecialty)
 //get specialty by id
 router.get('/:sId',specialtyControllers.getSpecialtyById)
 //post a: specialty
-router.post('/createSpecialty',specialtyControllers.postSpecialty)
+router.post('/createSpecialty',check('specialtyName').not().isEmpty(),specialtyControllers.postSpecialty)
 //patch a: specialty by patience
-router.patch('/:sId',specialtyControllers.patchSpecialty)
+router.patch('/:sId',check('specialtyName').not().isEmpty(),specialtyControllers.patchSpecialty)
 //delete a: specialty
 router.delete('/:sId',specialtyControllers.deleteSpecialty)
 

@@ -1,7 +1,7 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
-const {todayFunction} = require('../models/today')
+
 //BDA temporal
 let DBA_SPECIALTY = [
     {
@@ -27,6 +27,11 @@ const getSpecialtyById = (req,res,next)=>{
 };
 //post a: specialty
 const postSpecialty = (req,res,next)=>{
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {specialtyName} = req.body;
     const createSpecialty = {
         id:uuidv4(),
@@ -44,6 +49,11 @@ const postSpecialty = (req,res,next)=>{
 }
 //patch a: specialty by patience
 const patchSpecialty = (req,res,next) => {
+    const error = validationResult(req);
+    if(!error.isEmpty()){
+        console.log(error);
+        throw new httpError('Invalid inputs passed, please check your data',422);
+    }
     const {specialtyName} = req.body;
     const specialtyId = req.params.sId;
 
