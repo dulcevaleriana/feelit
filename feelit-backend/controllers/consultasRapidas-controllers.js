@@ -65,7 +65,34 @@ const getconsultasRapidasByDate = (req,res,next) => {
 }
 //post a: consultas rapidas
 const postconsultasRapidas = (req,res,next)=>{
+    const {
+        idPaciente,
+        idDoctor,
+        time,
+        message,
+    } = req.body;
+    const createConsultasRapidas = {
+        id:uuidv4(),
+        idPaciente:idPaciente,
+        idDoctor:idDoctor,
+        time:time,
+        message:message,
+        dateCreated:todayFunction(),
+        status:true,
+        link:uuidv4()
+    }
 
+    const pacienteDates = [... DBA_CONSULTA_RAPIDA.filter(p => p.idPaciente === idPaciente)];
+    const doctorDates = [... DBA_CONSULTA_RAPIDA.filter(p => p.idDoctor === idDoctor)];
+    const verifyPacienteTime = pacienteDates.find(d => d.time === time)
+    const verifyDoctorTime = doctorDates.find(d => d.time === time)
+
+    if(verifyPacienteTime || verifyDoctorTime){
+        throw new httpError(`We can't save this date with the same hour`,404)
+    }
+
+    DBA_CONSULTA_RAPIDA.push(createConsultasRapidas)
+    res.status(201).json({message:'This flash date was already created!!',createConsultasRapidas})
 }
 //patch a: consultas rapidas
 const patchconsultasRapidas = (req,res,next) => {
