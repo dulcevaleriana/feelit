@@ -6,11 +6,19 @@ const {todayFunction} = require('../models/today')
 let DBA_ENVIAR_EXAMENES = [
     {
         id:'dadafgsgfsdgrgf5678',
+        idPaciente:'dsfewjboforngboergo',
+        idDoctor:'sigr389r23ubru',
+        message:'hi hi hi hi hi',
+        messageDoctor:'hohohohoho',
+        docUpload:'sdsadassafdfdafafsd.pdf',
+        dateCreated:todayFunction(),
+        status:true,
+        link:'sfnsdnosgohnreignerognvfdng'
     }
 ]
 //get all enviar examenes
 const getAllEnviarExamenes = (req,res,next)=>{
-
+    res.json({DBA_ENVIAR_EXAMENES});
 };
 //get enviar examenes by id
 const getEnviarExamenesById = (req,res,next)=>{
