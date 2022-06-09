@@ -129,7 +129,16 @@ const patchconsultasRapidas = (req,res,next) => {
 }
 //delete a: consultas rapidas
 const deleteconsultasRapidas = (req,res,next) => {
+    const consultaFlashId = req.params.crId;
+    const deleteconsultaRapidas = DBA_CONSULTA_RAPIDA.find(p => p.id === consultaFlashId);
 
+    if(!deleteconsultaRapidas){
+        throw new httpError('We can`t find this date',404)
+    }
+
+    deleteconsultaRapidas.status = false;
+
+    res.status(201).json({message:'your date was already canceled!',deleteconsultaRapidas})
 }
 
 exports.getAllconsultasRapidas = getAllconsultasRapidas;
