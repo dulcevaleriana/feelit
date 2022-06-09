@@ -66,7 +66,26 @@ const getEnviarExamenesByDate = (req,res,next) => {
 }
 //post a: enviar examenes
 const postEnviarExamenes = (req,res,next)=>{
+    const {
+        idPaciente,
+        idDoctor,
+        message,
+        docUpload
+    } = req.body;
+    const createEnviarExamenes = {
+        id:uuidv4(),
+        idPaciente:idPaciente,
+        idDoctor:idDoctor,
+        message:message,
+        messageDoctor:'Dr. will send you a response soon',
+        docUpload:docUpload,
+        dateCreated:todayFunction(),
+        status:true,
+        link:uuidv4()
+    }
 
+    DBA_ENVIAR_EXAMENES.push(createEnviarExamenes)
+    res.status(201).json({message:'These exams was already sended!!',createEnviarExamenes})
 }
 //patch a: enviar examenes
 const patchEnviarExamenes = (req,res,next) => {
