@@ -4,20 +4,20 @@ const router = Router();
 const enviarExamenesControllers = require('../controllers/enviarExamenes-controllers');
 
 //get all enviar examenes
-router.get('/',)
+router.get('/',enviarExamenesControllers.getAllEnviarExamenes)
 //get enviar examenes by id
-router.get('/:eeId',)
+router.get('/:eeId',enviarExamenesControllers.getEnviarExamenesById)
 //get enviar examenes by status
-router.get('/status/:ToF',)
+router.get('/status/:ToF',enviarExamenesControllers.getEnviarExamenesByStatus)
 //get enviar examenes by doctor
-router.get('/doctor/:dId',)
+router.get('/doctor/:dId',enviarExamenesControllers.getEnviarExamenesByDoctor)
 //get enviar examenes by date
-router.get('/date/:date',)
+router.get('/date/:date',enviarExamenesControllers.getEnviarExamenesByDate)
 //post a: enviar examenes
-router.post('/createEnviarExamenes',)
+router.post('/createEnviarExamenes',enviarExamenesControllers.postEnviarExamenes)
 //patch a: enviar examenes
-router.patch('/:eeId',)
+router.patch('/:eeId',enviarExamenesControllers.patchEnviarExamenes)
 //delete a: enviar examenes
-router.delete('/:eeId',)
+router.delete('/:eeId',enviarExamenesControllers.deleteEnviarExamenes)
 
 module.exports = router;
