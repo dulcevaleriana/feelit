@@ -15,8 +15,10 @@ router.get('/doctor/:dId',enviarExamenesControllers.getEnviarExamenesByDoctor)
 router.get('/date/:date',enviarExamenesControllers.getEnviarExamenesByDate)
 //post a: enviar examenes
 router.post('/createEnviarExamenes',enviarExamenesControllers.postEnviarExamenes)
-//patch a: enviar examenes
-router.patch('/:eeId',enviarExamenesControllers.patchEnviarExamenes)
+//patch a: enviar examenes by patience
+router.patch('/:eeId/:pId',enviarExamenesControllers.patchEnviarExamenesByPaciente)
+//patch a: enviar examenes by doctor
+router.patch('/doctorMessage/:eeId/:dId',enviarExamenesControllers.patchEnviarExamenesByDoctor)
 //delete a: enviar examenes
 router.delete('/:eeId',enviarExamenesControllers.deleteEnviarExamenes)
 

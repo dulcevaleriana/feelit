@@ -10,7 +10,12 @@ let DBA_ENVIAR_EXAMENES = [
         idDoctor:'sigr389r23ubru',
         message:'hi hi hi hi hi',
         messageDoctor:'hohohohoho',
-        docUpload:'sdsadassafdfdafafsd.pdf',
+        docUpload:[
+            'sdsadassafdfdafafsd.pdf',
+            'sdsadassafdfdafafsd.pdf',
+            'sdsadassafdfdafafsd.pdf',
+            'sdsadassafdfdafafsd.pdf'
+        ],
         dateCreated:todayFunction(),
         status:true,
         link:'sfnsdnosgohnreignerognvfdng'
@@ -87,9 +92,58 @@ const postEnviarExamenes = (req,res,next)=>{
     DBA_ENVIAR_EXAMENES.push(createEnviarExamenes)
     res.status(201).json({message:'These exams was already sended!!',createEnviarExamenes})
 }
-//patch a: enviar examenes
-const patchEnviarExamenes = (req,res,next) => {
+//patch a: enviar examenes by patience
+const patchEnviarExamenesByPaciente = (req,res,next) => {
+    const {
+        message,
+        docUpload
+    } = req.body;
+    const enviarExamenesId = req.params.eeId;
+    const pacienteId = req.params.pId;
+    const verifyenviarExamenesId = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)
+    const verifyPacienteId = DBA_ENVIAR_EXAMENES.find(p => p.idPaciente === pacienteId)
+    const verifyenviarExamenesIndex = DBA_ENVIAR_EXAMENES.findIndex(p => p.id === enviarExamenesId)
+    const updateEnviarExamenes = {... DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)}
 
+    if(!verifyenviarExamenesId){
+        throw new httpError('Could not find any exams sended',404)
+    }
+    if(!verifyPacienteId){
+        throw new httpError('Could not find any exams sended by you',404)
+    }
+
+    updateEnviarExamenes.message = message;
+    updateEnviarExamenes.docUpload = DBA_ENVIAR_EXAMENES[verifyenviarExamenesIndex].docUpload.concat(docUpload);
+
+    DBA_ENVIAR_EXAMENES[verifyenviarExamenesIndex] = updateEnviarExamenes;
+
+    res.status(201).json({message:'Your exam sended was edited succesfully',updateEnviarExamenes})
+}
+//patch a: enviar examenes by doctor
+const patchEnviarExamenesByDoctor = (req,res,next) => {
+    const {
+        messageDoctor
+    } = req.body;
+    const enviarExamenesId = req.params.eeId;
+    const doctorId = req.params.dId;
+    const verifyenviarExamenesId = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)
+    const verifyDoctorId = DBA_ENVIAR_EXAMENES.find(p => p.idDoctor === doctorId)
+    const verifyenviarExamenesIndex = DBA_ENVIAR_EXAMENES.findIndex(p => p.id === enviarExamenesId)
+    const updateEnviarExamenes = {... DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)}
+
+    if(!verifyenviarExamenesId){
+        throw new httpError('Could not find any exams sended',404)
+    }
+
+    if(!verifyDoctorId){
+        throw new httpError('Could not find any exams sended for you, dr',404)
+    }
+
+    updateEnviarExamenes.messageDoctor = messageDoctor;
+
+    DBA_ENVIAR_EXAMENES[verifyenviarExamenesIndex] = updateEnviarExamenes;
+
+    res.status(201).json({message:'Dr. , Your exam response was sended succesfully',updateEnviarExamenes})
 }
 //delete a: enviar examenes
 const deleteEnviarExamenes = (req,res,next) => {
@@ -102,5 +156,6 @@ exports.getEnviarExamenesByStatus = getEnviarExamenesByStatus;
 exports.getEnviarExamenesByDoctor = getEnviarExamenesByDoctor;
 exports.getEnviarExamenesByDate = getEnviarExamenesByDate;
 exports.postEnviarExamenes = postEnviarExamenes;
-exports.patchEnviarExamenes = patchEnviarExamenes;
+exports.patchEnviarExamenesByPaciente = patchEnviarExamenesByPaciente;
+exports.patchEnviarExamenesByDoctor = patchEnviarExamenesByDoctor;
 exports.deleteEnviarExamenes = deleteEnviarExamenes;
