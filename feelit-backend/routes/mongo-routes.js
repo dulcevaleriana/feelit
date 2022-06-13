@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const router = Router();
-const mongoControllers = require('../controllers/mongo-controller');
+const mongoControllers = require('../controllers/mongoose-controller');
 
 //get 
 router.get('/',mongoControllers.getProducts)
