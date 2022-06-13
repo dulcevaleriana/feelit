@@ -1,6 +1,10 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
+const MongoClient = require('mongodb').MongoClient;
+
+const url = 'mongodb+srv://dulceguzmantaveras:Z8MZtFcDyVW9oWzW@cluster0.rcqta.mongodb.net/DBA_PACIENTE?retryWrites=true&w=majority';
+
 //BDA temporal
 let DBA_PACIENTE = [
     {
@@ -14,8 +18,19 @@ let DBA_PACIENTE = [
     }
 ]
 //get all paciente
-const getAllPaciente = (req,res,next)=>{
-    res.json({DBA_PACIENTE})
+const getAllPaciente = async (req,res,next)=>{
+    const clientMongoDB = new MongoClient(url);
+    let getAllPaciente;
+
+    try{
+        await clientMongoDB.connect();
+        const db = clientMongoDB.db();
+        getAllPaciente = await db.collection('paciente').find().toArray();
+    } catch(error){
+        return res.json({message:'Could not find any paciente'})
+    }
+    setTimeout(()=>clientMongoDB.close(),1500)
+    res.json({getAllPaciente})
 };
 //get paciente by id
 const getPacienteById = (req,res,next)=>{
@@ -27,7 +42,7 @@ const getPacienteById = (req,res,next)=>{
     res.status(201).json({findPacienteById});
 };
 //post a doctor
-const postPaciente = (req,res,next)=>{
+const postPaciente = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
         console.log(error);
@@ -41,7 +56,6 @@ const postPaciente = (req,res,next)=>{
         name
     } = req.body;
     const createPaciente = {
-        id: uuidv4(),
         cedula:cedula,
         email:email,
         password:password,
@@ -49,18 +63,29 @@ const postPaciente = (req,res,next)=>{
         name:name,
         status:true
     }
-    
-    const ifCedulaExist = DBA_PACIENTE.find(p => p.id === cedula);
-    const ifEmailExist = DBA_PACIENTE.find(p => p.email === email);
+    const clientMongoDB = new MongoClient(url);
 
-    if(ifCedulaExist){
-        throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
-    }
-    if(ifEmailExist){
-        throw new httpError(`a user with this email: ${email} is already exist`,322)
+    try {
+        await clientMongoDB.connect();
+        const db = clientMongoDB.db();
+        const ifCedulaExist = db.collection('paciente').find(p => p.cedula === cedula);
+        const ifEmailExist = db.collection('paciente').find(p => p.email === email);
+
+        if(ifCedulaExist){
+            console.log("ifCedulaExist",ifCedulaExist)
+            throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
+        } 
+        if(ifEmailExist){
+            throw new httpError(`a user with this email: ${email} is already exist`,322)
+        }
+
+        const result = db.collection('paciente').insertOne(createPaciente);
+    } catch (error) {
+        console.log(error)
+        return res.status(404).json({message:'Could not store data for "createPaciente"'})
     }
 
-    DBA_PACIENTE.push(createPaciente);
+    setTimeout(() => {clientMongoDB.close()}, 1500)
     res.status(201).json({message:"this paciente was succesfull created!",createPaciente});
 }
 //patch a doctor

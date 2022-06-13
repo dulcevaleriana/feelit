@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
+const mongoRoutes = require('./routes/mongo-routes');
+
 const doctorRoutes = require('./routes/doctor-routes');
 const pacienteRoutes = require('./routes/paciente-routes');
 const agendarCitaRoutes = require('./routes/agendarCita-routes');
@@ -17,6 +20,9 @@ app.use(bodyParser.json())
 app.use('/api/places',placesRoutes);
 //user Quit
 app.use('/api/users',usersRoutes);
+//mongoRoutes Quit
+app.use('/api/mongo',mongoRoutes)
+
 //doctor module
 app.use('/api/doctor',doctorRoutes);
 //paciente module
