@@ -3,7 +3,7 @@ const Product = require('../models/product');
 require('dotenv').config();
 
 mongoose.connect(
-    `mongodb+srv://dulceguzmantaveras:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`
     ).then(() => {
         console.log('database is conected!')
     }).catch(()=>{
@@ -21,6 +21,7 @@ const createProduct = async (req,res,next) => {
         price:req.body.price
     });
     const result = await createProduct.save();
+    console.log(createProduct._id)
     res.json(result)
 }
 

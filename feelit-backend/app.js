@@ -12,6 +12,8 @@ const consultasRapidasRoutes = require('./routes/consultasRapidas-routes');
 const enviarExamenesRoutes = require('./routes/enviarExamenes-routes');
 const specialtyRoutes = require('./routes/specialty-routes');
 const httpError = require('./models/http-error');
+require('dotenv').config();
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -48,4 +50,8 @@ app.use((error,req,res,next)=>{
     res.status(error.code || 500).json({message: error.message || 'sonething went wrong'})
 })
 
-app.listen(5000);
+mongoose
+    .connect(`mongodb+srv://dulceguzmantaveras:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`)
+    .then(() => {console.log('Connections works!!!'); app.listen(5000)})
+    .catch((err) => console.log('Connections failed!',err));
+
