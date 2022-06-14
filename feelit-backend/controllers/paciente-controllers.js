@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
 const MongoClient = require('mongodb').MongoClient;
 
-const url = 'mongodb+srv://dulceguzmantaveras:Z8MZtFcDyVW9oWzW@cluster0.rcqta.mongodb.net/DBA_PACIENTE?retryWrites=true&w=majority';
+const url = `mongodb+srv://dulceguzmantaveras:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`;
 
 //BDA temporal
 let DBA_PACIENTE = [

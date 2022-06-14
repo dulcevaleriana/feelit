@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
 const Product = require('../models/product');
+require('dotenv').config();
+
 mongoose.connect(
-    'mongodb+srv://dulceguzmantaveras:Z8MZtFcDyVW9oWzW@cluster0.rcqta.mongodb.net/products_test?retryWrites=true&w=majority'
+    `mongodb+srv://dulceguzmantaveras:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`
     ).then(() => {
         console.log('database is conected!')
     }).catch(()=>{
-        console.log('connection failed!')
+        console.log('connection failed!',)
     })
 
 const getProducts = async (req,res,next) => {
-
+    const products = await Product.find().exec();
+    res.json(products);
 }
 
 const createProduct = async (req,res,next) => {
