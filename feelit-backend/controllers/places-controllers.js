@@ -1,6 +1,7 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
+const Place = require('../models/place');
 //BDA temporal
 let DUMMY_PLACES = [
     {
@@ -38,7 +39,7 @@ const getPlacesByUserId = (req,res,next)=>{
     res.json({places})
 };
 //post a place
-const postPlace = (req,res,next)=>{
+const postPlace = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
         console.log(error);
@@ -49,19 +50,26 @@ const postPlace = (req,res,next)=>{
         description,
         location,
         address,
+        image,
         creator
     } = req.body;
-    const postPlace = {
-        id: uuidv4(),
-        title: title,
-        description: description,
-        location: location,
-        address: address,
-        creator: creator
-    };
+    const postPlace = new Place({
+        title,
+        description,
+        location,
+        address,
+        image:'https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg',
+        creator
+    })
 
-    DUMMY_PLACES.push(postPlace);
-    res.status(201).json(postPlace);
+    try{
+        await postPlace.save();
+    } catch (err) {
+        const error = new httpError('post place failed, please try again',500);
+        return next(error);
+    }
+
+    res.status(201).json({message:'your place was posted succesfully!',postPlace});
 }
 //update a place
 const patchPlace = (req,res,next) => {

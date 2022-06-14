@@ -1,14 +1,5 @@
-const mongoose = require('mongoose');
 const Product = require('../models/product');
 require('dotenv').config();
-
-mongoose.connect(
-    `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`
-    ).then(() => {
-        console.log('database is conected!')
-    }).catch(()=>{
-        console.log('connection failed!',)
-    })
 
 const getProducts = async (req,res,next) => {
     const products = await Product.find().exec();

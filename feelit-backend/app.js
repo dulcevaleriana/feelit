@@ -53,5 +53,5 @@ app.use((error,req,res,next)=>{
 mongoose
     .connect(`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`)
     .then(() => {console.log('Connections works!!!'); app.listen(5000)})
-    .catch((err) => console.log('Connections failed!',err));
+    .catch((error) => console.log('Connections failed!',error));
 
