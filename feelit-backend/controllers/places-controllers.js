@@ -120,12 +120,16 @@ const patchPlace = async (req,res,next) => {
     res.status(201).json({place: updatePlace.toObject({getters:true})});
 }
 //delete a place
-const deletePlace = (req,res,next) => {
+const deletePlace = async (req,res,next) => {
     const placeId = req.params.pId;
-    if(!DUMMY_PLACES.find(p => p.id === placeId)){
-        throw new httpError('Could not find a place for that id',404)
+    let placeById;
+
+    try {
+        placeById = await Place.findById(placeId);
+        placeById.remove();
+    } catch (err) {
+        return next(new httpError('Could not find this place',500))
     }
-    DUMMY_PLACES = DUMMY_PLACES.filter(p => p.id !== placeId);
 
     res.status(200).json({message: 'deleted place'})
 }
