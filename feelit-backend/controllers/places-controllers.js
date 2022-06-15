@@ -1,6 +1,8 @@
 const httpError = require('../models/http-error');
 const {validationResult} = require('express-validator');
 const Place = require('../models/place');
+const User = require('../models/user');
+const { default: mongoose } = require('mongoose');
 
 //get all element with principal id
 const getPlaceById = async (req,res,next)=>{
@@ -58,12 +60,21 @@ const postPlace = async (req,res,next)=>{
         image:'https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg',
         creator
     })
+    let user;
 
     try{
-        await postPlace.save();
+        user = await User.findById(creator);
+        if(!user){
+            return next(new httpError('could not find this user for provide id, please try again',500));
+        }
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await postPlace.save({session:sess});
+        user.places.push(postPlace);
+        await user.save({session:sess});
+        sess.commitTransaction();
     } catch (err) {
-        const error = new httpError('post place failed, please try again',500);
-        return next(error);
+        return next(new httpError('post place failed, please try again',500));
     }
 
     res.status(201).json({message:'your place was posted succesfully!',postPlace});
@@ -110,7 +121,7 @@ const deletePlace = async (req,res,next) => {
     let placeById;
 
     try {
-        placeById = await Place.findById(placeId);
+        placeById = await Place.findById(placeId).populate();
         placeById.remove();
     } catch (err) {
         return next(new httpError('Could not find this place',500))
