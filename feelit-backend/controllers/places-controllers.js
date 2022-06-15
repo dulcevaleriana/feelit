@@ -1,22 +1,7 @@
 const httpError = require('../models/http-error');
-const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
 const Place = require('../models/place');
-const place = require('../models/place');
-//BDA temporal
-let DUMMY_PLACES = [
-    {
-        id: 'pl',
-        title: 'Empire State Building',
-        description: 'description description description description',
-        location:{
-            lat: 40.7484474,
-            lng: -73.9871516
-        },
-        address: 'address address address address',
-        creator: 'url'
-    }
-]
+
 //get all element with principal id
 const getPlaceById = async (req,res,next)=>{
     const placeId = req.params.pId;

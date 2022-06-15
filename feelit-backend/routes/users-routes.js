@@ -14,7 +14,7 @@ router.post(
         check('password').isLength({min:6}),
         check('image').not().isEmpty()
     ], 
-    userControllers.postUsers)
+    userControllers.signUpUsers)
 //login with a exist account
 router.post('/login', userControllers.login)
 
