@@ -24,18 +24,18 @@ const getPlaceById = async (req,res,next)=>{
 //get all element with the same user id
 const getPlacesByUserId = async (req,res,next)=>{
     const userId = req.params.uId;
-    let place;
+    let userWithPlaces;
 
     try{
-        place = await Place.find({creator:userId});
+        userWithPlaces = await User.findById(userId).populate('places');
+        if (!userWithPlaces || userWithPlaces.places.length === 0){
+            return next(new httpError('could not find a place created by this user',404))
+        }
     } catch (err) {
         return next(new httpError('something went wrong',500));
     }
 
-    if (!place || place.length === 0){
-        return next(new httpError('could not find a place created by this user',404))
-    }
-    res.json({place:place.map(place => place.toObject({getters:true}))})
+    res.json({place:userWithPlaces.places.map(place => place.toObject({getters:true}))})
 };
 //post a place
 const postPlace = async (req,res,next)=>{
@@ -121,8 +121,16 @@ const deletePlace = async (req,res,next) => {
     let placeById;
 
     try {
-        placeById = await Place.findById(placeId).populate();
-        placeById.remove();
+        placeById = await Place.findById(placeId).populate('creator');
+        if(!placeById){
+            return next(new httpError('Could not find this place by id',500))
+        }
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await placeById.remove({session:sess});
+        placeById.creator.places.pull(placeById);
+        await placeById.creator.save({session:sess});
+        await sess.commitTransaction();
     } catch (err) {
         return next(new httpError('Could not find this place',500))
     }
