@@ -1,21 +1,23 @@
-const { v4: uuidv4 } = require('uuid');
 const httpError = require('../models/http-error');
 const {validationResult} = require('express-validator');
 const User = require('../models/user');
-//BDA TEMPORAL
-let DUMMY_USERS = [
-    {
-        id:'ul',
-        name:'Dulce guzman',
-        email:'dulce@gmail.com',
-        password:'proof',
-        image:'image.png'
-    }
-]
+
 //get all users
 const getUsers = async (req,res,next) => {
     const users = await User.find().exec();
     res.json({users})
+}
+//get all Users's Email And Password
+const getUsersEmailAndPassword = async (req,res,next) => {
+    let users;
+
+    try {
+        users = await User.find({},'-password');
+    } catch (err) {
+        return next(new httpError('fetching users failed, try again',500));
+    }
+
+    res.json({users: users.map(users => users.toObject({getters:true}))});
 }
 //post a user
 const signUpUsers = async (req,res,next) => {
@@ -75,5 +77,6 @@ const login = async (req,res,next) => {
 }
 
 exports.getUsers = getUsers;
+exports.getUsersEmailAndPassword = getUsersEmailAndPassword;
 exports.signUpUsers = signUpUsers;
 exports.login = login;

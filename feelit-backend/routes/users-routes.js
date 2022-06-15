@@ -5,6 +5,8 @@ const userControllers = require('../controllers/users-controllers')
 
 //get all users
 router.get('/', userControllers.getUsers)
+//get all Users's Email And Password
+router.get('/getUsersEmailAndPassword',userControllers.getUsersEmailAndPassword)
 //post a user
 router.post(
     '/signup',
