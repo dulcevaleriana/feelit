@@ -31,7 +31,6 @@ const signUpUsers = async (req,res,next) => {
         email,
         password,
         image,
-        places
     } = req.body;
 
     let existingUser;
@@ -41,7 +40,7 @@ const signUpUsers = async (req,res,next) => {
         email,
         password,
         image,
-        places
+        places:[]
     });
 
     try {
