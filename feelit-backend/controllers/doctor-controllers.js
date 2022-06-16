@@ -141,20 +141,37 @@ const patchDoctor = async (req,res,next) => {
     res.status(201).json({message:'doctor`s account was succesfull edited: ',updateDoctor:updateDoctor.toObject({getters:true})})
 }
 //delete a doctor
-const deleteDoctor = (req,res,next) => {
+const deleteDoctor = async (req,res,next) => {
     const doctorId = req.params.dId;
-    const findDoctorId = DBA_DOCTOR.find(p => p.id === doctorId)
-    const updateStatusDoctor = {... DBA_DOCTOR.find(p => p.id === doctorId)}
-    const verifyDoctorId = DBA_DOCTOR.findIndex(p => p.id === doctorId)
+    let setDoctorStatusFalse;
+    try {
+        setDoctorStatusFalse = await Doctor.findById(doctorId);
 
-    if(!findDoctorId){
-        throw new httpError('we can`t find this doctor',404)
+        setDoctorStatusFalse.status = false;
+
+        await setDoctorStatusFalse.save();
+    } catch(err){
+        return next(new httpError(`we can't find this doctor ${err}`,404))
     }
 
-    updateStatusDoctor.status = false;
-    DBA_DOCTOR[verifyDoctorId] = updateStatusDoctor;
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusFalse.status}: `,setDoctorStatusFalse:setDoctorStatusFalse.toObject({getters:true})})
+}
 
-    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${updateStatusDoctor.status}: `,updateStatusDoctor})
+//active a doctor
+const activeDoctor = async (req,res,next) => {
+    const doctorId = req.params.dId;
+    let setDoctorStatusFalse;
+    try {
+        setDoctorStatusFalse = await Doctor.findById(doctorId);
+
+        setDoctorStatusFalse.status = false;
+
+        await setDoctorStatusFalse.save();
+    } catch(err){
+        return next(new httpError(`we can't find this doctor ${err}`,404))
+    }
+
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusFalse.status}: `,setDoctorStatusFalse:setDoctorStatusFalse.toObject({getters:true})})
 }
 
 exports.getAllDoctor = getAllDoctor;
