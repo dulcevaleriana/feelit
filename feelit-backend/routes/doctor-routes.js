@@ -8,7 +8,7 @@ router.get('/',doctorControllers.getAllDoctor)
 //get doctor by id
 router.get('/:dId',doctorControllers.getDoctorById)
 //get doctor by specialty
-router.get('/especiality/:sId',doctorControllers.getAllDoctorBySpecialty)
+router.get('/speciality/:specialityName',doctorControllers.getAllDoctorBySpecialty)
 //post a doctor
 router.post(
     '/createDoctor',
@@ -43,6 +43,8 @@ router.patch(
     doctorControllers.patchDoctor)
 //delete a doctor
 router.delete('/:dId',doctorControllers.deleteDoctor)
+//active a doctor
+router.get('/activeDoctor/:dId',doctorControllers.activeDoctor)
 
 
 module.exports = router;

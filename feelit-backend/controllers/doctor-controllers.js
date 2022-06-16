@@ -1,61 +1,47 @@
 const httpError = require('../models/http-error');
-const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
 const Doctor = require('../models/doctor');
-//BDA temporal
-let DBA_DOCTOR = [
-    {
-        id:'dadafgsgfsdgrgf',
-        name:'Juan Ortega',
-        password:'dsfdgds',
-        cedula:'402-2334268-0',
-        email:'juanOrtega@gmail.com',
-        specialty:'pediatra',
-        telefono:'849-654-9687',
-        laborDays:{
-            su:false,
-            mo:true,
-            tu:true,
-            we:true,
-            th:true,
-            fr:true,
-            sa:false
-        },
-        hourStart:'8:00',
-        hourFinish:'17:00',
-        location:{
-            lan:23.42352,
-            lng:43.35453,
-            address:'calle sadas santo domingo'
-        },
-        status:true
-    }
-]
+
 //get all doctor
-const getAllDoctor = (req,res,next)=>{
-    res.json({DBA_DOCTOR})
+const getAllDoctor = async (req,res,next)=>{
+    let getAllDoctor;
+
+    try {
+        getAllDoctor = await Doctor.find().exec();
+    } catch(err) {
+        return next(new httpError(`Something went wrong ${err}`,404))
+    }
+
+    res.json({getAllDoctor:getAllDoctor.map(data => data.toObject({getters:true}))})
 };
 //get doctor by id
-const getDoctorById = (req,res,next)=>{
-    const specialtyId = req.params.dId;
-    const resultGetDoctorById = DBA_DOCTOR.filter(p => p.id === specialtyId)
+const getDoctorById = async (req,res,next)=>{
+    const doctorId = req.params.dId;
+    let getDoctorById;
 
-    if(!resultGetDoctorById){
-        throw new httpError('Could not find this specialty',404)
+    try {
+        getDoctorById = await Doctor.findById(doctorId);
+    } catch(err) {
+        return next(new httpError(`Something went wrong ${err}`,404))
     }
 
-    res.json({resultGetDoctorById})
+    res.json({getDoctorById:getDoctorById.toObject({getters:true})})
 };
 //get doctor by specialty
-const getAllDoctorBySpecialty = (req,res,next)=>{
-    const specialtyId = req.params.sId;
-    const resultGetAllDoctorBySpecialty = DBA_DOCTOR.filter(p => p.specialty === specialtyId)
+const getAllDoctorBySpecialty = async (req,res,next)=>{
+    const specialty = req.params.specialityName;
+    let getAllDoctorBySpecialty;
 
-    if(!resultGetAllDoctorBySpecialty){
-        throw new httpError('Could not find this specialty',404)
+    try {
+        getAllDoctorBySpecialty = await Doctor.find({specialty:specialty});
+        if(getAllDoctorBySpecialty.length === 0){
+            return next(new httpError(`Could not find any doctor with this specialty`,404))
+        }
+    } catch(err){
+        return next(new httpError(`Could not find this specialty ${err}`,404))
     }
 
-    res.json({resultGetAllDoctorBySpecialty})
+    res.json({getAllDoctorBySpecialty:getAllDoctorBySpecialty.map(data => data.toObject({getters:true}))})
 };
 //post a doctor
 const postDoctor = async (req,res,next)=>{
@@ -122,6 +108,10 @@ const patchDoctor = async (req,res,next) => {
     try {
         updateDoctor = await Doctor.findById(doctorId);
 
+        if(updateDoctor.status === false){
+            return next(new httpError(`We can't modify a doctor inactive`,500));
+        }
+
         updateDoctor.name = name;
         updateDoctor.password = password;
         updateDoctor.cedula = cedula;
@@ -160,18 +150,18 @@ const deleteDoctor = async (req,res,next) => {
 //active a doctor
 const activeDoctor = async (req,res,next) => {
     const doctorId = req.params.dId;
-    let setDoctorStatusFalse;
+    let setDoctorStatusTrue;
     try {
-        setDoctorStatusFalse = await Doctor.findById(doctorId);
+        setDoctorStatusTrue = await Doctor.findById(doctorId);
 
-        setDoctorStatusFalse.status = false;
+        setDoctorStatusTrue.status = true;
 
-        await setDoctorStatusFalse.save();
+        await setDoctorStatusTrue.save();
     } catch(err){
         return next(new httpError(`we can't find this doctor ${err}`,404))
     }
 
-    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusFalse.status}: `,setDoctorStatusFalse:setDoctorStatusFalse.toObject({getters:true})})
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
 }
 
 exports.getAllDoctor = getAllDoctor;
@@ -180,3 +170,4 @@ exports.getAllDoctorBySpecialty = getAllDoctorBySpecialty;
 exports.postDoctor = postDoctor;
 exports.patchDoctor = patchDoctor;
 exports.deleteDoctor = deleteDoctor;
+exports.activeDoctor = activeDoctor;
