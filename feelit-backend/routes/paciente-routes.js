@@ -31,6 +31,8 @@ router.patch(
     pacienteControllers.patchPaciente)
 //delete a paciente
 router.delete('/:pId',pacienteControllers.deletePaciente)
+//login paciente
+router.post('/login',pacienteControllers.loginPaciente)
 
 
 module.exports = router;

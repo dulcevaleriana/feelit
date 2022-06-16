@@ -1,46 +1,31 @@
 const httpError = require('../models/http-error');
-const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
-const MongoClient = require('mongodb').MongoClient;
 const Paciente = require('../models/paciente');
 
-const url = `mongodb+srv://dulceguzmantaveras:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`;
-
-//BDA temporal
-let DBA_PACIENTE = [
-    {
-        id:'dadafgsgfsdgrgf',
-        cedula:'402-2334268-0',
-        email:'juanOrtega@gmail.com',
-        password:'dsfdgds',
-        telefono:'849-654-9687',
-        name:'Juan Ortega',
-        status:true
-    }
-]
 //get all paciente
 const getAllPaciente = async (req,res,next)=>{
-    const clientMongoDB = new MongoClient(url);
     let getAllPaciente;
-
+    
     try{
-        await clientMongoDB.connect();
-        const db = clientMongoDB.db();
-        getAllPaciente = await db.collection('paciente').find().toArray();
+        getAllPaciente = await Paciente.find().exec();
     } catch(error){
         return res.json({message:'Could not find any paciente'})
     }
-    setTimeout(()=>clientMongoDB.close(),1500)
-    res.json({getAllPaciente})
+
+    res.json({getAllPaciente:getAllPaciente.map(data => data.toObject({getters:true}))})
 };
 //get paciente by id
-const getPacienteById = (req,res,next)=>{
+const getPacienteById = async (req,res,next) => {
     const pacienteId = req.params.pId;
-    const findPacienteById = DBA_PACIENTE.find(p => p.id === pacienteId);
-    if(!findPacienteById){
-        throw new httpError('Could not find this paciente',404)
+    let getPacienteById;
+
+    try {
+        getPacienteById = await Paciente.findById(pacienteId);
+    } catch(err){
+        return next(new httpError('we can`t find this paciente',500));
     }
-    res.status(201).json({findPacienteById});
+
+    res.json({getPacienteById:getPacienteById.toObject({getters:true})})
 };
 //post a doctor
 const postPaciente = async (req,res,next)=>{
@@ -129,9 +114,34 @@ const deletePaciente = async (req,res,next) => {
 
     res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusFalse.status}: `,setDoctorStatusFalse:setDoctorStatusFalse.toObject({getters:true})})
 }
+//login paciente
+const loginPaciente = async (req,res,next) => {
+    const {
+        email,
+        password,
+    } = req.body;
+    let loginPaciente;
+
+    try {
+        loginPaciente = await Paciente.findOne({email:email})
+
+        if(loginPaciente && loginPaciente.password !== password){
+            return next(new httpError(`your password are wrong, try again`,404))
+        }
+        if(!loginPaciente){
+            return next(new httpError(`we can't find a paciente with this email`,404))
+        }
+
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,500))
+    }
+
+    res.json({message:`Welcome ${loginPaciente.name}, you're login now`})
+}
 
 exports.getAllPaciente = getAllPaciente;
 exports.getPacienteById = getPacienteById;
 exports.postPaciente = postPaciente;
 exports.patchPaciente = patchPaciente;
 exports.deletePaciente = deletePaciente;
+exports.loginPaciente = loginPaciente;
