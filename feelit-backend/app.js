@@ -39,8 +39,7 @@ app.use('/api/enviar-examenes',enviarExamenesRoutes);
 app.use('/api/specialty',specialtyRoutes)
 
 app.use((req,res,next)=>{
-   const error = new httpError('Could not find this router',404);
-   throw error;
+    throw new httpError('Could not find this router',404);
 })
 
 app.use((error,req,res,next)=>{

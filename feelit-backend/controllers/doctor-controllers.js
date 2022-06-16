@@ -77,6 +77,16 @@ const postDoctor = async (req,res,next)=>{
     })
 
     try {
+        const ifCedulaExist = await Doctor.findOne({cedula:cedula});
+        const ifEmailExist = await Doctor.findOne({email:email});
+
+        if(ifCedulaExist){
+            throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
+        } 
+        if(ifEmailExist){
+            throw new httpError(`a user with this email: ${email} is already exist`,322)
+        }
+
         await createDoctor.save();
     } catch(err) {
         return next(new httpError(`could not create this doctor account, try again please ${err}`,500))

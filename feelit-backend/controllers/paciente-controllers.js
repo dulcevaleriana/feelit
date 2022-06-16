@@ -2,6 +2,7 @@ const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
 const MongoClient = require('mongodb').MongoClient;
+const Paciente = require('../models/paciente');
 
 const url = `mongodb+srv://dulceguzmantaveras:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`;
 
@@ -45,8 +46,7 @@ const getPacienteById = (req,res,next)=>{
 const postPaciente = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         cedula,
@@ -55,38 +55,32 @@ const postPaciente = async (req,res,next)=>{
         telefono,
         name
     } = req.body;
-    const createPaciente = {
-        cedula:cedula,
-        email:email,
-        password:password,
-        telefono:telefono,
-        name:name,
+    const createPaciente = new Paciente({
+        cedula,
+        email,
+        password,
+        telefono,
+        name,
         status:true
-    }
-    const clientMongoDB = new MongoClient(url);
+    })
 
     try {
-        await clientMongoDB.connect();
-        const db = clientMongoDB.db();
-        const ifCedulaExist = db.collection('paciente').find(p => p.cedula === cedula);
-        const ifEmailExist = db.collection('paciente').find(p => p.email === email);
+        const ifCedulaExist = await Paciente.findOne({cedula:cedula});
+        const ifEmailExist = await Paciente.findOne({email:email});
 
         if(ifCedulaExist){
-            console.log("ifCedulaExist",ifCedulaExist)
             throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
         } 
         if(ifEmailExist){
             throw new httpError(`a user with this email: ${email} is already exist`,322)
         }
 
-        const result = db.collection('paciente').insertOne(createPaciente);
-    } catch (error) {
-        console.log(error)
-        return res.status(404).json({message:'Could not store data for "createPaciente"'})
+        createPaciente.save();
+    } catch (err) {
+        return next(new httpError(`something went wrong ${err}`,500))
     }
 
-    setTimeout(() => {clientMongoDB.close()}, 1500)
-    res.status(201).json({message:"this paciente was succesfull created!",createPaciente});
+    res.status(201).json({message:"this paciente was succesfull created!",createPaciente:createPaciente.toObject({getters:true})});
 }
 //patch a doctor
 const patchPaciente = (req,res,next) => {
