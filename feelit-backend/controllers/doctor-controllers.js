@@ -58,11 +58,10 @@ const getAllDoctorBySpecialty = (req,res,next)=>{
     res.json({resultGetAllDoctorBySpecialty})
 };
 //post a doctor
-const postDoctor = (req,res,next)=>{
+const postDoctor = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         name,
@@ -77,42 +76,33 @@ const postDoctor = (req,res,next)=>{
         location
     } = req.body;
 
-    const createDoctor = {
-        id: uuidv4(),
-        name:name,
-        password:password,
-        cedula:cedula,
-        email:email,
-        specialty:specialty,
-        telefono:telefono,
-        laborDays:laborDays,
-        hourStart:hourStart,
-        hourFinish:hourFinish,
-        location:location,
-        status:true
+    const createDoctor = new Doctor({
+        name,
+        password,
+        cedula,
+        email,
+        specialty,
+        telefono,
+        laborDays,
+        hourStart,
+        hourFinish,
+        location,
+        status:true  
+    })
+
+    try {
+        await createDoctor.save();
+    } catch(err) {
+        return next(new httpError(`could not create this doctor account, try again please ${err}`,500))
     }
 
-    const ifCedulaExist = DBA_DOCTOR.find(p => p.cedula === cedula)
-    const ifEmailExist = DBA_DOCTOR.find(p => p.email === email)
-
-    if(ifCedulaExist){
-        throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
-    }
-
-    if(ifEmailExist){
-        throw new httpError(`a user with this email: ${email} is already exist`,322)
-    }
-
-    DBA_DOCTOR.push(createDoctor);
-
-    res.json({message:'this doctor was created succesfully!!',createDoctor})
+    res.json({message:'this doctor was created succesfully!!',createDoctor: createDoctor.toObject({getters:true})})
 }
 //patch a doctor
-const patchDoctor = (req,res,next) => {
+const patchDoctor = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const doctorId = req.params.dId;
     const {
@@ -127,37 +117,28 @@ const patchDoctor = (req,res,next) => {
         hourFinish,
         location
     } = req.body;
+    let updateDoctor;
 
-    const updateDoctor = {... DBA_DOCTOR.find(p => p.id === doctorId)}
-    const verifyDoctorId = DBA_DOCTOR.findIndex(p => p.id === doctorId)
-    const ifCedulaExist = DBA_DOCTOR.filter(p => p.cedula === cedula)
-    const ifEmailExist = DBA_DOCTOR.filter(p => p.email === email)
+    try {
+        updateDoctor = await Doctor.findById(doctorId);
 
-    updateDoctor.name = name;
-    updateDoctor.password = password;
-    updateDoctor.cedula = cedula;
-    updateDoctor.email = email;
-    updateDoctor.specialty = specialty;
-    updateDoctor.telefono = telefono;
-    updateDoctor.laborDays = laborDays;
-    updateDoctor.hourStart = hourStart;
-    updateDoctor.hourFinish = hourFinish;
-    updateDoctor.location = location;
-
-    if(ifCedulaExist > 1){
-        throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
+        updateDoctor.name = name;
+        updateDoctor.password = password;
+        updateDoctor.cedula = cedula;
+        updateDoctor.email = email;
+        updateDoctor.specialty = specialty;
+        updateDoctor.telefono = telefono;
+        updateDoctor.laborDays = laborDays;
+        updateDoctor.hourStart = hourStart;
+        updateDoctor.hourFinish = hourFinish;
+        updateDoctor.location = location;
+        
+        await updateDoctor.save();
+    } catch (err) {
+        return next(new httpError(`Somethig went wrong, please try again 2 ${err}`,500));
     }
 
-    if(ifEmailExist > 1){
-        throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
-    }
-
-    if(verifyDoctorId === -1){
-        throw new httpError(`we can't find this doctor`,322)
-    }
-
-    DBA_DOCTOR[verifyDoctorId] = updateDoctor;
-    res.status(201).json({message:'doctor`s account was succesfull edited: ',updateDoctor})
+    res.status(201).json({message:'doctor`s account was succesfull edited: ',updateDoctor:updateDoctor.toObject({getters:true})})
 }
 //delete a doctor
 const deleteDoctor = (req,res,next) => {

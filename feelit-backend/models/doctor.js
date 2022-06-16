@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const doctorSchema = mongoose.Schema({
     name:{ type:String, required:true },
-    password:{ type:String, required:true },
-    cedula:{ type:String, required:true, maxlength: 13 },
-    email:{ type:String, required:true },
+    password:{ type:String, required:true, minlength: 6 },
+    cedula:{ type:String, required:true, maxlength: 13, unique: true },
+    email:{ type:String, required:true, unique: true },
     specialty:{ type:String, required:true },
     telefono:{ type:String, required:true, maxlength: 12 },
     laborDays:{
