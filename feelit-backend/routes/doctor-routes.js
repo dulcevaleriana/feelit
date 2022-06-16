@@ -45,6 +45,8 @@ router.patch(
 router.delete('/:dId',doctorControllers.deleteDoctor)
 //active a doctor
 router.get('/activeDoctor/:dId',doctorControllers.activeDoctor)
+//login doctor
+router.post('/login',doctorControllers.loginDoctor)
 
 
 module.exports = router;

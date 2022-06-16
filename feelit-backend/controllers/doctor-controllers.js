@@ -163,6 +163,30 @@ const activeDoctor = async (req,res,next) => {
 
     res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
 }
+//login doctor
+const loginDoctor = async (req,res,next) => {
+    const {
+        password,
+        email,
+    } = req.body;
+    let loginDoctor;
+
+    try{
+        loginDoctor = await Doctor.findOne({email:email});
+
+        if(!loginDoctor){
+            return next(new httpError(`we can't find your account`,404))
+        }
+        if(loginDoctor && loginDoctor.password !== password){
+            return next(new httpError(`you wrote your password wrong, try again`,404))
+        }
+
+    } catch (err){
+        return next(new httpError(`something went wrong ${err}`,404))
+    }
+
+    res.json({message:`Welcome ${loginDoctor.name} you're logging`})
+}
 
 exports.getAllDoctor = getAllDoctor;
 exports.getDoctorById = getDoctorById;
@@ -171,3 +195,4 @@ exports.postDoctor = postDoctor;
 exports.patchDoctor = patchDoctor;
 exports.deleteDoctor = deleteDoctor;
 exports.activeDoctor = activeDoctor;
+exports.loginDoctor = loginDoctor;
