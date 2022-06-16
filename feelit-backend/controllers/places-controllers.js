@@ -41,8 +41,7 @@ const getPlacesByUserId = async (req,res,next)=>{
 const postPlace = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         title,
@@ -74,7 +73,7 @@ const postPlace = async (req,res,next)=>{
         await user.save({session:sess});
         sess.commitTransaction();
     } catch (err) {
-        return next(new httpError('post place failed, please try again',500));
+        return next(new httpError(`post place failed, please try again ${err}`,500));
     }
 
     res.status(201).json({message:'your place was posted succesfully!',postPlace});
@@ -83,7 +82,7 @@ const postPlace = async (req,res,next)=>{
 const patchPlace = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         title,
@@ -98,7 +97,7 @@ const patchPlace = async (req,res,next) => {
     try {
         updatePlace = await Place.findById(placeId);
     } catch (err) {
-        return next(new httpError('something went wrong',500));
+        return next(new httpError(`something went wrong ${err}`,500));
     }
 
     updatePlace.title = title;
@@ -110,7 +109,7 @@ const patchPlace = async (req,res,next) => {
     try {
         await updatePlace.save();
     } catch (err) {
-        return next(new httpError('We couldn`t update this place, try again',500))
+        return next(new httpError(`We couldn't update this place, try again ${err}`,500))
     }
 
     res.status(201).json({place: updatePlace.toObject({getters:true})});
@@ -132,7 +131,7 @@ const deletePlace = async (req,res,next) => {
         await placeById.creator.save({session:sess});
         await sess.commitTransaction();
     } catch (err) {
-        return next(new httpError('Could not find this place',500))
+        return next(new httpError(`Could not find this place ${err}`,500))
     }
 
     res.status(200).json({message: 'deleted place'})

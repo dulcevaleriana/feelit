@@ -14,7 +14,7 @@ const getUsersEmailAndPassword = async (req,res,next) => {
     try {
         users = await User.find({},'-password');
     } catch (err) {
-        return next(new httpError('fetching users failed, try again',500));
+        return next(new httpError(`fetching users failed, try again: ${err}`,500));
     }
 
     res.json({users: users.map(users => users.toObject({getters:true}))});
@@ -50,7 +50,7 @@ const signUpUsers = async (req,res,next) => {
         }
         await createUser.save();
     } catch (err) {
-        return next(new httpError('we can`t create this user, try again',500))
+        return next(new httpError(`we can't create this user, try again: ${err}`,500))
     }
 
     res.status(200).json({message:'your user was created!!',user:createUser.toObject({getters:true})})
@@ -69,7 +69,7 @@ const login = async (req,res,next) => {
             return next(new httpError(`your credentials are incorrect, try again`,422))
         }
     } catch (err) {
-        return next(new httpError('login failed, try again',500))
+        return next(new httpError(`login failed, try again ${err}`,500))
     }
 
     res.json({message: 'logged in!'})
