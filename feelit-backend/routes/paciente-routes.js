@@ -31,6 +31,8 @@ router.patch(
     pacienteControllers.patchPaciente)
 //delete a paciente
 router.delete('/:pId',pacienteControllers.deletePaciente)
+//active a paciente
+router.get('/activePaciente/:pId',pacienteControllers.activePaciente)
 //login paciente
 router.post('/login',pacienteControllers.loginPaciente)
 

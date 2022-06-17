@@ -86,6 +86,10 @@ const patchPaciente = async (req,res,next) => {
     try{
         updatePaciente = await Paciente.findById(pacienteId);
 
+        if(updatePaciente.status === false){
+            return next(new httpError(`We can't modify a paciente inactive`,500));
+        }
+
         updatePaciente.cedula = cedula;
         updatePaciente.email = email;
         updatePaciente.password = password;
@@ -99,7 +103,7 @@ const patchPaciente = async (req,res,next) => {
 
     res.status(201).json({message:'paciente`s account was succesfull edited:',updatePaciente})
 }
-//delete a doctor
+//delete a paciente
 const deletePaciente = async (req,res,next) => {
     const pacienteId = req.params.pId;
     let setDoctorStatusFalse;
@@ -113,6 +117,21 @@ const deletePaciente = async (req,res,next) => {
     }
 
     res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusFalse.status}: `,setDoctorStatusFalse:setDoctorStatusFalse.toObject({getters:true})})
+}
+//active a paciente
+const activePaciente = async (req,res,next) => {
+    const pacienteId = req.params.pId;
+    let setDoctorStatusTrue;
+
+    try{
+        setDoctorStatusTrue = await Paciente.findById(pacienteId);
+        setDoctorStatusTrue.status = true;
+        setDoctorStatusTrue.save();
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,500))
+    }
+
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
 }
 //login paciente
 const loginPaciente = async (req,res,next) => {
@@ -145,3 +164,4 @@ exports.postPaciente = postPaciente;
 exports.patchPaciente = patchPaciente;
 exports.deletePaciente = deletePaciente;
 exports.loginPaciente = loginPaciente;
+exports.activePaciente = activePaciente;
