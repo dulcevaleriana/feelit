@@ -144,8 +144,8 @@ const postAgendarCita = async (req,res,next) => {
         doctor.agendarCita.push(createAgendarCita);
         paciente.agendarCita.push(createAgendarCita);
 
-        doctor.save({session:sess});
-        paciente.save({session:sess});
+        await doctor.save({session:sess});
+        await paciente.save({session:sess});
 
         sess.commitTransaction();
 
