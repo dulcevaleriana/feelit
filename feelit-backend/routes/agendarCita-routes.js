@@ -29,8 +29,6 @@ router.post(
 router.patch(
     '/:acId',
     [
-        check('idPaciente').not().isEmpty(),
-        check('idDoctor').not().isEmpty(),
         check('date').trim().isDate(),
         check('time').not().isEmpty(),
         check('message').not().isEmpty()

@@ -6,7 +6,8 @@ const pacienteSchema = mongoose.Schema({
     password:{ type:String, required:true, minlength: 6 },
     telefono:{ type:String, required:true, maxlength: 12 },
     name:{ type:String, required:true },
-    status:{ type:Boolean, required:true }
+    status:{ type:Boolean, required:true },
+    agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}]
 })
 
 module.exports = mongoose.model('Paciente',pacienteSchema)

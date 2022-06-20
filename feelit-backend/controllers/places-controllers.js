@@ -63,14 +63,18 @@ const postPlace = async (req,res,next)=>{
 
     try{
         user = await User.findById(creator);
+        
         if(!user){
             return next(new httpError('could not find this user for provide id, please try again',500));
         }
+
         const sess = await mongoose.startSession();
         sess.startTransaction();
+
         await postPlace.save({session:sess});
         user.places.push(postPlace);
         await user.save({session:sess});
+
         sess.commitTransaction();
     } catch (err) {
         return next(new httpError(`post place failed, please try again ${err}`,500));

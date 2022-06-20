@@ -23,7 +23,8 @@ const doctorSchema = mongoose.Schema({
         lng:{ type:Number, required:true },
         address:{ type:String, required:true }
     },
-    status:{ type:Boolean, required:true }
+    status:{ type:Boolean, required:true },
+    agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}]
 })
 
 module.exports = mongoose.model('Doctor',doctorSchema);
