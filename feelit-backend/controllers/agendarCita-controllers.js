@@ -5,63 +5,87 @@ const AgendarCita = require('../models/agendarCita');
 const Doctor = require('../models/doctor');
 const Paciente = require('../models/paciente');
 const { default: mongoose } = require('mongoose');
-//BDA temporal
-let DBA_AGENDAR_CITA = [
-    {
-        id:'dadafgsgfsdgrgf5678',
-        idPaciente:'dsfewjboforngboergo',
-        idDoctor:'sigr389r23ubru',
-        date:'2022-6-12',
-        time:'11:00',
-        status:true,
-        message:'hi hi hi hi hi',
-        link:'sfnsdnosgohnreignerognvfdng'
-    }
-]
+
 //get all agendar cita
-const getAllAgendarCita = (req,res,next)=>{
-    res.json({DBA_AGENDAR_CITA})
+const getAllAgendarCita = async (req,res,next)=>{
+    let AgendarCitaDBA;
+
+    try{
+        AgendarCitaDBA = await AgendarCita.find().exec();
+    }catch(err){
+        return next(new httpError(`something went wrong ${err}`,404))
+    }
+
+    res.json({AgendarCitaDBA})
 };
 //get agendar cita by id
-const getAgendarCitaById = (req,res,next)=>{
+const getAgendarCitaById = async (req,res,next)=>{
     const agendarCitaId = req.params.acId;
-    const getAgendarCitaId = DBA_AGENDAR_CITA.find(p => p.id === agendarCitaId);
+    let getAgendarCitaId;
 
-    if(!getAgendarCitaId){
-        throw new httpError('Could not find this date',404)
+    try {
+        getAgendarCitaId = await AgendarCita.findById(agendarCitaId);
+        
+        if(!getAgendarCitaId){
+            throw new httpError('Could not find this date',404)
+        }
+
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,404))
     }
 
     res.status(201).json({getAgendarCitaId})
 };
 //get agendar cita by status
-const getAgendarCitaByStatus = (req,res,next) => {
-    const agendarCitaStatus = req.params.ToF === 'true' ? true : false;
-    const getAgendarCitaStatus = DBA_AGENDAR_CITA.filter(p => p.status === agendarCitaStatus);
+const getAgendarCitaByStatus = async (req,res,next) => {
+    const agendarCitaStatus = req.params.ToF === 'true' ? true : req.params.ToF === 'false' ? false : undefined ;
+    let getAgendarCitaStatus;
 
-    if(getAgendarCitaStatus < 1){
-        throw new httpError(`Could not find dates with status ${agendarCitaStatus}`,404)
+    try {
+        getAgendarCitaStatus = await AgendarCita.find({status:agendarCitaStatus})
+        
+        if(getAgendarCitaStatus.length === 0 || agendarCitaStatus === undefined){
+            throw new httpError(`Could not find dates with status ${req.params.ToF}`,404)
+        }
+
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,404))
     }
 
-    res.status(201).json({getAgendarCitaStatus,agendarCitaStatus})
+    res.status(201).json({getAgendarCitaStatus})
 }
 //get agendar cita by doctor
-const getAgendarCitaByDoctor = (req,res,next) => {
+const getAgendarCitaByDoctor = async (req,res,next) => {
     const doctorId = req.params.dId;
-    const getAgendarCitaDoctor = DBA_AGENDAR_CITA.filter(p => p.idDoctor === doctorId);
+    let getAgendarCitaDoctor;
 
-    if(getAgendarCitaDoctor < 1){
-        throw new httpError(`Could not find any dates with this doctor`,404)
+    try {
+        getAgendarCitaDoctor = await AgendarCita.find({idDoctor:doctorId})
+        
+        
+        if(!getAgendarCitaDoctor){
+            throw new httpError(`Could not find any dates with this doctor`,404)
+        }
+
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,404))
     }
 
     res.status(201).json({getAgendarCitaDoctor})
 }
 //get agendar cita by date
-const getAgendarCitaByDate = (req,res,next) => {
+const getAgendarCitaByDate = async (req,res,next) => {
     const agendarCitaDate = req.params.date;
-    const getAgendarCitaDate = DBA_AGENDAR_CITA.filter(p => p.date === agendarCitaDate)
+    let getAgendarCitaDate;
 
-    if(getAgendarCitaDate < 1){
-        throw new httpError(`Could not find any with this date`,404)
+    try {
+        getAgendarCitaDate = await AgendarCita.find({date:agendarCitaDate})
+
+        if(getAgendarCitaDate < 1){
+            throw new httpError(`Could not find any with this date`,404)
+        }
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,404))
     }
 
     res.status(201).json({getAgendarCitaDate})
@@ -160,6 +184,10 @@ const patchAgendarCita = async (req,res,next) => {
             throw new httpError(`We can't find this date`,404)
         }
 
+        if(updateAgendarCita.status === false){
+            throw new httpError(`We can't modified a date canceled`,404)
+        }
+
         if(verifyPacienteDates || verifyDoctorDates){
             const verifyPacienteTime = pacienteDates.find(d => d.time === time)
             const verifyDoctorTime = doctorDates.find(d => d.time === time)
@@ -182,17 +210,47 @@ const patchAgendarCita = async (req,res,next) => {
     res.status(201).json({message:'your date was already modified!',updateAgendarCita})
 }
 //delete a: agendar cita
-const deleteAgendarCita = (req,res,next) => {
+const deleteAgendarCita = async (req,res,next) => {
     const agendarCitaId = req.params.acId;
-    const deleteAgendaCita = DBA_AGENDAR_CITA.find(p => p.id === agendarCitaId);
+    let deleteAgendaCita;
 
-    if(!deleteAgendaCita){
-        throw new httpError('We can`t find this date',404)
+    try {
+        deleteAgendaCita = await AgendarCita.findById(agendarCitaId);
+
+        if(!deleteAgendaCita){
+            throw new httpError('We can`t find this date',404)
+        }
+    
+        deleteAgendaCita.status = false;
+        deleteAgendaCita.save();
+
+    }catch(err){
+        return next(new httpError(`something went wrong: ${err}`,404));
     }
 
-    deleteAgendaCita.status = false;
+    res.status(201).json({message:`your date was already canceled! now your status is ${deleteAgendaCita.status}`,deleteAgendaCita})
+}
 
-    res.status(201).json({message:'your date was already canceled!',deleteAgendaCita})
+//active a: agendar cita
+const activeAgendarCita = async (req,res,next) => {
+    const agendarCitaId = req.params.acId;
+    let deleteAgendaCita;
+
+    try {
+        deleteAgendaCita = await AgendarCita.findById(agendarCitaId);
+
+        if(!deleteAgendaCita){
+            throw new httpError('We can`t find this date',404)
+        }
+    
+        deleteAgendaCita.status = true;
+        deleteAgendaCita.save();
+
+    }catch(err){
+        return next(new httpError(`something went wrong: ${err}`,404));
+    }
+
+    res.status(201).json({message:`your date was already active again! now your status is ${deleteAgendaCita.status}`,deleteAgendaCita})
 }
 
 exports.getAllAgendarCita = getAllAgendarCita;
@@ -203,3 +261,4 @@ exports.getAgendarCitaByDate = getAgendarCitaByDate;
 exports.postAgendarCita = postAgendarCita;
 exports.patchAgendarCita = patchAgendarCita;
 exports.deleteAgendarCita = deleteAgendarCita;
+exports.activeAgendarCita = activeAgendarCita;

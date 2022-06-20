@@ -36,6 +36,8 @@ router.patch(
     agendarCitaControllers.patchAgendarCita)
 //delete a: agendar cita
 router.delete('/:acId',agendarCitaControllers.deleteAgendarCita)
+//active a: agendar cita
+router.get('/active/:acId',agendarCitaControllers.activeAgendarCita)
 
 
 module.exports = router;
