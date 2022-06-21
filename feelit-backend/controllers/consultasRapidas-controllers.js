@@ -20,49 +20,81 @@ let DBA_CONSULTA_RAPIDA = [
     }
 ]
 //get all consultas rapidas
-const getAllconsultasRapidas = (req,res,next)=>{
-    res.json({DBA_CONSULTA_RAPIDA})
+const getAllconsultasRapidas = async (req,res,next)=>{
+    let getAllconsultasRapidas;
+
+    try {
+        getAllconsultasRapidas = await ConsultasRapidas.find().exec();
+    }catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
+    }
+
+    res.json({getAllconsultasRapidas})
 };
 //get consultas rapidas by id
-const getconsultasRapidasById = (req,res,next)=>{
+const getconsultasRapidasById = async (req,res,next)=>{
     const consultaFlashId = req.params.crId;
-    const getConsultasRapidasId = DBA_CONSULTA_RAPIDA.find(p => p.id === consultaFlashId)
+    let getConsultasRapidasId;
 
-    if(!getConsultasRapidasId){
-        throw new httpError('could not find any flash consult',404)
+    try {
+        getConsultasRapidasId = await ConsultasRapidas.findById(consultaFlashId);
+
+        if(!getConsultasRapidasId){
+            throw new httpError('could not find any flash consult',404)
+        }
+    } catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
     }
 
     res.status(201).json({getConsultasRapidasId})
 };
 //get consultas rapidas by status
-const getconsultasRapidasByStatus = (req,res,next) => {
-    const consultaFlashStatus = req.params.ToF === 'true' ? true : false;
-    const getConsultasRapidasStatus = DBA_CONSULTA_RAPIDA.filter(p => p.status === consultaFlashStatus);
+const getconsultasRapidasByStatus = async (req,res,next) => {
+    const consultaFlashStatus = req.params.ToF === 'true' ? true : req.params.ToF === 'false' ? false : undefined;
+    let getConsultasRapidasStatus;
 
-    if(getConsultasRapidasStatus < 1){
-        throw new httpError(`could not find any flash consult with status ${consultaFlashStatus}`,404)
+    try {
+        getConsultasRapidasStatus = await ConsultasRapidas.find({status:consultaFlashStatus});
+
+        if(getConsultasRapidasStatus.length < 1 || consultaFlashStatus === undefined){
+            throw new httpError(`could not find any flash consult with status ${req.params.ToF}`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
     }
 
     res.status(201).json({getConsultasRapidasStatus});
 }
 //get consultas rapidas by doctor
-const getconsultasRapidasByDoctor = (req,res,next) => {
+const getconsultasRapidasByDoctor = async (req,res,next) => {
     const doctorId = req.params.dId;
-    const getConsultasRapidasDoctor = DBA_CONSULTA_RAPIDA.filter(p => p.idDoctor === doctorId);
+    let getConsultasRapidasDoctor;
 
-    if(getConsultasRapidasDoctor < 1){
-        throw new httpError(`could not find any flash consult with this doctor`,404)
+    try {
+        getConsultasRapidasDoctor = await ConsultasRapidas.find({idDoctor:doctorId});
+        
+        if(getConsultasRapidasDoctor.length < 1){
+            throw new httpError(`could not find any flash consult with this doctor`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
     }
 
     res.status(201).json({getConsultasRapidasDoctor})
 }
 //get consultas rapidas by date
-const getconsultasRapidasByDate = (req,res,next) => {
+const getconsultasRapidasByDate = async (req,res,next) => {
     const consultasRapidasDate = req.params.date;
-    const getConsultasRapidasDate = DBA_CONSULTA_RAPIDA.filter(p => p.dateCreated === consultasRapidasDate)
+    let getConsultasRapidasDate;
 
-    if(getConsultasRapidasDate < 1){
-        throw new httpError(`Could not find any with this date`,404)
+    try {
+        getConsultasRapidasDate = await ConsultasRapidas.find({dateCreated:consultasRapidasDate})
+
+        if(getConsultasRapidasDate.length < 1){
+            throw new httpError(`Could not find any with this date`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
     }
 
     res.status(201).json({getConsultasRapidasDate})
@@ -209,23 +241,23 @@ const deleteconsultasRapidas = async (req,res,next) => {
 //active a: consultas rapidas
 const activeConsultasRapidas = async (req,res,next) => {
     const consultaFlashId = req.params.crId;
-    let deleteconsultaRapidas;
+    let activeconsultaRapidas;
 
     try {
-        deleteconsultaRapidas = await ConsultasRapidas.findById(consultaFlashId);
+        activeconsultaRapidas = await ConsultasRapidas.findById(consultaFlashId);
 
-        if(!deleteconsultaRapidas){
+        if(!activeconsultaRapidas){
             throw new httpError('We can`t find this date',404)
         }
     
-        deleteconsultaRapidas.status = true;
-        await deleteconsultaRapidas.save();
+        activeconsultaRapidas.status = true;
+        await activeconsultaRapidas.save();
         
     } catch(err){
         return next(new httpError(`somethign went wrong ${err}`,422));
     }
 
-    res.status(201).json({message:'your date was already activate again!',deleteconsultaRapidas})
+    res.status(201).json({message:'your date was already activate again!',activeconsultaRapidas})
 }
 
 exports.getAllconsultasRapidas = getAllconsultasRapidas;
