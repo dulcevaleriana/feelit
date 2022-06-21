@@ -5,7 +5,7 @@ const doctorSchema = mongoose.Schema({
     password:{ type:String, required:true, minlength: 6 },
     cedula:{ type:String, required:true, maxlength: 13, unique: true },
     email:{ type:String, required:true, unique: true },
-    specialty:{ type:String, required:true },
+    specialty:{type:mongoose.Types.ObjectId, required:true, ref:'Specialty'},
     telefono:{ type:String, required:true, maxlength: 12 },
     laborDays:{
         su:{ type:Boolean, required:true },

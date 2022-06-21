@@ -1,7 +1,7 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
-
+const Specialty = require('../models/specialty');
 //BDA temporal
 let DBA_SPECIALTY = [
     {
@@ -26,28 +26,32 @@ const getSpecialtyById = (req,res,next)=>{
     res.status(201).json({getSpecialtyId})
 };
 //post a: specialty
-const postSpecialty = (req,res,next)=>{
+const postSpecialty = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
         console.log(error);
         throw new httpError('Invalid inputs passed, please check your data',422);
     }
     const {specialtyName} = req.body;
-    const createSpecialty = {
-        id:uuidv4(),
-        specialtyName: specialtyName,
+    const createSpecialty = new Specialty({
+        specialtyName,
         status:true
+    })
+    let verifyNotDuplicatedName;
+
+    try {
+        verifyNotDuplicatedName = await Specialty.find({specialtyName:specialtyName});
+        if(verifyNotDuplicatedName.length === 1){
+            throw new httpError('This specialty was already exist',404)
+        }
+        await createSpecialty.save();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
-    const verifyNotDuplicatedName = DBA_SPECIALTY.find(p => p.specialtyName === specialtyName);
-    if(verifyNotDuplicatedName){
-        throw new httpError('This specialty was already exist',404)
-    }
-
-    DBA_SPECIALTY.push(createSpecialty);
     res.status(201).json({message:'Your specialty was create succesfully',createSpecialty});
 }
-//patch a: specialty by patience
+//patch a: specialty
 const patchSpecialty = (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
