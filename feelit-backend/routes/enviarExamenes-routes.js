@@ -38,5 +38,7 @@ router.patch(
     enviarExamenesControllers.patchEnviarExamenesByDoctor)
 //delete a: enviar examenes
 router.delete('/:eeId',enviarExamenesControllers.deleteEnviarExamenes)
+//active a: enviar examenes
+router.get('/active/:eeId',enviarExamenesControllers.activeEnviarExamenes)
 
 module.exports = router;
