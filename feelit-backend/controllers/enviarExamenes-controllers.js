@@ -1,7 +1,11 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
-const {todayFunction} = require('../models/today')
+const {todayFunction} = require('../models/today');
+const EnviarExamenes = require('../models/enviarExamenes');
+const Paciente = require('../models/paciente');
+const Doctor = require('../models/doctor');
+const { default: mongoose } = require('mongoose');
 //BDA temporal
 let DBA_ENVIAR_EXAMENES = [
     {
@@ -70,11 +74,10 @@ const getEnviarExamenesByDate = (req,res,next) => {
     res.status(201).json({getEnviarExamenesDate})
 }
 //post a: enviar examenes
-const postEnviarExamenes = (req,res,next)=>{
+const postEnviarExamenes = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         idPaciente,
@@ -82,19 +85,45 @@ const postEnviarExamenes = (req,res,next)=>{
         message,
         docUpload
     } = req.body;
-    const createEnviarExamenes = {
-        id:uuidv4(),
-        idPaciente:idPaciente,
-        idDoctor:idDoctor,
-        message:message,
-        messageDoctor:'Dr. will send you a response soon',
-        docUpload:docUpload,
+    const createEnviarExamenes = new EnviarExamenes({
+        idPaciente,
+        idDoctor,
+        message,
+        docUpload,
+        messageDoctor:' ',
         dateCreated:todayFunction(),
         status:true,
         link:uuidv4()
+    })
+
+    try {
+        const paciente = await Paciente.findById(idPaciente);
+        const doctor = await Doctor.findById(idDoctor);
+
+        if(!paciente){
+            return next(new httpError(`we can't find this paciente`,404))
+        }
+        if(!doctor){
+            return next(new httpError(`we can't find this doctor`,404))
+        }
+
+        createEnviarExamenes.messageDoctor = `Dr. ${doctor.name} will send you a response soon`;
+
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+
+        paciente.enviarExamenes.push(createEnviarExamenes);
+        doctor.enviarExamenes.push(createEnviarExamenes);
+
+        await createEnviarExamenes.save({session:sess});
+        await doctor.save({session:sess});
+        await paciente.save({session:sess});
+
+        sess.commitTransaction();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
-    DBA_ENVIAR_EXAMENES.push(createEnviarExamenes)
     res.status(201).json({message:'These exams was already sended!!',createEnviarExamenes})
 }
 //patch a: enviar examenes by patience

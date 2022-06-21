@@ -8,7 +8,8 @@ const pacienteSchema = mongoose.Schema({
     name:{ type:String, required:true },
     status:{ type:Boolean, required:true },
     agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}],
-    consultaRapida:[{type:mongoose.Types.ObjectId, required:true, ref:'ConsultasRapidas'}]
+    consultaRapida:[{type:mongoose.Types.ObjectId, required:true, ref:'ConsultasRapidas'}],
+    enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}]
 })
 
 module.exports = mongoose.model('Paciente',pacienteSchema)

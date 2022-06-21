@@ -6,19 +6,7 @@ const ConsultasRapidas = require('../models/consultasRapidas');
 const Paciente = require('../models/paciente');
 const Doctor = require('../models/doctor');
 const { default: mongoose } = require('mongoose');
-//BDA temporal
-let DBA_CONSULTA_RAPIDA = [
-    {
-        id:'dadafgsgfsdgrgf5678',
-        idPaciente:'dsfewjboforngboergo',
-        idDoctor:'sigr389r23ubru',
-        time:'11:00',
-        message:'hi hi hi hi hi',
-        dateCreated:todayFunction(),
-        status:true,
-        link:'sfnsdnosgohnreignerognvfdng'
-    }
-]
+
 //get all consultas rapidas
 const getAllconsultasRapidas = async (req,res,next)=>{
     let getAllconsultasRapidas;
