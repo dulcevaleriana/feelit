@@ -185,17 +185,47 @@ const patchconsultasRapidas = async (req,res,next) => {
     res.status(201).json({message:'This flash consult was edited succesfully!!',verifyconsultaFlashId})
 }
 //delete a: consultas rapidas
-const deleteconsultasRapidas = (req,res,next) => {
+const deleteconsultasRapidas = async (req,res,next) => {
     const consultaFlashId = req.params.crId;
-    const deleteconsultaRapidas = DBA_CONSULTA_RAPIDA.find(p => p.id === consultaFlashId);
+    let deleteconsultaRapidas;
 
-    if(!deleteconsultaRapidas){
-        throw new httpError('We can`t find this date',404)
+    try {
+        deleteconsultaRapidas = await ConsultasRapidas.findById(consultaFlashId);
+
+        if(!deleteconsultaRapidas){
+            throw new httpError('We can`t find this date',404)
+        }
+    
+        deleteconsultaRapidas.status = false;
+        await deleteconsultaRapidas.save();
+        
+    } catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
     }
 
-    deleteconsultaRapidas.status = false;
-
     res.status(201).json({message:'your date was already canceled!',deleteconsultaRapidas})
+}
+
+//active a: consultas rapidas
+const activeConsultasRapidas = async (req,res,next) => {
+    const consultaFlashId = req.params.crId;
+    let deleteconsultaRapidas;
+
+    try {
+        deleteconsultaRapidas = await ConsultasRapidas.findById(consultaFlashId);
+
+        if(!deleteconsultaRapidas){
+            throw new httpError('We can`t find this date',404)
+        }
+    
+        deleteconsultaRapidas.status = true;
+        await deleteconsultaRapidas.save();
+        
+    } catch(err){
+        return next(new httpError(`somethign went wrong ${err}`,422));
+    }
+
+    res.status(201).json({message:'your date was already activate again!',deleteconsultaRapidas})
 }
 
 exports.getAllconsultasRapidas = getAllconsultasRapidas;
@@ -206,3 +236,4 @@ exports.getconsultasRapidasByDate = getconsultasRapidasByDate;
 exports.postconsultasRapidas = postconsultasRapidas;
 exports.patchconsultasRapidas = patchconsultasRapidas;
 exports.deleteconsultasRapidas = deleteconsultasRapidas;
+exports.activeConsultasRapidas = activeConsultasRapidas;
