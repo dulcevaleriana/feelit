@@ -6,69 +6,82 @@ const EnviarExamenes = require('../models/enviarExamenes');
 const Paciente = require('../models/paciente');
 const Doctor = require('../models/doctor');
 const { default: mongoose } = require('mongoose');
-//BDA temporal
-let DBA_ENVIAR_EXAMENES = [
-    {
-        id:'dadafgsgfsdgrgf5678',
-        idPaciente:'dsfewjboforngboergo',
-        idDoctor:'sigr389r23ubru',
-        message:'hi hi hi hi hi',
-        messageDoctor:'hohohohoho',
-        docUpload:[
-            'sdsadassafdfdafafsd.pdf',
-            'sdsadassafdfdafafsd.pdf',
-            'sdsadassafdfdafafsd.pdf',
-            'sdsadassafdfdafafsd.pdf'
-        ],
-        dateCreated:todayFunction(),
-        status:true,
-        link:'sfnsdnosgohnreignerognvfdng'
-    }
-]
+
 //get all enviar examenes
-const getAllEnviarExamenes = (req,res,next)=>{
-    res.json({DBA_ENVIAR_EXAMENES});
+const getAllEnviarExamenes = async (req,res,next)=>{
+    let getAllEnviarExamenes;
+
+    try {
+        getAllEnviarExamenes = await EnviarExamenes.find().exec();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
+    }
+
+    res.json({getAllEnviarExamenes});
 };
 //get enviar examenes by id
-const getEnviarExamenesById = (req,res,next)=>{
+const getEnviarExamenesById = async (req,res,next)=>{
     const enviarExamenesId = req.params.eeId;
-    const getEnviarExamenesId = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)
+    let getEnviarExamenesId;
 
-    if(!getEnviarExamenesId){
-        throw new httpError('could not find any examn sended',404)
+    try {
+        getEnviarExamenesId = await EnviarExamenes.findById(enviarExamenesId);
+
+        if(!getEnviarExamenesId){
+            throw new httpError('could not find any examn sended',404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesId})
 };
 //get enviar examenes by status
-const getEnviarExamenesByStatus = (req,res,next) => {
-    const enviarExamenesStatus = req.params.ToF === 'true' ? true : false;
-    const getEnviarExamenesStatus = DBA_ENVIAR_EXAMENES.filter(p => p.status === enviarExamenesStatus);
+const getEnviarExamenesByStatus = async (req,res,next) => {
+    const enviarExamenesStatus = req.params.ToF === 'true' ? true : req.params.ToF === 'false' ? false : undefined;
+    let getEnviarExamenesStatus;
 
-    if(getEnviarExamenesStatus < 1){
-        throw new httpError(`could not find any examn sended with status ${enviarExamenesStatus}`,404)
+    try {
+        getEnviarExamenesStatus = await EnviarExamenes.find({status:enviarExamenesStatus});
+
+        if(getEnviarExamenesStatus < 1 || enviarExamenesStatus === undefined){
+            throw new httpError(`could not find any examn sended with status ${req.params.ToF}`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesStatus});
 }
 //get enviar examenes by doctor
-const getEnviarExamenesByDoctor = (req,res,next) => {
+const getEnviarExamenesByDoctor = async (req,res,next) => {
     const doctorId = req.params.dId;
-    const getEnviarExamenesDoctor = DBA_ENVIAR_EXAMENES.filter(p => p.idDoctor === doctorId);
+    let getEnviarExamenesDoctor;
 
-    if(getEnviarExamenesDoctor < 1){
-        throw new httpError(`could not find any examn sended with this doctor`,404)
+    try {
+        getEnviarExamenesDoctor = await EnviarExamenes.find({idDoctor:doctorId});
+
+        if(getEnviarExamenesDoctor < 1){
+            throw new httpError(`could not find any examn sended with this doctor`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesDoctor})
 }
 //get enviar examenes by date
-const getEnviarExamenesByDate = (req,res,next) => {
+const getEnviarExamenesByDate = async (req,res,next) => {
     const consultasRapidasDate = req.params.date;
-    const getEnviarExamenesDate = DBA_ENVIAR_EXAMENES.filter(p => p.dateCreated === consultasRapidasDate)
+    let getEnviarExamenesDate;
 
-    if(getEnviarExamenesDate < 1){
-        throw new httpError(`Could not find any with this date`,404)
+    try {
+        getEnviarExamenesDate = await EnviarExamenes.find({dateCreated:consultasRapidasDate})
+        if(getEnviarExamenesDate < 1){
+            throw new httpError(`Could not find any with this date`,404)
+        }    
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesDate})
