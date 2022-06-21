@@ -1,15 +1,7 @@
 const httpError = require('../models/http-error');
-const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
 const Specialty = require('../models/specialty');
-//BDA temporal
-let DBA_SPECIALTY = [
-    {
-        id:'dadafgsgfsdgrgf5678',
-        specialtyName:'Pediatry',
-        status:true
-    }
-]
+
 //get all specialty
 const getAllSpecialty = async (req,res,next)=>{
     let getSpecialty;
