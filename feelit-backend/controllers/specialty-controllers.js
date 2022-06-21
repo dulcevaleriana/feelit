@@ -11,16 +11,32 @@ let DBA_SPECIALTY = [
     }
 ]
 //get all specialty
-const getAllSpecialty = (req,res,next)=>{
-    res.json({DBA_SPECIALTY})
+const getAllSpecialty = async (req,res,next)=>{
+    let getSpecialty;
+
+    try {
+        getSpecialty = await Specialty.find().exec();
+        if(!getSpecialty){
+            throw new httpError('Could not find any specialty',404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
+    }
+
+    res.json({getSpecialty})
 };
 //get specialty by id
-const getSpecialtyById = (req,res,next)=>{
+const getSpecialtyById = async (req,res,next)=>{
     const specialtyId = req.params.sId;
-    const getSpecialtyId = DBA_SPECIALTY.find(p => p.id === specialtyId);
+    let getSpecialtyId;
 
-    if(!getSpecialtyId){
-        throw new httpError('Could not find any specialty',404)
+    try {
+        getSpecialtyId = await Specialty.findById(specialtyId);
+        if(!getSpecialtyId){
+            throw new httpError('Could not find any specialty',404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getSpecialtyId})
