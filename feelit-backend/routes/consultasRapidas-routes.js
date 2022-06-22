@@ -35,5 +35,7 @@ router.patch(
     consultasRapidasControllers.patchconsultasRapidas)
 //delete a: consultas rapidas
 router.delete('/:crId',consultasRapidasControllers.deleteconsultasRapidas)
+//active a: consultas rapidas
+router.get('/active/:crId',consultasRapidasControllers.activeConsultasRapidas)
 
 module.exports = router;

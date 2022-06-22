@@ -1,37 +1,37 @@
 const httpError = require('../models/http-error');
-const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
-//BDA temporal
-let DBA_PACIENTE = [
-    {
-        id:'dadafgsgfsdgrgf',
-        cedula:'402-2334268-0',
-        email:'juanOrtega@gmail.com',
-        password:'dsfdgds',
-        telefono:'849-654-9687',
-        name:'Juan Ortega',
-        status:true
-    }
-]
+const Paciente = require('../models/paciente');
+
 //get all paciente
-const getAllPaciente = (req,res,next)=>{
-    res.json({DBA_PACIENTE})
+const getAllPaciente = async (req,res,next)=>{
+    let getAllPaciente;
+    
+    try{
+        getAllPaciente = await Paciente.find().exec();
+    } catch(error){
+        return res.json({message:'Could not find any paciente'})
+    }
+
+    res.json({getAllPaciente:getAllPaciente.map(data => data.toObject({getters:true}))})
 };
 //get paciente by id
-const getPacienteById = (req,res,next)=>{
+const getPacienteById = async (req,res,next) => {
     const pacienteId = req.params.pId;
-    const findPacienteById = DBA_PACIENTE.find(p => p.id === pacienteId);
-    if(!findPacienteById){
-        throw new httpError('Could not find this paciente',404)
+    let getPacienteById;
+
+    try {
+        getPacienteById = await Paciente.findById(pacienteId);
+    } catch(err){
+        return next(new httpError('we can`t find this paciente',500));
     }
-    res.status(201).json({findPacienteById});
+
+    res.json({getPacienteById:getPacienteById.toObject({getters:true})})
 };
 //post a doctor
-const postPaciente = (req,res,next)=>{
+const postPaciente = async (req,res,next)=>{
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         cedula,
@@ -40,35 +40,38 @@ const postPaciente = (req,res,next)=>{
         telefono,
         name
     } = req.body;
-    const createPaciente = {
-        id: uuidv4(),
-        cedula:cedula,
-        email:email,
-        password:password,
-        telefono:telefono,
-        name:name,
+    const createPaciente = new Paciente({
+        cedula,
+        email,
+        password,
+        telefono,
+        name,
         status:true
-    }
-    
-    const ifCedulaExist = DBA_PACIENTE.find(p => p.id === cedula);
-    const ifEmailExist = DBA_PACIENTE.find(p => p.email === email);
+    })
 
-    if(ifCedulaExist){
-        throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
-    }
-    if(ifEmailExist){
-        throw new httpError(`a user with this email: ${email} is already exist`,322)
+    try {
+        const ifCedulaExist = await Paciente.findOne({cedula:cedula});
+        const ifEmailExist = await Paciente.findOne({email:email});
+
+        if(ifCedulaExist){
+            throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
+        } 
+        if(ifEmailExist){
+            throw new httpError(`a user with this email: ${email} is already exist`,322)
+        }
+
+        createPaciente.save();
+    } catch (err) {
+        return next(new httpError(`something went wrong ${err}`,500))
     }
 
-    DBA_PACIENTE.push(createPaciente);
-    res.status(201).json({message:"this paciente was succesfull created!",createPaciente});
+    res.status(201).json({message:"this paciente was succesfull created!",createPaciente:createPaciente.toObject({getters:true})});
 }
 //patch a doctor
-const patchPaciente = (req,res,next) => {
+const patchPaciente = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         cedula,
@@ -78,48 +81,81 @@ const patchPaciente = (req,res,next) => {
         name
     } = req.body;
     const pacienteId = req.params.pId;
+    let updatePaciente;
 
-    const updatePaciente = {... DBA_PACIENTE.find(p => p.id === pacienteId)};
-    const verifyPacienteId = DBA_PACIENTE.findIndex(p => p.id === pacienteId);
-    const ifCedulaExist = DBA_PACIENTE.filter(p => p.cedula === cedula);
-    const ifEmailExist = DBA_PACIENTE.filter(p => p.email === email);
-    const findPacienteId = DBA_PACIENTE.find(p => p.id === pacienteId);
+    try{
+        updatePaciente = await Paciente.findById(pacienteId);
 
-    updatePaciente.cedula = cedula;
-    updatePaciente.email = email;
-    updatePaciente.password = password;
-    updatePaciente.telefono = telefono;
-    updatePaciente.name = name;
+        if(updatePaciente.status === false){
+            return next(new httpError(`We can't modify a paciente inactive`,500));
+        }
 
-    if(!findPacienteId){
-        throw new httpError(`we can't find this paciente`,404)
+        updatePaciente.cedula = cedula;
+        updatePaciente.email = email;
+        updatePaciente.password = password;
+        updatePaciente.telefono = telefono;
+        updatePaciente.name = name;
+    
+        await updatePaciente.save();
+    } catch (err){
+        return next(new httpError(`something went wrong ${err}`,500))
     }
-    if(ifCedulaExist > 1){
-        throw new httpError(`we can't save this changes: a user with this cedula: ${cedula} is already exist`,322)
-    }
-    if(ifEmailExist > 1){
-        throw new httpError(`we can't save this changes: a user with this email: ${email} is already exist`,322)
-    }
-
-    DBA_PACIENTE[verifyPacienteId] = updatePaciente;
 
     res.status(201).json({message:'paciente`s account was succesfull edited:',updatePaciente})
 }
-//delete a doctor
-const deletePaciente = (req,res,next) => {
+//delete a paciente
+const deletePaciente = async (req,res,next) => {
     const pacienteId = req.params.pId;
-    const findPacienteId = DBA_PACIENTE.find(p => p.id === pacienteId)
-    const updateStatusPaciente = {... DBA_PACIENTE.find(p => p.id === pacienteId)}
-    const verifyPacienteId = DBA_PACIENTE.findIndex(p => p.id === pacienteId)
+    let setDoctorStatusFalse;
 
-    if(!findPacienteId){
-        throw new httpError('we can`t find this paciente',404)
+    try{
+        setDoctorStatusFalse = await Paciente.findById(pacienteId);
+        setDoctorStatusFalse.status = false;
+        setDoctorStatusFalse.save();
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,500))
     }
 
-    updateStatusPaciente.status = false;
-    DBA_PACIENTE[verifyPacienteId] = updateStatusPaciente;
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusFalse.status}: `,setDoctorStatusFalse:setDoctorStatusFalse.toObject({getters:true})})
+}
+//active a paciente
+const activePaciente = async (req,res,next) => {
+    const pacienteId = req.params.pId;
+    let setDoctorStatusTrue;
 
-    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${updateStatusPaciente.status}: `,updateStatusPaciente})
+    try{
+        setDoctorStatusTrue = await Paciente.findById(pacienteId);
+        setDoctorStatusTrue.status = true;
+        setDoctorStatusTrue.save();
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,500))
+    }
+
+    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
+}
+//login paciente
+const loginPaciente = async (req,res,next) => {
+    const {
+        email,
+        password,
+    } = req.body;
+    let loginPaciente;
+
+    try {
+        loginPaciente = await Paciente.findOne({email:email})
+
+        if(loginPaciente && loginPaciente.password !== password){
+            return next(new httpError(`your password are wrong, try again`,404))
+        }
+        if(!loginPaciente){
+            return next(new httpError(`we can't find a paciente with this email`,404))
+        }
+
+    } catch(err){
+        return next(new httpError(`something went wrong ${err}`,500))
+    }
+
+    res.json({message:`Welcome ${loginPaciente.name}, you're login now`})
 }
 
 exports.getAllPaciente = getAllPaciente;
@@ -127,3 +163,5 @@ exports.getPacienteById = getPacienteById;
 exports.postPaciente = postPaciente;
 exports.patchPaciente = patchPaciente;
 exports.deletePaciente = deletePaciente;
+exports.loginPaciente = loginPaciente;
+exports.activePaciente = activePaciente;

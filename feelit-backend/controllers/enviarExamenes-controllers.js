@@ -1,80 +1,96 @@
 const httpError = require('../models/http-error');
 const { v4: uuidv4 } = require('uuid');
 const {validationResult} = require('express-validator');
-const {todayFunction} = require('../models/today')
-//BDA temporal
-let DBA_ENVIAR_EXAMENES = [
-    {
-        id:'dadafgsgfsdgrgf5678',
-        idPaciente:'dsfewjboforngboergo',
-        idDoctor:'sigr389r23ubru',
-        message:'hi hi hi hi hi',
-        messageDoctor:'hohohohoho',
-        docUpload:[
-            'sdsadassafdfdafafsd.pdf',
-            'sdsadassafdfdafafsd.pdf',
-            'sdsadassafdfdafafsd.pdf',
-            'sdsadassafdfdafafsd.pdf'
-        ],
-        dateCreated:todayFunction(),
-        status:true,
-        link:'sfnsdnosgohnreignerognvfdng'
-    }
-]
+const {todayFunction} = require('../models/today');
+const EnviarExamenes = require('../models/enviarExamenes');
+const Paciente = require('../models/paciente');
+const Doctor = require('../models/doctor');
+const { default: mongoose } = require('mongoose');
+
 //get all enviar examenes
-const getAllEnviarExamenes = (req,res,next)=>{
-    res.json({DBA_ENVIAR_EXAMENES});
+const getAllEnviarExamenes = async (req,res,next)=>{
+    let getAllEnviarExamenes;
+
+    try {
+        getAllEnviarExamenes = await EnviarExamenes.find().exec();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
+    }
+
+    res.json({getAllEnviarExamenes});
 };
 //get enviar examenes by id
-const getEnviarExamenesById = (req,res,next)=>{
+const getEnviarExamenesById = async (req,res,next)=>{
     const enviarExamenesId = req.params.eeId;
-    const getEnviarExamenesId = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)
+    let getEnviarExamenesId;
 
-    if(!getEnviarExamenesId){
-        throw new httpError('could not find any examn sended',404)
+    try {
+        getEnviarExamenesId = await EnviarExamenes.findById(enviarExamenesId);
+
+        if(!getEnviarExamenesId){
+            throw new httpError('could not find any examn sended',404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesId})
 };
 //get enviar examenes by status
-const getEnviarExamenesByStatus = (req,res,next) => {
-    const enviarExamenesStatus = req.params.ToF === 'true' ? true : false;
-    const getEnviarExamenesStatus = DBA_ENVIAR_EXAMENES.filter(p => p.status === enviarExamenesStatus);
+const getEnviarExamenesByStatus = async (req,res,next) => {
+    const enviarExamenesStatus = req.params.ToF === 'true' ? true : req.params.ToF === 'false' ? false : undefined;
+    let getEnviarExamenesStatus;
 
-    if(getEnviarExamenesStatus < 1){
-        throw new httpError(`could not find any examn sended with status ${enviarExamenesStatus}`,404)
+    try {
+        getEnviarExamenesStatus = await EnviarExamenes.find({status:enviarExamenesStatus});
+
+        if(getEnviarExamenesStatus < 1 || enviarExamenesStatus === undefined){
+            throw new httpError(`could not find any examn sended with status ${req.params.ToF}`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesStatus});
 }
 //get enviar examenes by doctor
-const getEnviarExamenesByDoctor = (req,res,next) => {
+const getEnviarExamenesByDoctor = async (req,res,next) => {
     const doctorId = req.params.dId;
-    const getEnviarExamenesDoctor = DBA_ENVIAR_EXAMENES.filter(p => p.idDoctor === doctorId);
+    let getEnviarExamenesDoctor;
 
-    if(getEnviarExamenesDoctor < 1){
-        throw new httpError(`could not find any examn sended with this doctor`,404)
+    try {
+        getEnviarExamenesDoctor = await EnviarExamenes.find({idDoctor:doctorId});
+
+        if(getEnviarExamenesDoctor < 1){
+            throw new httpError(`could not find any examn sended with this doctor`,404)
+        }
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesDoctor})
 }
 //get enviar examenes by date
-const getEnviarExamenesByDate = (req,res,next) => {
+const getEnviarExamenesByDate = async (req,res,next) => {
     const consultasRapidasDate = req.params.date;
-    const getEnviarExamenesDate = DBA_ENVIAR_EXAMENES.filter(p => p.dateCreated === consultasRapidasDate)
+    let getEnviarExamenesDate;
 
-    if(getEnviarExamenesDate < 1){
-        throw new httpError(`Could not find any with this date`,404)
+    try {
+        getEnviarExamenesDate = await EnviarExamenes.find({dateCreated:consultasRapidasDate})
+        if(getEnviarExamenesDate < 1){
+            throw new httpError(`Could not find any with this date`,404)
+        }    
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
     res.status(201).json({getEnviarExamenesDate})
 }
 //post a: enviar examenes
-const postEnviarExamenes = (req,res,next)=>{
+const postEnviarExamenes = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         idPaciente,
@@ -82,27 +98,52 @@ const postEnviarExamenes = (req,res,next)=>{
         message,
         docUpload
     } = req.body;
-    const createEnviarExamenes = {
-        id:uuidv4(),
-        idPaciente:idPaciente,
-        idDoctor:idDoctor,
-        message:message,
-        messageDoctor:'Dr. will send you a response soon',
-        docUpload:docUpload,
+    const createEnviarExamenes = new EnviarExamenes({
+        idPaciente,
+        idDoctor,
+        message,
+        docUpload,
+        messageDoctor:' ',
         dateCreated:todayFunction(),
         status:true,
         link:uuidv4()
+    })
+
+    try {
+        const paciente = await Paciente.findById(idPaciente);
+        const doctor = await Doctor.findById(idDoctor);
+
+        if(!paciente){
+            return next(new httpError(`we can't find this paciente`,404))
+        }
+        if(!doctor){
+            return next(new httpError(`we can't find this doctor`,404))
+        }
+
+        createEnviarExamenes.messageDoctor = `Dr. ${doctor.name} will send you a response soon`;
+
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+
+        paciente.enviarExamenes.push(createEnviarExamenes);
+        doctor.enviarExamenes.push(createEnviarExamenes);
+
+        await createEnviarExamenes.save({session:sess});
+        await doctor.save({session:sess});
+        await paciente.save({session:sess});
+
+        sess.commitTransaction();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404))
     }
 
-    DBA_ENVIAR_EXAMENES.push(createEnviarExamenes)
     res.status(201).json({message:'These exams was already sended!!',createEnviarExamenes})
 }
 //patch a: enviar examenes by patience
-const patchEnviarExamenesByPaciente = (req,res,next) => {
+const patchEnviarExamenesByPaciente = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         message,
@@ -110,68 +151,130 @@ const patchEnviarExamenesByPaciente = (req,res,next) => {
     } = req.body;
     const enviarExamenesId = req.params.eeId;
     const pacienteId = req.params.pId;
-    const verifyenviarExamenesId = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)
-    const verifyPacienteId = DBA_ENVIAR_EXAMENES.find(p => p.idPaciente === pacienteId)
-    const verifyenviarExamenesIndex = DBA_ENVIAR_EXAMENES.findIndex(p => p.id === enviarExamenesId)
-    const updateEnviarExamenes = {... DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)}
+    let verifyenviarExamenesId;
 
-    if(!verifyenviarExamenesId){
-        throw new httpError('Could not find any exams sended',404)
+    try {
+        verifyenviarExamenesId = await EnviarExamenes.findById(enviarExamenesId);
+        const verifyPacienteId = verifyenviarExamenesId.idPaciente.toString() === pacienteId;
+        const getPaciente = await Paciente.findById(verifyenviarExamenesId.idPaciente.toString());
+        const getDoctor = await Doctor.findById(verifyenviarExamenesId.idDoctor.toString());
+
+        if(!verifyenviarExamenesId){
+            throw new httpError('Could not find any exams sended',404)
+        }
+        if(verifyPacienteId === false){
+            throw new httpError('Could not find any exams sended by you',404)
+        }
+        
+        verifyenviarExamenesId.message = message;
+        verifyenviarExamenesId.docUpload = verifyenviarExamenesId.docUpload.concat(docUpload);
+
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+
+        getPaciente.enviarExamenes.push(verifyenviarExamenesId);
+        getDoctor.enviarExamenes.push(verifyenviarExamenesId);
+
+        await verifyenviarExamenesId.save({session:sess});
+        await getPaciente.save({session:sess});
+        await getDoctor.save({session:sess});
+
+        sess.commitTransaction();
+        
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404));
     }
-    if(!verifyPacienteId){
-        throw new httpError('Could not find any exams sended by you',404)
-    }
 
-    updateEnviarExamenes.message = message;
-    updateEnviarExamenes.docUpload = DBA_ENVIAR_EXAMENES[verifyenviarExamenesIndex].docUpload.concat(docUpload);
-
-    DBA_ENVIAR_EXAMENES[verifyenviarExamenesIndex] = updateEnviarExamenes;
-
-    res.status(201).json({message:'Your exam sended was edited succesfully',updateEnviarExamenes})
+    res.status(201).json({message:'Your exam sended was edited succesfully',verifyenviarExamenesId})
 }
 //patch a: enviar examenes by doctor
-const patchEnviarExamenesByDoctor = (req,res,next) => {
+const patchEnviarExamenesByDoctor = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        console.log(error);
-        throw new httpError('Invalid inputs passed, please check your data',422);
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         messageDoctor
     } = req.body;
     const enviarExamenesId = req.params.eeId;
     const doctorId = req.params.dId;
-    const verifyenviarExamenesId = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)
-    const verifyDoctorId = DBA_ENVIAR_EXAMENES.find(p => p.idDoctor === doctorId)
-    const verifyenviarExamenesIndex = DBA_ENVIAR_EXAMENES.findIndex(p => p.id === enviarExamenesId)
-    const updateEnviarExamenes = {... DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId)}
+    let verifyenviarExamenesId;
 
-    if(!verifyenviarExamenesId){
-        throw new httpError('Could not find any exams sended',404)
+    try {
+        verifyenviarExamenesId = await EnviarExamenes.findById(enviarExamenesId);
+        const verifyDoctorId = verifyenviarExamenesId.idDoctor.toString() === doctorId;
+        const getPaciente = await Paciente.findById(verifyenviarExamenesId.idPaciente.toString());
+        const getDoctor = await Doctor.findById(verifyenviarExamenesId.idDoctor.toString());
+
+        if(!verifyenviarExamenesId){
+            throw new httpError('Could not find any exams sended',404)
+        }
+    
+        if(verifyDoctorId === false){
+            throw new httpError('Could not find any exams sended for you, dr',404)
+        }
+
+        verifyenviarExamenesId.messageDoctor = messageDoctor;
+
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+
+        getPaciente.enviarExamenes.push(verifyenviarExamenesId);
+        getDoctor.enviarExamenes.push(verifyenviarExamenesId);
+
+        await verifyenviarExamenesId.save({session:sess});
+        await getPaciente.save({session:sess});
+        await getPaciente.save({session:sess});
+
+        sess.commitTransaction();
+
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404));
     }
 
-    if(!verifyDoctorId){
-        throw new httpError('Could not find any exams sended for you, dr',404)
-    }
-
-    updateEnviarExamenes.messageDoctor = messageDoctor;
-
-    DBA_ENVIAR_EXAMENES[verifyenviarExamenesIndex] = updateEnviarExamenes;
-
-    res.status(201).json({message:'Dr. , Your exam response was sended succesfully',updateEnviarExamenes})
+    res.status(201).json({message:'Dr. , Your exam response was sended succesfully',verifyenviarExamenesId})
 }
 //delete a: enviar examenes
-const deleteEnviarExamenes = (req,res,next) => {
+const deleteEnviarExamenes = async (req,res,next) => {
     const enviarExamenesId = req.params.eeId;
-    const deleteEnviarExamenes = DBA_ENVIAR_EXAMENES.find(p => p.id === enviarExamenesId);
+    let deleteEnviarExamenes;
 
-    if(!deleteEnviarExamenes){
-        throw new httpError('We can`t find any exam sended',404)
+    try {
+        deleteEnviarExamenes = await EnviarExamenes.findById(enviarExamenesId);
+
+        if(!deleteEnviarExamenes){
+            throw new httpError('We can`t find any exam sended',404)
+        }
+    
+        deleteEnviarExamenes.status = false;
+
+        await deleteEnviarExamenes.save();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404));
     }
 
-    deleteEnviarExamenes.status = false;
-
     res.status(201).json({message:'your exam sended was already canceled!',deleteEnviarExamenes})
+}
+//active a: enviar examenes
+const activeEnviarExamenes = async (req,res,next) => {
+    const enviarExamenesId = req.params.eeId;
+    let activeEnviarExamenes;
+
+    try {
+        activeEnviarExamenes = await EnviarExamenes.findById(enviarExamenesId);
+
+        if(!activeEnviarExamenes){
+            throw new httpError('We can`t find any exam sended',404)
+        }
+    
+        activeEnviarExamenes.status = true;
+
+        await activeEnviarExamenes.save();
+    } catch(err){
+        return next(new httpError(`somenthing went wrong ${err}`,404));
+    }
+
+    res.status(201).json({message:'your exam sended was already active again!!',activeEnviarExamenes})
 }
 
 exports.getAllEnviarExamenes = getAllEnviarExamenes;
@@ -183,3 +286,4 @@ exports.postEnviarExamenes = postEnviarExamenes;
 exports.patchEnviarExamenesByPaciente = patchEnviarExamenesByPaciente;
 exports.patchEnviarExamenesByDoctor = patchEnviarExamenesByDoctor;
 exports.deleteEnviarExamenes = deleteEnviarExamenes;
+exports.activeEnviarExamenes = activeEnviarExamenes;

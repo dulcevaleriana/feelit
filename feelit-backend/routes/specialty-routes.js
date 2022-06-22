@@ -13,5 +13,7 @@ router.post('/createSpecialty',check('specialtyName').not().isEmpty(),specialtyC
 router.patch('/:sId',check('specialtyName').not().isEmpty(),specialtyControllers.patchSpecialty)
 //delete a: specialty
 router.delete('/:sId',specialtyControllers.deleteSpecialty)
+//active a: specialty
+router.get('/active/:sId',specialtyControllers.activeSpecialty)
 
 module.exports = router;

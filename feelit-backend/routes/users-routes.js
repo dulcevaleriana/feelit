@@ -5,6 +5,8 @@ const userControllers = require('../controllers/users-controllers')
 
 //get all users
 router.get('/', userControllers.getUsers)
+//get all Users's Email And Password
+router.get('/getUsersEmailAndPassword',userControllers.getUsersEmailAndPassword)
 //post a user
 router.post(
     '/signup',
@@ -14,7 +16,7 @@ router.post(
         check('password').isLength({min:6}),
         check('image').not().isEmpty()
     ], 
-    userControllers.postUsers)
+    userControllers.signUpUsers)
 //login with a exist account
 router.post('/login', userControllers.login)
 

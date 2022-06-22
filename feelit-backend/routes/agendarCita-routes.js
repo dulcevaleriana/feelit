@@ -29,8 +29,6 @@ router.post(
 router.patch(
     '/:acId',
     [
-        check('idPaciente').not().isEmpty(),
-        check('idDoctor').not().isEmpty(),
         check('date').trim().isDate(),
         check('time').not().isEmpty(),
         check('message').not().isEmpty()
@@ -38,6 +36,8 @@ router.patch(
     agendarCitaControllers.patchAgendarCita)
 //delete a: agendar cita
 router.delete('/:acId',agendarCitaControllers.deleteAgendarCita)
+//active a: agendar cita
+router.get('/active/:acId',agendarCitaControllers.activeAgendarCita)
 
 
 module.exports = router;
