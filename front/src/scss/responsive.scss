@@ -1,0 +1,38 @@
+@media only screen and (max-width: 992px){
+    ul.class-NavsLinks{
+        display: none !important;
+    }
+
+    ul.class-NavsLinks.class-responsive{
+        display: flex !important;
+        flex-direction: column;
+        background: #1f8bf7;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 30vw;
+        padding: 5% !important;
+        z-index: 9;
+        box-shadow: 3px 0 0 0 #0004;
+        padding-top: 90px !important;
+    }
+
+    header {
+        > svg {
+            z-index: 99;
+            color: white;
+        }
+
+        h1 a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+
+    .class-User > div:nth-child(2) {
+        display: flex !important;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
