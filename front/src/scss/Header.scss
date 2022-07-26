@@ -1,0 +1,25 @@
+header.class-Header {
+    padding: 10px 5%;
+    display: grid;
+    grid-template-columns: 100px auto 100px;
+    gap: 20px;
+    border-bottom: 2px solid #ffffff;
+    background: #ffffff;
+    align-items: center;
+
+    ul.class-NavsLinks {
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style-type: none;
+
+            a {
+                text-decoration: none;
+                color: #444;
+            }
+        }
+    }
+}
