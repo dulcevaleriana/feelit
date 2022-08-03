@@ -152,5 +152,25 @@
         }
                 
     }
+
+    form {
+        display: grid;
+        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+        grid-template-rows: repeat(5,56px);
+        gap: 20px;
+
+        > h5,
+        > div:nth-child(4),
+        > div:nth-child(5)  {
+            grid-column: 1 / span 2;
+        }
+
+        > .css-xn6ruc>:not(style),
+        > div,
+        > div:nth-child(2) > div {
+            width: auto;
+            margin: 0;
+        }
+    }
 }
 
