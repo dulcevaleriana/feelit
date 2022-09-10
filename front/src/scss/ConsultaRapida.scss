@@ -18,11 +18,11 @@
             display: grid;
             grid-template-columns: 60px calc(100% - 120px) 60px;
             justify-content: center;
-            align-items: start;
+            align-items: flex-start;
             min-width: 560px;
     
             svg:first-child  {
-                justify-self: start;
+                justify-self: flex-start;
             }
     
             svg:last-child  {
@@ -38,7 +38,7 @@
             > span {
                 display: flex;
                 flex-direction: row;
-                align-items: start;
+                align-items: flex-start;
                 justify-content: center;
     
                 .class-select{

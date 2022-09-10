@@ -28,7 +28,8 @@ export default function FormPayment(){
         </div>
         <TextField 
             id="outlined-basic" 
-            label="Outlined" 
+            label="Número de seguro" 
+            placeholder='0000-0000-0000-0000'
             variant="outlined" 
         />
         <TextField 

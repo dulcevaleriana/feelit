@@ -1,7 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom";
 
-const Header = (props) => {
-    return <header className="class-Header">{props.children}</header>
+export default function Header(props) {
+    return ReactDOM.createPortal(<header className="class-Header">{props.children}</header>,document.getElementById("drawer-hook"))
 }
-
-export default Header;
