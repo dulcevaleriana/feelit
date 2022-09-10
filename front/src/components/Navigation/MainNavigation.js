@@ -17,7 +17,10 @@ const MainNavigation = (props) => {
             <h1>
                 <Link to="/">Feelit</Link>
             </h1>
-            <NavsLinks className={matches && displayMenu ? " class-responsive class-NavsLinks " : " class-NavsLinks "}/>
+            <NavsLinks
+                show={matches ? displayMenu : true}
+                className={matches && displayMenu ? " class-responsive class-NavsLinks " : " class-NavsLinks "}
+            />
             <ImageAvatars />
         </Header>
     </React.Fragment>

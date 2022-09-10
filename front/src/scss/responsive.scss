@@ -30,6 +30,12 @@
         }
     }
 
+    header.class-Header {
+        display: grid;
+        grid-template-columns: 24px auto 100px;
+        background: #1f8bf7;
+    }
+
     .class-User > div:nth-child(2) {
         display: flex !important;
         flex-direction: column;
