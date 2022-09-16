@@ -11,6 +11,29 @@ const MainNavigation = (props) => {
     const [displayMenu, setDisplayMenu] = useState(false)
     const matches = useMediaQuery('(max-width:992px)');
 
+    const arrayLinks = [
+        {
+            to:"/consultaRapida/Create",
+            name:"Consulta Rapida",
+        },
+        {
+            to:"/users",
+            name:"All User",
+        },
+        {
+            to:"/ul/places",
+            name:"My Places",
+        },
+        {
+            to:"/places/new",
+            name:"Add Place",
+        },
+        {
+            to:"/auth",
+            name:"Authenticate",
+        }
+    ]
+
     return <React.Fragment>
         <Header className="class-MainNavigation">
             {matches && (displayMenu ? <CloseIcon onClick={() => setDisplayMenu(!displayMenu)}/> : <MenuIcon onClick={() => setDisplayMenu(!displayMenu)}/> )}
@@ -20,6 +43,8 @@ const MainNavigation = (props) => {
             <NavsLinks
                 show={matches ? displayMenu : true}
                 className={matches && displayMenu ? " class-responsive class-NavsLinks " : " class-NavsLinks "}
+                arrayLinks={arrayLinks}
+                onClick={() => setDisplayMenu(false)}
             />
             <ImageAvatars />
         </Header>

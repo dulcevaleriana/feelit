@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 
 const NavsLinks = (props) => {
-    return <CSSTransition
+    return <div>
+        <CSSTransition
             in={props.show}
             timeout={200}
             classNames="slide-in-left"
@@ -12,24 +13,15 @@ const NavsLinks = (props) => {
         >
         <nav>
             <ul className={props.className}>
-                <li>
-                    <NavLink to="/consultaRapida/Create" exact>Consulta Rapida</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/users" exact>All User</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/ul/places">My Plases</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/places/new">Add Place</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/auth">Authenticate</NavLink>
-                </li>
+                {props.arrayLinks.map((index,key)=>(
+                    <li onClick={props.onClick} key={key}>
+                        <NavLink to={index.to}>{index.name}</NavLink>
+                    </li>
+                ))}
             </ul>
         </nav>
         </CSSTransition>
+    </div>
 }
 
 export default NavsLinks;
