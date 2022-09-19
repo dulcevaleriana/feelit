@@ -1,16 +1,32 @@
 import React from 'react';
 import BasicButtons from '../UIElements/BasicButtons-MUI';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 
 const PlaceItem = (props) => {
     return <li className='class-PlaceItem'>
-        <div>
-            <img src={props.image} alt={props.title}/>
-            <div>
-                <h2>{props.title}</h2>
-                <h3>{props.description}</h3>
-                <p>{props.address}</p>
-            </div>
-            <div>
+        <Card sx={{ maxWidth: 345 }}>
+            <CardMedia
+                component="img"
+                height="140"
+                image={props.image}
+                alt={props.title}
+            />
+            <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                    {props.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {props.description}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {props.address}
+                </Typography>
+            </CardContent>
+            <CardActions>
                 <BasicButtons
                     buttonName="View on map"
                     onClick={()=>{}}
@@ -26,8 +42,8 @@ const PlaceItem = (props) => {
                     onClick={()=>{}}
                     variantName="contained"
                 />
-            </div>
-        </div>
+            </CardActions>
+        </Card>
     </li>
 }
 

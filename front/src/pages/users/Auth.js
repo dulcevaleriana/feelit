@@ -6,10 +6,10 @@ const Auth = (props) => {
     // const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
 
-  const authSubmitHandler = async event => {
-    event.preventDefault();
-    // auth.login();
-  }
+  // const authSubmitHandler = async event => {
+  //   event.preventDefault();
+  //   auth.login();
+  // }
 
     return (
         <Box className="authentication">
@@ -45,7 +45,7 @@ const Auth = (props) => {
               errorText="Please enter a valid password, at least 5 characters."
             //   onInput={inputHandler}
             />
-            <BasicButtons type="submit" >
+            <BasicButtons type="submit" onClick={()=>setIsLoginMode(!isLoginMode)}>
             {/* disabled={!formState.isValid} */}
               {isLoginMode ? 'LOGIN' : 'SIGNUP'}
             </BasicButtons>
