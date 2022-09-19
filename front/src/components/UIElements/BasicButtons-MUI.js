@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-// Note: variant only can be: 
+// Note: variant only can be:
 // "text"
 // "contained"
 // "outlined"

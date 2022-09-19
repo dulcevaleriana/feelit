@@ -21,16 +21,12 @@ const MainNavigation = (props) => {
             name:"All User",
         },
         {
-            to:"/ul/places",
-            name:"My Places",
+            to:"/w1/UserPlaces",
+            name:"User's places",
         },
         {
-            to:"/places/new",
-            name:"Add Place",
-        },
-        {
-            to:"/auth",
-            name:"Authenticate",
+            to:"/place",
+            name:"Create Places",
         }
     ]
 
@@ -46,7 +42,9 @@ const MainNavigation = (props) => {
                 arrayLinks={arrayLinks}
                 onClick={() => setDisplayMenu(false)}
             />
-            <ImageAvatars />
+            <Link to="/login">
+                <ImageAvatars />
+            </Link>
         </Header>
     </React.Fragment>
 }

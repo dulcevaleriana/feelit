@@ -35,8 +35,6 @@ export default function FormUserData() {
             onChange={handleChangeName}
             label="Nombre"
             />
-        </FormControl>
-        <FormControl>
             <InputLabel htmlFor="component-outlined">Teléfono</InputLabel>
             <OutlinedInput
             id="component-outlined"
@@ -44,8 +42,6 @@ export default function FormUserData() {
             onChange={handleChangeTelefono}
             label="Telefono"
             />
-        </FormControl>
-        <FormControl>
             <InputLabel htmlFor="component-outlined">Correo</InputLabel>
             <OutlinedInput
             id="component-outlined"
@@ -53,14 +49,14 @@ export default function FormUserData() {
             onChange={handleChangeCorreo}
             label="Correo"
             />
+            <TextareaAutosize
+                aria-label="Mensaje"
+                minRows={6}
+                placeholder="Si quieres, puedes dejar un mensaje"
+                value={textarea}
+                onChange={handleChangeTextarea}
+            />
         </FormControl>
-        <TextareaAutosize
-            aria-label="Mensaje"
-            minRows={6}
-            placeholder="Si quieres, puedes dejar un mensaje"
-            value={textarea}
-            onChange={handleChangeTextarea}
-        />
         <h5>* Al llenar estos campos esta de acuerdo con crear una cuenta para tener su cita</h5>
     </Box>
 }
