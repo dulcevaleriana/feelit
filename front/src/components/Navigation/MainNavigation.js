@@ -21,7 +21,7 @@ const MainNavigation = (props) => {
             name:"All User",
         },
         {
-            to:"/w1/UserPlaces",
+            to:"/w2/UserPlaces",
             name:"User's places",
         },
         {

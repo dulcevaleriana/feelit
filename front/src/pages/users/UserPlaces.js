@@ -41,11 +41,12 @@ const UserPlaces = (props) => {
             }
         }
     ]
-    useParams()
+    const userId = useParams().usersId;
+    const filterDBAbyUserId = DUMMY_PLACES.filter(item => item.creatorId === userId);
     return (
         <div>
-            UserPlaces
-            <PlaceList items={DUMMY_PLACES}/>
+            UserPlaces {userId}
+            <PlaceList items={filterDBAbyUserId}/>
         </div>
     )
 }

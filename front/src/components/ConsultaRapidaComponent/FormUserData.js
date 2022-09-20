@@ -35,6 +35,8 @@ export default function FormUserData() {
             onChange={handleChangeName}
             label="Nombre"
             />
+        </FormControl>
+        <FormControl>
             <InputLabel htmlFor="component-outlined">Teléfono</InputLabel>
             <OutlinedInput
             id="component-outlined"
@@ -42,6 +44,8 @@ export default function FormUserData() {
             onChange={handleChangeTelefono}
             label="Telefono"
             />
+        </FormControl>
+        <FormControl>
             <InputLabel htmlFor="component-outlined">Correo</InputLabel>
             <OutlinedInput
             id="component-outlined"
@@ -49,6 +53,8 @@ export default function FormUserData() {
             onChange={handleChangeCorreo}
             label="Correo"
             />
+        </FormControl>
+        <FormControl>
             <TextareaAutosize
                 aria-label="Mensaje"
                 minRows={6}
