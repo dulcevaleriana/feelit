@@ -1,35 +1,83 @@
-import React from 'react';
+import React, { useReducer, useEffect } from 'react';
+import { validate } from '../../shared/util/validators';
 
-const SelectSubComponent = props => {
-    return <select
-        id={props.id}
-        name={props.name}
-        placeholder={props.placeholder}>
-        {props.selectOptions.map((elem,key)=>(
-            <option key={key} value={elem}>{elem}</option>
-        ))}
-    </select>
-}
+const inputReducer = (state, action) => {
+  switch (action.type) {
+    case 'CHANGE':
+      return {
+        ...state,
+        value: action.val,
+        isValid: validate(action.val, action.validators)
+      };
+    case 'TOUCH': {
+      return {
+        ...state,
+        isTouched: true
+      }
+    }
+    default:
+      return state;
+  }
+};
 
-const TextareaSubComponent = props => {
-    return <textarea
+const Input = props => {
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    value: '',
+    isTouched: false,
+    isValid: false
+  });
+
+  const { id, onInput } = props;
+  const { value, isValid } = inputState;
+
+  useEffect(() => {
+    onInput(id, value, isValid)
+  }, [id, value, isValid, onInput]);
+
+  const changeHandler = event => {
+    dispatch({
+      type: 'CHANGE',
+      val: event.target.value,
+      validators: props.validators
+    });
+  };
+
+  const touchHandler = () => {
+    dispatch({
+      type: 'TOUCH'
+    });
+  };
+
+  const element =
+    props.element === 'input' ? (
+      <input
         id={props.id}
+        type={props.type}
         placeholder={props.placeholder}
-        name={props.name}
-        cols={props.cols || 30}
-        rows={props.rows || 10}>
-            {props.placeholder}
-    </textarea>
-}
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={inputState.value}
+      />
+    ) : (
+      <textarea
+        id={props.id}
+        rows={props.rows || 3}
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={inputState.value}
+      />
+    );
 
-const InputComponent = (props) => {
-    const validateElement = props.elementType === 'input' ? <input id={props.id} type={props.type} placeholder={props.placeholder}/> :
-                            props.elementType === 'textarea' ? <TextareaSubComponent {... props}/> :
-                            props.elementType === 'select' ? <SelectSubComponent {... props}/> : null;
-    return <div className={`class-input ${props.className}`}>
-        <label htmlFor={props.id}>{props.label}</label>
-        {validateElement}
+  return (
+    <div
+      className={`form-control ${!inputState.isValid && inputState.isTouched &&
+        'form-control--invalid'}`}
+    >
+      <label htmlFor={props.id}>{props.label}</label>
+      {element}
+      {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
     </div>
-}
+  );
+};
 
-export default InputComponent;
+export default Input;

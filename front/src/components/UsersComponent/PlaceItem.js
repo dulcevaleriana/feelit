@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import BasicButtons from '../UIElements/BasicButtons-MUI';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,12 +7,25 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ModalComponent from '../UIElements/ModalComponent';
 import InputComponent from '../UIElements/InputComponent';
+import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 
 const PlaceItem = (props) => {
     const [showModal, setShowModal] = useState(false);
 
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
+
+    const titleInputHangler = useCallback((id, value, isValid) => {
+
+    },[])
+
+    const descriptionInputHangler = useCallback((id, value, isValid) => {
+
+    },[])
+
+    const selectInputHangler = useCallback((id, value, isValid) => {
+
+    },[])
 
     return <React.Fragment>
         <ModalComponent
@@ -33,9 +46,34 @@ const PlaceItem = (props) => {
                 />
             </React.Fragment>}
         >
-            <InputComponent elementType="input" label="inputtttt"/>
-            <InputComponent elementType="select" label="select333333" selectOptions={['lala','lolo']}/>
-            <InputComponent elementType="textarea" label="textarea"/>
+            <InputComponent
+                id="input"
+                elementType="input"
+                label="inputtttt"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="error try again"
+                placeholder="Input name"
+                onInput={titleInputHangler}
+            />
+            <InputComponent
+                id="select"
+                elementType="select"
+                label="select333333"
+                selectOptions={['lala','lolo']}
+                errorText="error try again"
+                placeholder="Input name"
+                onInput={selectInputHangler}
+                validators={[VALIDATOR_REQUIRE()]}
+            />
+            <InputComponent
+                id="textarea"
+                elementType="textarea"
+                label="textarea"
+                errorText="error try again"
+                placeholder="Input name"
+                onInput={descriptionInputHangler}
+                validators={[VALIDATOR_REQUIRE()]}
+            />
         </ModalComponent>
         <li className='class-PlaceItem'>
             <Card sx={{ maxWidth: 345 }}>
