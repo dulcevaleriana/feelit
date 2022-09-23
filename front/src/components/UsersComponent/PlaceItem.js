@@ -101,7 +101,7 @@ const PlaceItem = (props) => {
                         variantName="contained"
                     />
                     <BasicButtons
-                        // to={`/editPlace/${props.id}`}
+                        to={`/place/${props.id}`}
                         buttonName="Edit"
                         onClick={openModal}
                         variantName="contained"
