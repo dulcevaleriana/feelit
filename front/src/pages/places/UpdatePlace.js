@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect , useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Input from '../../components/UIElements/InputComponent';
 import {
@@ -9,6 +9,7 @@ import BasicButtons from '../../components/UIElements/BasicButtons-MUI';
 import { useForm } from '../../shared/hooks/form-hook';
 
 const UpdatePlace = props => {
+    const [loading, setIsloading] = useState(true);
     const getPlaceId = useParams().placeId;
 
     const DUMMY_PLACES = [
@@ -82,6 +83,7 @@ const UpdatePlace = props => {
                 isValid: true
             }
         },true)
+        setIsloading(false)
     },[getPlaceDataById,setFormData])
 
     if(!getPlaceDataById){
@@ -95,7 +97,7 @@ const UpdatePlace = props => {
         console.log(formState.inputs)
     }
 
-    return formState.inputs.title.value ? <form onSubmit={updatePlace}>
+    return !loading ? <form onSubmit={updatePlace}>
         <h2>UpdatePlace {getPlaceId}</h2>
         <Input
             id="title"

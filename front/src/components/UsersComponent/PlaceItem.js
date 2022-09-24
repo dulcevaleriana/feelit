@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useContext } from 'react';
 import BasicButtons from '../UIElements/BasicButtons-MUI';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -6,26 +6,20 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ModalComponent from '../UIElements/ModalComponent';
-import InputComponent from '../UIElements/InputComponent';
-import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const PlaceItem = (props) => {
     const [showModal, setShowModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const auth = useContext(AuthContext);
 
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
-    const titleInputHangler = useCallback((id, value, isValid) => {
-
-    },[])
-
-    const descriptionInputHangler = useCallback((id, value, isValid) => {
-
-    },[])
-
-    const selectInputHangler = useCallback((id, value, isValid) => {
-
-    },[])
+    const confirmDeleteHandler = () => {
+        setShowConfirmModal(false);
+        console.log('DELETING...');
+    };
 
     return <React.Fragment>
         <ModalComponent
@@ -35,45 +29,36 @@ const PlaceItem = (props) => {
             iconName="close"
             footer={<React.Fragment>
                 <BasicButtons
-                    buttonName="Cancel"
+                    buttonName="Ok"
                     onClick={closeModal}
-                    variantName="contained"
-                />
-                <BasicButtons
-                    buttonName="Save"
-                    onClick={()=>{}}
                     variantName="contained"
                 />
             </React.Fragment>}
         >
-            <InputComponent
-                id="input"
-                elementType="input"
-                label="inputtttt"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="error try again"
-                placeholder="Input name"
-                onInput={titleInputHangler}
-            />
-            <InputComponent
-                id="select"
-                elementType="select"
-                label="select333333"
-                selectOptions={['lala','lolo']}
-                errorText="error try again"
-                placeholder="Input name"
-                onInput={selectInputHangler}
-                validators={[VALIDATOR_REQUIRE()]}
-            />
-            <InputComponent
-                id="textarea"
-                elementType="textarea"
-                label="textarea"
-                errorText="error try again"
-                placeholder="Input name"
-                onInput={descriptionInputHangler}
-                validators={[VALIDATOR_REQUIRE()]}
-            />
+            <h1>Map is not avaiable</h1>
+        </ModalComponent>
+        <ModalComponent
+            show={showConfirmModal}
+            onCancel={()=>setShowConfirmModal(false)}
+            className="class-modalEdit"
+            iconName="close"
+            footer={<React.Fragment>
+                <BasicButtons
+                    buttonName="Cancel"
+                    onClick={()=>setShowConfirmModal(false)}
+                    variantName="contained"
+                />
+                <BasicButtons
+                    buttonName="Delete"
+                    onClick={confirmDeleteHandler}
+                    variantName="contained"
+                />
+            </React.Fragment>}
+        >
+            <p>
+                Do you want to proceed and delete this place? Please note that it
+                can't be undone thereafter.
+            </p>
         </ModalComponent>
         <li className='class-PlaceItem'>
             <Card sx={{ maxWidth: 345 }}>
@@ -97,21 +82,23 @@ const PlaceItem = (props) => {
                 <CardActions>
                     <BasicButtons
                         buttonName="View on map"
-                        onClick={()=>{}}
-                        variantName="contained"
-                    />
-                    <BasicButtons
-                        to={`/place/${props.id}`}
-                        buttonName="Edit"
                         onClick={openModal}
                         variantName="contained"
                     />
-                    <BasicButtons
-                        // to={`/deletePlace/${props.id}`}
-                        buttonName="Delete"
-                        onClick={()=>{}}
-                        variantName="contained"
-                    />
+                    {auth.isLoggedIn && (
+                        <BasicButtons
+                            to={`/place/${props.id}`}
+                            buttonName="Edit"
+                            variantName="contained"
+                        />
+                    )}
+                    {auth.isLoggedIn && (
+                        <BasicButtons
+                            buttonName="Delete"
+                            onClick={()=>setShowConfirmModal(true)}
+                            variantName="contained"
+                        />
+                    )}
                 </CardActions>
             </Card>
         </li>

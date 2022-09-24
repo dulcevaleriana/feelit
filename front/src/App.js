@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import "./scss/GlobalStyle.scss";
@@ -9,12 +9,24 @@ import UserPlaces  from './pages/users/UserPlaces';
 import NewPlace from './pages/places/NewPlace';
 import UpdatePlace from './pages/places/UpdatePlace'
 import ConsultaRapida from './pages/consultasRapidas/ConsultaRapida';
-// import Auth from './pages/users/Auth';
+import Auth from './pages/users/Auth';
+import { AuthContext } from './shared/context/auth-context';
 
 const App = () => {
-  return <Router>
-    <MainNavigation />
-    <main>
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+
+  if (isLoggedIn) {
+    routes = (
       <Switch>
         <Route path="/" component={Home} exact/>
         <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
@@ -22,11 +34,29 @@ const App = () => {
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
         <Route path="/place/new" component={NewPlace} exact/>
         <Route path="/place/:placeId" component={UpdatePlace} exact/>
-        {/* <Route patch="/login" component={Auth} exact/> */}
         <Redirect to="/"/>
       </Switch>
-    </main>
-  </Router>;
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" component={Home} exact/>
+        <Route path="/users" component={Users} exact/>
+        <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
+        <Route path="/auth" component={Auth} exact/>
+        <Redirect to="/auth"/>
+      </Switch>
+    );
+  }
+
+  return <AuthContext.Provider
+    value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+  >
+    <Router>
+      <MainNavigation />
+      <main>{routes}</main>
+    </Router>
+  </AuthContext.Provider>
 }
 
 export default App;

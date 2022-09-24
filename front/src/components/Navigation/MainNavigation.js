@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import NavsLinks from "./NavsLinks";
@@ -6,12 +6,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import ImageAvatars from "../../components/UIElements/ImageAvatars";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const MainNavigation = (props) => {
     const [displayMenu, setDisplayMenu] = useState(false)
     const matches = useMediaQuery('(max-width:992px)');
+    const auth = useContext(AuthContext);
 
-    const arrayLinks = [
+    const arrayLinks_isLoggedIn_true = [
         {
             to:"/consultaRapida/Create",
             name:"Consulta Rapida",
@@ -30,6 +32,17 @@ const MainNavigation = (props) => {
         }
     ]
 
+    const arrayLinks_isLoggedIn_flase = [
+        {
+            to:"/users",
+            name:"All User",
+        },
+        {
+            to:"/users/w2/UserPlaces",
+            name:"User's places",
+        }
+    ]
+
     return <React.Fragment>
         <Header className="class-MainNavigation">
             {matches && (displayMenu ? <CloseIcon onClick={() => setDisplayMenu(!displayMenu)}/> : <MenuIcon onClick={() => setDisplayMenu(!displayMenu)}/> )}
@@ -39,12 +52,16 @@ const MainNavigation = (props) => {
             <NavsLinks
                 show={matches ? displayMenu : true}
                 className={matches && displayMenu ? " class-responsive class-NavsLinks " : " class-NavsLinks "}
-                arrayLinks={arrayLinks}
+                arrayLinks={auth.isLoggedIn ? arrayLinks_isLoggedIn_true : arrayLinks_isLoggedIn_flase}
                 onClick={() => setDisplayMenu(false)}
             />
-            <Link to="/login">
-                <ImageAvatars />
-            </Link>
+            {auth.isLoggedIn ? (
+                <button onClick={auth.logout}>LOGOUT</button>
+            ) : (
+                <Link to="/auth">
+                    <ImageAvatars />
+                </Link>
+            )}
         </Header>
     </React.Fragment>
 }
