@@ -54,13 +54,15 @@ export default function FormUserData() {
             label="Correo"
             />
         </FormControl>
-        <TextareaAutosize
-            aria-label="Mensaje"
-            minRows={6}
-            placeholder="Si quieres, puedes dejar un mensaje"
-            value={textarea}
-            onChange={handleChangeTextarea}
-        />
+        <FormControl>
+            <TextareaAutosize
+                aria-label="Mensaje"
+                minRows={6}
+                placeholder="Si quieres, puedes dejar un mensaje"
+                value={textarea}
+                onChange={handleChangeTextarea}
+            />
+        </FormControl>
         <h5>* Al llenar estos campos esta de acuerdo con crear una cuenta para tener su cita</h5>
     </Box>
 }

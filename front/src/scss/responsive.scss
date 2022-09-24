@@ -1,6 +1,17 @@
 @media only screen and (max-width: 992px){
-    ul.class-NavsLinks{
-        display: none !important;
+    .class-Header > div:nth-child(3) {
+        grid-column: 1;
+        grid-row: 1;
+        position: fixed;
+        bottom: 0;
+        top: 0;
+        z-index: 9;
+    }
+
+    ul.class-NavsLinks {
+        display: flex !important;
+        flex-direction: column;
+        opacity: 0;
     }
 
     ul.class-NavsLinks.class-responsive{
@@ -16,6 +27,7 @@
         z-index: 9;
         box-shadow: 3px 0 0 0 #0004;
         padding-top: 90px !important;
+        opacity: 1;
     }
 
     header {
@@ -28,6 +40,12 @@
             text-decoration: none;
             color: white;
         }
+    }
+
+    header.class-Header {
+        display: grid;
+        grid-template-columns: 24px auto 100px;
+        background: #1f8bf7;
     }
 
     .class-User > div:nth-child(2) {

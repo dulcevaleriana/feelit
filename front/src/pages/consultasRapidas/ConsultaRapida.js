@@ -3,6 +3,7 @@ import DoctorGallery from '../../components/ConsultaRapidaComponent/DoctorGaller
 import StaticTimePickerDemo from '../../components/UIElements/StaticTimePickerDemo';
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
 import PacienteData from '../../components/ConsultaRapidaComponent/PacienteData';
+import FormPayment from '../../components/ConsultaRapidaComponent/FormPayment';
 
 import FormUserData from '../../components/ConsultaRapidaComponent/FormUserData';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
@@ -22,7 +23,7 @@ export default function ConsultaRapida(){
         {step === 1 && <>
             <DoctorSelected/>
             <PacienteData/>
-            <span>data 3</span>
+            <FormPayment/>
         </>}
         {step === 2 && <>
             <span>thank u</span>

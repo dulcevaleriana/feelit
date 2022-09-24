@@ -1,0 +1,11 @@
+ul.class-PlaceList {
+    display: grid;
+    grid-template-columns: max-content max-content max-content max-content;
+    gap: 20px;
+    padding: 10px 5%;
+
+    li {
+        display: block;
+        list-style: none;
+    }
+}
