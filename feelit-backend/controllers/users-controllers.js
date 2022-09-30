@@ -25,7 +25,7 @@ const signUpUsers = async (req,res,next) => {
     if(!error.isEmpty()){
         return next(new httpError('Invalid inputs passed, please check your data',422));
     }
-    
+
     const {
         name,
         email,
@@ -72,7 +72,7 @@ const login = async (req,res,next) => {
         return next(new httpError(`login failed, try again ${err}`,500))
     }
 
-    res.json({message: 'logged in!'})
+    res.json({message: 'logged in!', user: existingUser.toObject({getters: true})})
 }
 
 exports.getUsers = getUsers;
