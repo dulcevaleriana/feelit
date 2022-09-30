@@ -5,7 +5,7 @@ import BasicButtons from './BasicButtons-MUI';
 
 const UsersList = (props) => {
     if(props.item.length === 0 || !(props.item)){
-        return <BasicCardMUI 
+        return <BasicCardMUI
         className="class-cardNotFound"
         data={[
             {
@@ -19,7 +19,7 @@ const UsersList = (props) => {
                 component:"div"
             }
         ]}
-        cardAction={    
+        cardAction={
             <BasicButtons
                 spacing={2}
                 variantName="contained"
@@ -30,7 +30,7 @@ const UsersList = (props) => {
     }
     return <div>
         {props.item.map((user,key) => (
-            <UsersItem 
+            <UsersItem
                 key={user.id}
                 id={user.id}
                 name={user.name}

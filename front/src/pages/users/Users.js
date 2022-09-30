@@ -1,38 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UsersList from "../../components/UIElements/UserList";
+import ModalComponent from '../../components/UIElements/ModalComponent';
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const Users = () => {
-    const TEMP_USER_DBA = [
-        {
-            id:"asfwrgrgvdbdfbdb",
-            name:"layla",
-            email:"layla125@gmail.com",
-            password:"123456789",
-            image:"https://ami.animecharactersdatabase.com/uploads/chars/67961-1721145809.jpg",
-            places:3
-        },
-        {
-            id:"asfwrgrgvdbdfbdb",
-            name:"shin",
-            email:"shin247@gmail.com",
-            password:"123456789",
-            image:"https://data.whicdn.com/images/311102976/original.jpg",
-            places:5
-        },
-        {
-            id:"asfwrgrgvdbdfbdb",
-            name:"takumi",
-            email:"trapness@gmail.com",
-            password:"123456789",
-            image:"https://www.nautiljon.com/images/manga_persos/00/13/1131.jpg",
-            places:3
-        }
-    ]
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const [loadedUsers, setLoadedUsers] = useState();
 
-    return <div className="class-User">
-        <h1>Users</h1>
-        <UsersList item={TEMP_USER_DBA}/>
-    </div>
+    useEffect(()=>{
+        const fetchUsers = async () => {
+            try {
+                const response = await sendRequest('http://localhost:5000/api/users');
+
+                setLoadedUsers(response.users);
+            } catch(err){}
+        }
+        fetchUsers();
+    },[sendRequest]);
+
+    return isLoading ? (<h1>Loading...</h1>) : (<React.Fragment>
+        <ModalComponent
+            headerTitle='You can not access for now'
+            show={error}
+            onCancel={clearError}
+        >
+            {error}
+        </ModalComponent>
+        <div className="class-User">
+            <h1>Users</h1>
+            {loadedUsers && <UsersList item={loadedUsers}/>}
+        </div>
+    </React.Fragment>)
 }
 
 export default Users;

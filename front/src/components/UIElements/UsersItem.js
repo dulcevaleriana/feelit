@@ -22,7 +22,7 @@ export default function UsersItem(props) {
             {props.email}
             </Typography>
             <Box component="span">
-                {props.places} 
+                Places: {props.places.length}
             </Box>
             <CardActions>
             <Link to={`/editUser/${props.id}`}>
