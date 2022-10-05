@@ -17,7 +17,7 @@ const UserPlaces = (props) => {
             }catch(err){}
         }
         getPlaceByUserData();
-    },[])
+    },[sendRequest,auth.userId])
 
     return (
         <React.Fragment>

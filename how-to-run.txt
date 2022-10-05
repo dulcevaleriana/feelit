@@ -5,3 +5,40 @@ node app.js
 frontend:
 
 npm start
+
+3:56
+- Start pre-demo views: apply pallete color
+- Re-draw shape according to Portrait's Guidelines
+
+Design's link: https://www.figma.com/file/NYoJ3AGJnvh2PGqB1zdx23/mockupPhotoPRD?node-id=159%3A2756
+
+4:01
+Continue course: React, NodeJS, Express & MongoDB - The MERN Fullstack Guide
+
+Capthers completed:
+
+- 11.01 Module Introduction
+- 11.02 Building an ImageUpload Component
+- 11.03 Finishing & Using the ImageUpload Component (in a Form)
+
+Course's Link: https://azumo.udemy.com/course/react-nodejs-express-mongodb-the-mern-fullstack-guide/learn/lecture/16845494#overview
+Note's Link: https://docs.google.com/document/d/1LbtwadISpnaIwe4gp0pnFSkKt9PqqyqlhsFgTtk1L7o/edit#heading=h.trunx2kd124g
+
+-----------------------------------------------------------
+
+Changes:
+
+1- Complete patience record
+2- Separate after photo to compare photo:
+	2.1 - After photo equal to before photo
+	2.2 - Compare photo almost generate but with zoom photo, split and slide
+3- Draw the last shape guide
+
+
+
+
+
+
+
+
+

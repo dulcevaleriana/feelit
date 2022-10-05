@@ -40,9 +40,6 @@ const NewPlace = () => {
       await sendRequest(
         'http://localhost:5000/api/places/',
         'POST',
-        {
-          'Content-Type': 'application/json'
-        },
         JSON.stringify({
           title: formState.inputs.title.value,
           description: formState.inputs.description.value,
@@ -52,7 +49,10 @@ const NewPlace = () => {
             lat: 0,
             lng: 0
           }
-        })
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
       )
       history.push('/')
     }catch(err){}

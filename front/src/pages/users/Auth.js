@@ -62,13 +62,13 @@ const Auth = () => {
           const responseData = await sendRequest(
             "http://localhost:5000/api/users/login",
             'POST',
-            {
-              'Content-Type': 'application/json'
-            },
             JSON.stringify({
               email: formState.inputs.email.value,
               password: formState.inputs.password.value,
-            })
+            }),
+            {
+              'Content-Type': 'application/json'
+            },
           );
 
           auth.login(responseData.user.id);
@@ -81,15 +81,15 @@ const Auth = () => {
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/signup",
           'POST',
-          {
-            'Content-Type': 'application/json'
-          },
           JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
             image: 'img.png'
-          })
+          }),
+          {
+            'Content-Type': 'application/json'
+          },
         )
 
         auth.login(responseData.user.id);
