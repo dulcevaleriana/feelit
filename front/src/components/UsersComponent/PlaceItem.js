@@ -7,8 +7,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ModalComponent from '../UIElements/ModalComponent';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const PlaceItem = (props) => {
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [showModal, setShowModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const auth = useContext(AuthContext);
@@ -16,12 +18,26 @@ const PlaceItem = (props) => {
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
-    const confirmDeleteHandler = () => {
+    const confirmDeleteHandler = async () => {
         setShowConfirmModal(false);
-        console.log('DELETING...');
+        try{
+            await sendRequest(
+                `http://localhost:5000/api/places/${props.id}`,
+                'DELETE'
+            );
+            props.onDelete(props.id);
+        }catch(err){}
     };
 
     return <React.Fragment>
+        <ModalComponent
+            headerTitle='You can not access for now'
+            show={error}
+            onCancel={clearError}
+        >
+            {error}
+        </ModalComponent>
+        {isLoading && <h1>Loading...</h1>}
         <ModalComponent
             show={showModal}
             onCancel={closeModal}

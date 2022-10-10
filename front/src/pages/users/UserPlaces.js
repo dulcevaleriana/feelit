@@ -9,6 +9,10 @@ const UserPlaces = (props) => {
     const auth = useContext(AuthContext);
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
+    const onDeletePlacesHandle = deletedPlaceId => {
+        setPlaceData(prevPlaces => prevPlaces.filter(places => places.id !== deletedPlaceId))
+    }
+
     useEffect(()=>{
         const getPlaceByUserData = async () =>{
             try{
@@ -33,7 +37,7 @@ const UserPlaces = (props) => {
             ) : (
                 <div>
                     UserPlaces {auth.userId}
-                    {placeData && <PlaceList items={placeData}/>}
+                    {placeData && <PlaceList items={placeData} onDeletePlaces={onDeletePlacesHandle}/>}
                 </div>
             )}
         </React.Fragment>
