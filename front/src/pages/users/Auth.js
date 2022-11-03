@@ -133,6 +133,7 @@ const Auth = () => {
               <ImageUpload
                 id="image"
                 onInput={inputHandler}
+                errorText="please provide us an image"
               />
             </>
           )}

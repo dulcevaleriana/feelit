@@ -46,17 +46,16 @@ const postPlace = async (req,res,next)=>{
     const {
         title,
         description,
-        location,
+        // location,
         address,
-        image,
         creator
     } = req.body;
     const postPlace = new Place({
         title,
         description,
-        location,
+        // location,
         address,
-        image:'https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg',
+        image: req.file.path,
         creator
     })
     let user;

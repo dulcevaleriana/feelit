@@ -81,7 +81,7 @@ const PlaceItem = (props) => {
                 <CardMedia
                     component="img"
                     height="140"
-                    image={props.image}
+                    image={`http://localhost:5000/${props.image}`}
                     alt={props.title}
                 />
                 <CardContent>

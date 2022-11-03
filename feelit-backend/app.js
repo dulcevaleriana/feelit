@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path')
 
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
@@ -20,6 +21,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
+//to show files
+app.use('/uploads/images', express.static(path.join('uploads','images')));
+
+//to access
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin','*');
     res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -46,11 +51,11 @@ app.use('/api/consultas-rapidas',consultasRapidasRoutes);
 app.use('/api/enviar-examenes',enviarExamenesRoutes);
 //specialty module
 app.use('/api/specialty',specialtyRoutes)
-
+//error 404
 app.use((req,res,next)=>{
     throw new httpError('Could not find this router',404);
 })
-
+//another kind of erros
 app.use((error,req,res,next)=>{
     if(req.file) {
         fs.unlink(
@@ -65,7 +70,7 @@ app.use((error,req,res,next)=>{
     }
     res.status(error.code || 500).json({message: error.message || 'sonething went wrong'})
 })
-
+//mongoose connections
 mongoose
     .connect(`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_KEY}@cluster0.rcqta.mongodb.net/${process.env.MONGODB_DBA}?retryWrites=true&w=majority`)
     .then(() => {console.log('Connections works!!!'); app.listen(5000)})

@@ -9,6 +9,7 @@ import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from '../../shared/context/auth-context';
 import ModalComponent from '../../components/UIElements/ModalComponent';
+import ImageUpload from '../../components/UIElements/ImageUpload';
 
 const NewPlace = () => {
   const auth = useContext(AuthContext);
@@ -27,6 +28,14 @@ const NewPlace = () => {
         address: {
           value: '',
           isValid: false
+        },
+        image: {
+          value: null,
+          isValid: false
+        },
+        creator: {
+          value: auth.userId,
+          isValid: true
         }
     },
     false
@@ -37,22 +46,18 @@ const NewPlace = () => {
     try{
       console.log(formState.inputs) // send this to backend
 
+      const formData = new FormData()
+
+      formData.append('title',formState.inputs.title.value)
+      formData.append('description',formState.inputs.description.value)
+      formData.append('address',formState.inputs.address.value)
+      formData.append('creator',formState.inputs.creator.value)
+      formData.append('image',formState.inputs.image.value)
+
       await sendRequest(
         'http://localhost:5000/api/places/',
         'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          creator: auth.userId,
-          location: {
-            lat: 0,
-            lng: 0
-          }
-        }),
-        {
-          'Content-Type': 'application/json'
-        }
+        formData
       )
       history.push('/')
     }catch(err){}
@@ -70,6 +75,11 @@ const NewPlace = () => {
       <form className="place-form" onSubmit={placeSubmitHandler}>
           {isLoading && <h1>Loading...</h1>}
           <h2>Create places</h2>
+          <ImageUpload
+              id="image"
+              onInput={inputHandler}
+              errorText="please provide us an image"
+          />
           <Input
               id="title"
               element="input"
