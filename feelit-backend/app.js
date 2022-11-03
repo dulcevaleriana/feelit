@@ -14,6 +14,7 @@ const specialtyRoutes = require('./routes/specialty-routes');
 const httpError = require('./models/http-error');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const app = express();
 
@@ -51,6 +52,14 @@ app.use((req,res,next)=>{
 })
 
 app.use((error,req,res,next)=>{
+    if(req.file) {
+        fs.unlink(
+            req.file.path,
+            err => {
+                console.log(err)
+            }
+        )
+    }
     if (res.headerSent){
         return next(error);
     }

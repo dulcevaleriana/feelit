@@ -30,7 +30,6 @@ const signUpUsers = async (req,res,next) => {
         name,
         email,
         password,
-        image,
     } = req.body;
 
     let existingUser;
@@ -39,7 +38,7 @@ const signUpUsers = async (req,res,next) => {
         name,
         email,
         password,
-        image,
+        image: req.file.path,
         places:[]
     });
 
