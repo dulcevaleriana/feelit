@@ -3,6 +3,7 @@ const {validationResult} = require('express-validator');
 const Place = require('../models/place');
 const User = require('../models/user');
 const { default: mongoose } = require('mongoose');
+const fs = require('fs');
 
 //get all element with principal id
 const getPlaceById = async (req,res,next)=>{
@@ -121,12 +122,14 @@ const patchPlace = async (req,res,next) => {
 const deletePlace = async (req,res,next) => {
     const placeId = req.params.pId;
     let placeById;
+    let imagePath;
 
     try {
         placeById = await Place.findById(placeId).populate('creator');
         if(!placeById){
             return next(new httpError('Could not find this place by id',500))
         }
+        imagePath = placeById.image;
         const sess = await mongoose.startSession();
         sess.startTransaction();
         await placeById.remove({session:sess});
@@ -136,6 +139,10 @@ const deletePlace = async (req,res,next) => {
     } catch (err) {
         return next(new httpError(`Could not find this place ${err}`,500))
     }
+
+    fs.unlink(imagePath, err => {
+        console.log(err)
+    })
 
     res.status(200).json({message: 'deleted place'})
 }
