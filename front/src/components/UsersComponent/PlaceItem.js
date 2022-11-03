@@ -23,11 +23,18 @@ const PlaceItem = (props) => {
         try{
             await sendRequest(
                 `http://localhost:5000/api/places/${props.id}`,
-                'DELETE'
+                'DELETE',
+                null,
+                {
+                    Authorization: 'Bearer ' + auth.token
+                }
             );
             props.onDelete(props.id);
         }catch(err){}
     };
+
+    console.log("auth.userId",auth.userId)
+    console.log("props.creatorId",props.creatorId)
 
     return <React.Fragment>
         <ModalComponent
@@ -101,19 +108,19 @@ const PlaceItem = (props) => {
                         onClick={openModal}
                         variantName="contained"
                     />
-                    {auth.isLoggedIn && (
-                        <BasicButtons
-                            to={`/place/${props.id}`}
-                            buttonName="Edit"
-                            variantName="contained"
-                        />
-                    )}
-                    {auth.isLoggedIn && (
-                        <BasicButtons
-                            buttonName="Delete"
-                            onClick={()=>setShowConfirmModal(true)}
-                            variantName="contained"
-                        />
+                    {auth.userId === props.creator && (
+                        <>
+                            <BasicButtons
+                                to={`/place/${props.id}`}
+                                buttonName="Edit"
+                                variantName="contained"
+                            />
+                            <BasicButtons
+                                buttonName="Delete"
+                                onClick={()=>setShowConfirmModal(true)}
+                                variantName="contained"
+                            />
+                        </>
                     )}
                 </CardActions>
             </Card>

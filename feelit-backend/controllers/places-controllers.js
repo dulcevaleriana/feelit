@@ -104,6 +104,10 @@ const patchPlace = async (req,res,next) => {
         return next(new httpError(`something went wrong ${err}`,500));
     }
 
+    if(updatePlace.creator.toString() !== req.userData.userId){
+        return next(new httpError(`This user not allowed to edit this place`,401));
+    }
+
     updatePlace.title = title;
     updatePlace.description = description;
     updatePlace.location = location;

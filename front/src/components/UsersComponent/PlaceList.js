@@ -22,7 +22,7 @@ const PlaceList = (props) => {
                 title={item.title}
                 description={item.description}
                 address={item.address}
-                creatorId={item.creatorId}
+                creator={item.creator}
                 location={item.location}
                 onDelete={props.onDeletePlaces}
             />

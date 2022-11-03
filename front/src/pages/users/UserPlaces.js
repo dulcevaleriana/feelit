@@ -23,6 +23,8 @@ const UserPlaces = (props) => {
         getPlaceByUserData();
     },[sendRequest,auth.userId])
 
+    console.log("placeData",placeData)
+
     return (
         <React.Fragment>
             <ModalComponent

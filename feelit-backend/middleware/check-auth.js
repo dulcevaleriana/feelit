@@ -7,7 +7,7 @@ module.exports = (req, res,next) => {
     }
 
     try {
-        const token = req.headers.uthorization.split(' ')[1];
+        const token = req.headers.authorization.split(' ')[1];
         if(!token){
             const err = new httpError("Authentication failed",401);
             return next(err)
