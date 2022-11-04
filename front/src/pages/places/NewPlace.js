@@ -60,7 +60,7 @@ const NewPlace = () => {
         formData,
         { Authorization: 'Bearer ' + auth.token }
       )
-      history.push('/')
+      history.push('/users/' + auth.userId + '/UserPlaces')
     }catch(err){}
   }
 

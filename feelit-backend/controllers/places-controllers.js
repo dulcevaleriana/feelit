@@ -86,12 +86,12 @@ const postPlace = async (req,res,next)=>{
 const patchPlace = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        return next(httpError('Invalid inputs passed, please check your data',422));
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         title,
         description,
-        location,
+        // location,
         address,
         image
     } = req.body;
@@ -110,7 +110,7 @@ const patchPlace = async (req,res,next) => {
 
     updatePlace.title = title;
     updatePlace.description = description;
-    updatePlace.location = location;
+    // updatePlace.location = location;
     updatePlace.address = address;
     updatePlace.image = image;
 

@@ -33,9 +33,6 @@ const PlaceItem = (props) => {
         }catch(err){}
     };
 
-    console.log("auth.userId",auth.userId)
-    console.log("props.creatorId",props.creatorId)
-
     return <React.Fragment>
         <ModalComponent
             headerTitle='You can not access for now'

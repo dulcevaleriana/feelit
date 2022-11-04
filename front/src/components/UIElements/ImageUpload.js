@@ -49,7 +49,7 @@ const ImageUpload = props => {
                 onChange={pickerHandle}
             />
             <div>
-                {previewUrl ? <img  src={previewUrl} alt="previous"/> : <p>Please pick an image</p>}
+                {previewUrl ? <img src={previewUrl} alt="previous"/> : props.imageValue ? <img src={`http://localhost:5000/${props.imageValue}`} alt="previous"/> : <p>Please pick an image</p>}
                 <button type='button' onClick={pickImageHandler}>
                     Pick Image
                 </button>

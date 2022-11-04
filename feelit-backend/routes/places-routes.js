@@ -24,10 +24,10 @@ router.post(
 //update a place
 router.patch(
     '/:pId',
+    fileUpload.single('image'),
     [
         check('title').not().isEmpty(),
         check('description').isLength({min:5}),
-        check('location').not().isEmpty(),
         check('address').not().isEmpty(),
     ],
     placesControllers.patchPlace);

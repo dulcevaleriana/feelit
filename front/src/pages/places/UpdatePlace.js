@@ -10,6 +10,7 @@ import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from '../../shared/context/auth-context';
 import ModalComponent from '../../components/UIElements/ModalComponent';
+import ImageUpload from '../../components/UIElements/ImageUpload';
 
 const UpdatePlace = props => {
     const auth = useContext(AuthContext)
@@ -31,6 +32,10 @@ const UpdatePlace = props => {
         description: {
             value: '',
             isValid: false
+        },
+        image: {
+          value: null,
+          isValid: false
         }
     },true)
 
@@ -53,6 +58,10 @@ const UpdatePlace = props => {
                     description: {
                         value: responseData.place.description,
                         isValid: true
+                    },
+                    image: {
+                      value: responseData.place.image,
+                      isValid: true
                     }
                 },true)
             }catch(err){}
@@ -69,29 +78,27 @@ const UpdatePlace = props => {
     const updatePlace = async event => {
         event.preventDefault();
         try{
+            const formData = new FormData()
+
+            formData.append('title',formState.inputs.title.value)
+            formData.append('address',formState.inputs.address.value)
+            formData.append('description',formState.inputs.description.value)
+            formData.append('image',formState.inputs.image.value)
+
             await sendRequest(
                 `http://localhost:5000/api/places/${getPlaceId}`,
                 'PATCH',
-                JSON.stringify({
-                    title: formState.inputs.title.value,
-                    address: formState.inputs.address.value,
-                    description: formState.inputs.description.value,
-                    creator: auth.userId,
-                    image: 'https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg',
-                    location: {
-                        lat: 0,
-                        lng: 0
-                    }
-                }),
-                {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + auth.token
-                }
+                formData,
+                { Authorization: 'Bearer ' + auth.token }
             )
+
+            console.log("formData place",formData)
 
             history.push('/users/' + auth.userId + '/UserPlaces');
         }catch(err){}
     }
+
+    console.log("formState",formState)
 
     return <React.Fragment>
         <ModalComponent
@@ -104,6 +111,12 @@ const UpdatePlace = props => {
         {isLoading && <h1>loading</h1>}
         {!isLoading && loadedPlace && <form onSubmit={updatePlace}>
         <h2>UpdatePlace {getPlaceId}</h2>
+        <ImageUpload
+            id="image"
+            onInput={inputHandler}
+            errorText="please provide us an image"
+            imageValue={loadedPlace.image}
+        />
         <Input
             id="title"
             element="input"
