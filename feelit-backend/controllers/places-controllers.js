@@ -105,7 +105,7 @@ const patchPlace = async (req,res,next) => {
     }
 
     if(updatePlace.creator.toString() !== req.userData.userId){
-        return next(new httpError(`This user not allowed to edit this place`,401));
+        return next(new httpError(`This user not allowed to edit this place`,403));
     }
 
     updatePlace.title = title;
@@ -133,6 +133,11 @@ const deletePlace = async (req,res,next) => {
         if(!placeById){
             return next(new httpError('Could not find this place by id',500))
         }
+
+        if(placeById.creator.toString() !== req.userData.userId){
+            return next(new httpError(`This user not allowed to delete this place`,403));
+        }
+
         imagePath = placeById.image;
         const sess = await mongoose.startSession();
         sess.startTransaction();

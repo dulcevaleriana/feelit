@@ -9,14 +9,14 @@ module.exports = (req, res,next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         if(!token){
-            const err = new httpError("Authentication failed",401);
+            const err = new httpError("Authentication failed",403);
             return next(err)
         }
         const decodedToken = jwt.verify(token,'supersecret_dont_share');
         req.userData = {userId: decodedToken.userId}
         next();
     } catch(err){
-        throw new httpError("Authentication failed",401);
+        throw new httpError("Authentication failed",403);
     }
 
 }

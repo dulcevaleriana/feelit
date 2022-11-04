@@ -74,7 +74,7 @@ const signUpUsers = async (req,res,next) => {
             }
         );
     } catch(err){
-        return next(new httpError('Could not create user, please try again',500));
+        return next(new httpError('Could not create user, please try again',400));
     }
 
     res.status(200).json({userId: createUser.id, email: createUser.email, token: token})
@@ -105,7 +105,7 @@ const login = async (req,res,next) => {
     }
 
     if(!isValidPassword){
-        return next(new httpError(`login failed, review your credentials and try again`,500))
+        return next(new httpError(`login failed, review your credentials and try again`,400))
     }
 
     let token;
