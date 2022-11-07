@@ -16,7 +16,7 @@ const UserPlaces = (props) => {
     useEffect(()=>{
         const getPlaceByUserData = async () =>{
             try{
-                const responsePlaceData = await sendRequest(`http://localhost:5000/api/places/user/${auth.userId}`)
+                const responsePlaceData = await sendRequest(process.env.REACT_APP_ + `places/user/${auth.userId}`)
                 setPlaceData(responsePlaceData.place)
             }catch(err){}
         }

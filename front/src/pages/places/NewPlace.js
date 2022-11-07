@@ -32,10 +32,6 @@ const NewPlace = () => {
         image: {
           value: null,
           isValid: false
-        },
-        creator: {
-          value: auth.userId,
-          isValid: true
         }
     },
     false
@@ -51,11 +47,10 @@ const NewPlace = () => {
       formData.append('title',formState.inputs.title.value)
       formData.append('description',formState.inputs.description.value)
       formData.append('address',formState.inputs.address.value)
-      formData.append('creator',formState.inputs.creator.value)
       formData.append('image',formState.inputs.image.value)
 
       await sendRequest(
-        'http://localhost:5000/api/places/',
+        process.env.REACT_APP_ + 'places/',
         'POST',
         formData,
         { Authorization: 'Bearer ' + auth.token }

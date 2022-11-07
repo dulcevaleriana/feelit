@@ -13,7 +13,7 @@ export default function UsersItem(props) {
         <Card sx={{ minWidth: 275 }} key={props.id} id={props.id}>
         <CardContent>
             <div>
-                <img src={`http://localhost:5000/${props.image}`} alt={`http://localhost:5000/${props.image}`} />
+                <img src={process.env.REACT_APP_IMG + props.image} alt={process.env.REACT_APP_IMG + props.image} />
             </div>
             <Typography variant="h5" component="div">
             {props.name}

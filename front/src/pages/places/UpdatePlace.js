@@ -42,7 +42,7 @@ const UpdatePlace = props => {
     useEffect(()=>{
         const fetchPlace = async () => {
             try{
-                const responseData = await sendRequest(`http://localhost:5000/api/places/${getPlaceId}`);
+                const responseData = await sendRequest(process.env.REACT_APP_ + `places/${getPlaceId}`);
 
                 setLoadedPlace(responseData.place)
 
@@ -86,7 +86,7 @@ const UpdatePlace = props => {
             formData.append('image',formState.inputs.image.value)
 
             await sendRequest(
-                `http://localhost:5000/api/places/${getPlaceId}`,
+                process.env.REACT_APP_ + `places/${getPlaceId}`,
                 'PATCH',
                 formData,
                 { Authorization: 'Bearer ' + auth.token }
