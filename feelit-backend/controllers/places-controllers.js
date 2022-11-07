@@ -49,7 +49,7 @@ const postPlace = async (req,res,next)=>{
         description,
         // location,
         address,
-        creator
+        // creator
     } = req.body;
     const postPlace = new Place({
         title,
@@ -57,12 +57,12 @@ const postPlace = async (req,res,next)=>{
         // location,
         address,
         image: req.file.path,
-        creator
+        creator: req.userData.userId
     })
     let user;
 
     try{
-        user = await User.findById(creator);
+        user = await User.findById(req.userData.userId);
 
         if(!user){
             return next(new httpError('could not find this user for provide id, please try again',500));
@@ -134,7 +134,7 @@ const deletePlace = async (req,res,next) => {
             return next(new httpError('Could not find this place by id',500))
         }
 
-        if(placeById.creator.toString() !== req.userData.userId){
+        if(placeById.creator.id !== req.userData.userId){
             return next(new httpError(`This user not allowed to delete this place`,403));
         }
 

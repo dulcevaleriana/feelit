@@ -6,7 +6,12 @@ const jwt = require('jsonwebtoken');
 
 //get all users
 const getUsers = async (req,res,next) => {
-    const users = await User.find().exec();
+    let users;
+    try{
+        users = await User.find({}, '-password').exec();
+    } catch(err){
+        return next(new httpError(`fetching users failed, try again: ${err}`,500));
+    }
     res.json({users})
 }
 //get all Users's Email And Password
@@ -68,7 +73,7 @@ const signUpUsers = async (req,res,next) => {
                 userId: createUser.id,
                 email: createUser.email
             },
-            'supersecret_dont_share',
+            process.env.JWT_KEY,
             {
                 expiresIn: '1h'
             }
@@ -115,7 +120,7 @@ const login = async (req,res,next) => {
                 userId: existingUser.id,
                 email: existingUser.email
             },
-            'supersecret_dont_share',
+            process.env.JWT_KEY,
             {
                 expiresIn: '1h'
             }
