@@ -93,7 +93,7 @@ const patchPlace = async (req,res,next) => {
         description,
         // location,
         address,
-        image
+        // image
     } = req.body;
     const placeId = req.params.pId;
     let updatePlace;
@@ -112,7 +112,7 @@ const patchPlace = async (req,res,next) => {
     updatePlace.description = description;
     // updatePlace.location = location;
     updatePlace.address = address;
-    updatePlace.image = image;
+    updatePlace.image = req.file.path;
 
     try {
         await updatePlace.save();

@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import "./scss/GlobalStyle.scss";
 
-import Home from './pages/Home';
-import Users  from './pages/users/Users';
-import UserPlaces  from './pages/users/UserPlaces';
-import NewPlace from './pages/places/NewPlace';
-import UpdatePlace from './pages/places/UpdatePlace'
+// import Home from './pages/Home';
+// import Users  from './pages/users/Users';
+// import UserPlaces  from './pages/users/UserPlaces';
+// import NewPlace from './pages/places/NewPlace';
+// import UpdatePlace from './pages/places/UpdatePlace';
+// import Auth from './pages/users/Auth';
+
 import ConsultaRapida from './pages/consultasRapidas/ConsultaRapida';
-import Auth from './pages/users/Auth';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
+
+const Home = lazy(() => import('./pages/Home'));
+const Users = lazy(() => import('./pages/users/Users'));
+const UserPlaces = lazy(() => import('./pages/users/UserPlaces'));
+const NewPlace = lazy(() => import('./pages/places/NewPlace'));
+const UpdatePlace = lazy(() => import('./pages/places/UpdatePlace'));
+const Auth = lazy(() => import('./pages/users/Auth'));
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
@@ -53,7 +61,9 @@ const App = () => {
   >
     <Router>
       <MainNavigation />
-      <main>{routes}</main>
+      <main>
+        <Suspense fallback={<div>Loading...</div>}>{routes}</Suspense>
+      </main>
     </Router>
   </AuthContext.Provider>
 }
