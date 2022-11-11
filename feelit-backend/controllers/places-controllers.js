@@ -3,6 +3,7 @@ const {validationResult} = require('express-validator');
 const Place = require('../models/place');
 const User = require('../models/user');
 const { default: mongoose } = require('mongoose');
+const fs = require('fs');
 
 //get all element with principal id
 const getPlaceById = async (req,res,next)=>{
@@ -46,24 +47,23 @@ const postPlace = async (req,res,next)=>{
     const {
         title,
         description,
-        location,
+        // location,
         address,
-        image,
-        creator
+        // creator
     } = req.body;
     const postPlace = new Place({
         title,
         description,
-        location,
+        // location,
         address,
-        image:'https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg',
-        creator
+        image: req.file.path,
+        creator: req.userData.userId
     })
     let user;
 
     try{
-        user = await User.findById(creator);
-        
+        user = await User.findById(req.userData.userId);
+
         if(!user){
             return next(new httpError('could not find this user for provide id, please try again',500));
         }
@@ -86,14 +86,14 @@ const postPlace = async (req,res,next)=>{
 const patchPlace = async (req,res,next) => {
     const error = validationResult(req);
     if(!error.isEmpty()){
-        return next(httpError('Invalid inputs passed, please check your data',422));
+        return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
         title,
         description,
-        location,
+        // location,
         address,
-        image
+        // image
     } = req.body;
     const placeId = req.params.pId;
     let updatePlace;
@@ -104,11 +104,15 @@ const patchPlace = async (req,res,next) => {
         return next(new httpError(`something went wrong ${err}`,500));
     }
 
+    if(updatePlace.creator.toString() !== req.userData.userId){
+        return next(new httpError(`This user not allowed to edit this place`,403));
+    }
+
     updatePlace.title = title;
     updatePlace.description = description;
-    updatePlace.location = location;
+    // updatePlace.location = location;
     updatePlace.address = address;
-    updatePlace.image = image;
+    updatePlace.image = req.file.path;
 
     try {
         await updatePlace.save();
@@ -122,12 +126,19 @@ const patchPlace = async (req,res,next) => {
 const deletePlace = async (req,res,next) => {
     const placeId = req.params.pId;
     let placeById;
+    let imagePath;
 
     try {
         placeById = await Place.findById(placeId).populate('creator');
         if(!placeById){
             return next(new httpError('Could not find this place by id',500))
         }
+
+        if(placeById.creator.id !== req.userData.userId){
+            return next(new httpError(`This user not allowed to delete this place`,403));
+        }
+
+        imagePath = placeById.image;
         const sess = await mongoose.startSession();
         sess.startTransaction();
         await placeById.remove({session:sess});
@@ -137,6 +148,10 @@ const deletePlace = async (req,res,next) => {
     } catch (err) {
         return next(new httpError(`Could not find this place ${err}`,500))
     }
+
+    fs.unlink(imagePath, err => {
+        console.log(err)
+    })
 
     res.status(200).json({message: 'deleted place'})
 }

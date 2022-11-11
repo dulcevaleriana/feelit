@@ -13,7 +13,7 @@ export default function UsersItem(props) {
         <Card sx={{ minWidth: 275 }} key={props.id} id={props.id}>
         <CardContent>
             <div>
-                <img src={props.image} alt={props.image} />
+                <img src={process.env.REACT_APP_IMG + props.image} alt={process.env.REACT_APP_IMG + props.image} />
             </div>
             <Typography variant="h5" component="div">
             {props.name}
@@ -22,7 +22,7 @@ export default function UsersItem(props) {
             {props.email}
             </Typography>
             <Box component="span">
-                {props.places} 
+                Places: {props.places.length}
             </Box>
             <CardActions>
             <Link to={`/editUser/${props.id}`}>

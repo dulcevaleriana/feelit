@@ -7,8 +7,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import ModalComponent from '../UIElements/ModalComponent';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const PlaceItem = (props) => {
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [showModal, setShowModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const auth = useContext(AuthContext);
@@ -16,12 +18,28 @@ const PlaceItem = (props) => {
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
-    const confirmDeleteHandler = () => {
+    const confirmDeleteHandler = async () => {
         setShowConfirmModal(false);
-        console.log('DELETING...');
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + `places/${props.id}`,
+                'DELETE',
+                null,
+                { Authorization: 'Bearer ' + auth.token }
+            );
+            props.onDelete(props.id);
+        }catch(err){}
     };
 
     return <React.Fragment>
+        <ModalComponent
+            headerTitle='You can not access for now'
+            show={error}
+            onCancel={clearError}
+        >
+            {error}
+        </ModalComponent>
+        {isLoading && <h1>Loading...</h1>}
         <ModalComponent
             show={showModal}
             onCancel={closeModal}
@@ -65,7 +83,7 @@ const PlaceItem = (props) => {
                 <CardMedia
                     component="img"
                     height="140"
-                    image={props.image}
+                    image={process.env.REACT_APP_IMG + props.image}
                     alt={props.title}
                 />
                 <CardContent>
@@ -85,19 +103,19 @@ const PlaceItem = (props) => {
                         onClick={openModal}
                         variantName="contained"
                     />
-                    {auth.isLoggedIn && (
-                        <BasicButtons
-                            to={`/place/${props.id}`}
-                            buttonName="Edit"
-                            variantName="contained"
-                        />
-                    )}
-                    {auth.isLoggedIn && (
-                        <BasicButtons
-                            buttonName="Delete"
-                            onClick={()=>setShowConfirmModal(true)}
-                            variantName="contained"
-                        />
+                    {auth.userId === props.creator && (
+                        <>
+                            <BasicButtons
+                                to={`/place/${props.id}`}
+                                buttonName="Edit"
+                                variantName="contained"
+                            />
+                            <BasicButtons
+                                buttonName="Delete"
+                                onClick={()=>setShowConfirmModal(true)}
+                                variantName="contained"
+                            />
+                        </>
                     )}
                 </CardActions>
             </Card>
