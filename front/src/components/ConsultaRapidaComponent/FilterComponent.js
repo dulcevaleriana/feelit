@@ -27,29 +27,32 @@ const filterArray = [
 export default function FilterComponent(){
 
     return (
-        <Box>
+        <Box className="class-filterComponent">
             <div>
                 <h5>Mis citas</h5>
-                <FormControl>
-                    <BasicSelect
-                        name="Filtrar por"
-                        filterArray={filterArray}
-                    />
-                </FormControl>
-                <FormControl>
-                    <InputLabel htmlFor="component-outlined">Escriba aquí</InputLabel>
-                    <OutlinedInput
-                        id="component-outlined"
-                        // value={name}
-                        // onChange={handleChangeName}
-                        label="Escriba aquí"
-                    />
-                </FormControl>
+                <div>
+                    <FormControl>
+                        <BasicSelect
+                            name="Filtrar por"
+                            filterArray={filterArray}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel htmlFor="component-outlined">Escriba aquí</InputLabel>
+                        <OutlinedInput
+                            id="component-outlined"
+                            // value={name}
+                            // onChange={handleChangeName}
+                            label="Escriba aquí"
+                        />
+                    </FormControl>
+                </div>
                 <FormControl>
                     <BasicButtons
                         onClick={()=>{}}
                         variantName="contained"
                         buttonName={""}
+                        className=""
                         iconName={faTableCellsLarge}
                     />
                     <BasicButtons
@@ -57,6 +60,7 @@ export default function FilterComponent(){
                         variantName="contained"
                         buttonName={""}
                         iconName={faList}
+                        className="class-notSelected"
                     />
                 </FormControl>
             </div>

@@ -1,0 +1,51 @@
+.class-filterComponent {
+    padding: 10px 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    > div:first-child {
+        display: grid;
+        grid-template-columns: 200px auto 130px;
+        gap: 20px;
+        align-items: center;
+
+        > div:nth-child(2)  {
+            display: grid;
+            grid-template-columns: 200px auto;
+        }
+
+        > div:last-child {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: 100%;
+
+            > div {
+                height: 100%;
+                width: 50%;
+
+                > button {
+                    width: 100%;
+                    position: relative;
+
+                    svg {
+                        position: absolute;
+                    }
+                }
+
+                > button:first-child {
+                    border-radius: 4px 0 0 4px;
+                }
+
+                > button:last-child {
+                    border-radius: 0 4px 4px 0;
+                }
+
+                > button.class-notSelected {
+                    background-color: #9d9d9d;
+                }
+            }
+        }
+    }
+}
