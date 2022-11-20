@@ -135,6 +135,7 @@ const DUMMY_DATA = [
 console.log("DUMMY_DATA",DUMMY_DATA)
 
 export default function ReadConsultaRapida(){
+    const [cardClassName, setCardClassName] = useState(true);
     const [lessCard, setLessCard] = useState(0);
     const [prevCard, setPrevCard] = useState(6);
 
@@ -153,8 +154,12 @@ export default function ReadConsultaRapida(){
 
     return(
         <div className='class-GestionarConsultas'>
-            <FilterComponent/>
-            <div>
+            <FilterComponent
+                cardClassName={cardClassName}
+                cardOptionFunction={()=>setCardClassName(true)}
+                tableOptionFunction={()=>setCardClassName(false)}
+            />
+            <div className={ cardClassName === false ? "class-flexDirection" : ""}>
                 {DUMMY_DATA.filter((condition,key)=> ( key >= lessCard && key <= prevCard)).map((item,key)=>(
                     <CardConsultas
                         key={key}
@@ -163,6 +168,10 @@ export default function ReadConsultaRapida(){
                         name={item.name}
                         date={item.date}
                         time={item.time}
+                        tipo="Consulta flash"
+                        especialidad="Pediatra"
+                        estado="Activo"
+                        className={cardClassName ? 'class-cardConsulta' : 'class-cardConsulta-table'}
                         seeDetailFunction={()=>{}}
                         editFunction={()=>{}}
                     />

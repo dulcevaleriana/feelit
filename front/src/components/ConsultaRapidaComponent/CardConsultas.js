@@ -4,26 +4,32 @@ import BasicButtons from '../UIElements/BasicButtons-MUI';
 
 export default function CardConsultas(props) {
     return (
-        <div className='class-cardConsulta' key={props.key}>
+        <div className={props.className} key={props.key}>
             <div>
-                <img src={props.img} alt={props.alt}/>
-            </div>
-            <h4>{props.name}</h4>
-            <h5>
-                {props.date}
-                <br/>
-                {props.time}
-            </h5>
+                <div>
+                    <img src={props.img} alt={props.alt}/>
+                </div>
+                <h4>{props.name}</h4>
+                <h5>{props.date}</h5>
+                <h5>{props.time}</h5>
+                {props.className === 'class-cardConsulta-table' ? <>
+                <h5>{props.tipo}</h5>
+                <h5>{props.especialidad}</h5>
+                <h5>{props.estado}</h5>
+                </> : null}
+                </div>
             <div>
                 <BasicButtons
                     onClick={props.seeDetailFunction}
                     variantName="outlined"
                     iconName={faEye}
+                    buttonName={props.className === 'class-cardConsulta-table' ? "Ver detalle" : ""}
                 />
                 <BasicButtons
                     onClick={props.editFunction}
                     variantName="contained"
                     iconName={faPen}
+                    buttonName={props.className === 'class-cardConsulta-table' ? "Editar" : ""}
                 />
             </div>
         </div>

@@ -24,7 +24,7 @@ const filterArray = [
     }
 ]
 
-export default function FilterComponent(){
+export default function FilterComponent(props){
 
     return (
         <Box className="class-filterComponent">
@@ -49,18 +49,18 @@ export default function FilterComponent(){
                 </div>
                 <FormControl>
                     <BasicButtons
-                        onClick={()=>{}}
+                        onClick={props.cardOptionFunction}
                         variantName="contained"
                         buttonName={""}
-                        className=""
+                        className={props.cardClassName === false ? "class-notSelected" : ""}
                         iconName={faTableCellsLarge}
                     />
                     <BasicButtons
-                        onClick={()=>{}}
+                        onClick={props.tableOptionFunction}
                         variantName="contained"
                         buttonName={""}
                         iconName={faList}
-                        className="class-notSelected"
+                        className={props.cardClassName === true ? "class-notSelected" : ""}
                     />
                 </FormControl>
             </div>
