@@ -20,7 +20,7 @@ const MainNavigation = (props) => {
         },
         {
             to:"/consultaRapida/ReadConsultaRapida",
-            name:"Mi lista de Consulta Flash",
+            name:"Gestionar Consultas",
         },
         {
             to:"/users",

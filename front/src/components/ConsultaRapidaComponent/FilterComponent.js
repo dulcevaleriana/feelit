@@ -89,6 +89,7 @@ export default function FilterComponent(){
                         onClick={()=>{}}
                         variantName="contained"
                         buttonName={"Inactivo"}
+                        className="class-notSelected"
                     />
                 </FormControl>
             </div>
