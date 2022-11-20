@@ -1,0 +1,49 @@
+.class-cardConsulta {
+    z-index: 8;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+    max-width: 200px;
+
+    > div:first-child {
+        display: inline-block;
+        position: relative;
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 50%;
+        grid-row: 1 / spam 4;
+
+        img {
+            width: auto;
+            height: 100%;
+            margin-left: -50px;
+        }
+    }
+
+    h4 {
+        font-weight: bold;
+    }
+
+    > div:last-child {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+        button {
+            height: 58px;
+            width: 58px;
+            position: relative;
+
+            svg {
+                position: absolute;
+            }
+        }
+    }
+}
+
