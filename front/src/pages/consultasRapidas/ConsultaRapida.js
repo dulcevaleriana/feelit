@@ -4,6 +4,7 @@ import StaticTimePickerDemo from '../../components/UIElements/StaticTimePickerDe
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
 import PacienteData from '../../components/ConsultaRapidaComponent/PacienteData';
 import FormPayment from '../../components/ConsultaRapidaComponent/FormPayment';
+import MessageComponent from "../../components/ConsultaRapidaComponent/MessageComponent";
 
 import FormUserData from '../../components/ConsultaRapidaComponent/FormUserData';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
@@ -26,7 +27,7 @@ export default function ConsultaRapida(){
             <FormPayment/>
         </>}
         {step === 2 && <>
-            <span>thank u</span>
+            <MessageComponent />
         </>}
         {step !== 2 && <>
             <BasicButtons

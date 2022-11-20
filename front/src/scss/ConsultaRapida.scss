@@ -108,7 +108,7 @@
 .class-ConsultaRapida-step2{
     padding: 0px 5%;
     display: grid;
-    grid-template-columns: 12% 22% auto;
+    grid-template-columns: 25% 25% auto;
     grid-gap: 20px;
     height: calc(100vh - 107px);
     align-content: center;
@@ -119,10 +119,16 @@
 
     > div:first-child{
         min-height: 435px;
+        justify-self: left;
     }
 
     > div:nth-child(2) {
         display: grid;
+    }
+
+    > div:last-child {
+        grid-column: 3;
+        justify-content: right;
     }
 
     .class-select {
