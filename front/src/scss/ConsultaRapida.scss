@@ -180,3 +180,19 @@
     }
 }
 
+.class-ConsultaRapida-step3 > div {
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    gap: 20px;
+    align-content: center;
+    height: calc(100vh - 65px);
+
+    > img {
+        max-height: 340px;
+        height: 100%;
+        width: auto;
+    }
+}
+

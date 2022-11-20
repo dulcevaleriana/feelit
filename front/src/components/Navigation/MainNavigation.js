@@ -16,7 +16,11 @@ const MainNavigation = (props) => {
     const arrayLinks_isLoggedIn_true = [
         {
             to:"/consultaRapida/Create",
-            name:"Consulta Rapida",
+            name:"Consulta Flash",
+        },
+        {
+            to:"/consultaRapida/ReadConsultaRapida",
+            name:"Mi lista de Consulta Flash",
         },
         {
             to:"/users",

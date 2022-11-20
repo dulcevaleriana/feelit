@@ -11,6 +11,7 @@ import "./scss/GlobalStyle.scss";
 // import Auth from './pages/users/Auth';
 
 import ConsultaRapida from './pages/consultasRapidas/ConsultaRapida';
+import ReadConsultaRapida from './pages/consultasRapidas/ReadConsultaRapida';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 
@@ -31,6 +32,7 @@ const App = () => {
       <Switch>
         <Route path="/" component={Home} exact/>
         <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
+        <Route path="/consultaRapida/ReadConsultaRapida" component={ReadConsultaRapida} exact/>
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
         <Route path="/place/new" component={NewPlace} exact/>
