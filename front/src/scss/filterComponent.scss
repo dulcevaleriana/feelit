@@ -1,5 +1,19 @@
 .class-GestionarConsultas{
     padding: 10px 5%;
+    display: grid;
+    grid-template-rows: 132px calc(100vh - (65px + 32px + 132px + 80px)) 32px;
+
+    > div:nth-child(2){
+        display: flex;
+        gap: 40px;
+        padding: 20px 0;
+        align-items: center;
+    }
+
+    > .css-1p5q5e5-MuiStack-root {
+        display: flex;
+        align-items: flex-end;
+    }
 }
 
 .class-filterComponent {
