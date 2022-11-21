@@ -22,6 +22,7 @@ export default function BasicSelect(props) {
           value={age}
           label="Age"
           onChange={handleChange}
+          disabled={props.disabled}
         >
             {props.filterArray.map((item,key)=> <MenuItem value={item.value} key={key}>{item.name}</MenuItem>)}
         </Select>

@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-export default function DateTimeComponent() {
+export default function DateTimeComponent(props) {
   const [value, setValue] = useState(dayjs('2014-08-18T21:11:54'));
 
   const handleChange = (newValue) => {
@@ -22,6 +22,7 @@ export default function DateTimeComponent() {
           value={value}
           onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}
+          disabled={props.disabled}
         />
       </Stack>
     </LocalizationProvider>

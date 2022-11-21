@@ -5,5 +5,9 @@ export const AuthContext = createContext({
   userId: null,
   token: null,
   login: () => {},
-  logout: () => {}
+  logout: () => {},
+  editConsultaRapida: false,
+  seeDetailConsultaRapida: false,
+  setEditConsultaRapida:()=>{},
+  setSeeDetailConsultaRapida:()=>{}
 });

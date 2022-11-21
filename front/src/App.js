@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import "./scss/GlobalStyle.scss";
@@ -25,6 +25,9 @@ const Auth = lazy(() => import('./pages/users/Auth'));
 
 const App = () => {
   const { token, login, logout, userId } = useAuth();
+
+  const [editConsultaRapida, setEditConsultaRapida] = useState(false);
+  const [seeDetailConsultaRapida, setSeeDetailConsultaRapida] = useState(false);
 
   let routes;
 
@@ -61,7 +64,11 @@ const App = () => {
       token: token,
       userId: userId,
       login: login,
-      logout: logout
+      logout: logout,
+      editConsultaRapida: editConsultaRapida,
+      seeDetailConsultaRapida: seeDetailConsultaRapida,
+      setEditConsultaRapida: setEditConsultaRapida,
+      setSeeDetailConsultaRapida: setSeeDetailConsultaRapida
     }}
   >
     <Router>

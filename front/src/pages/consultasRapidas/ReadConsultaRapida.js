@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import { AuthContext } from '../../shared/context/auth-context';
 import FilterComponent from '../../components/ConsultaRapidaComponent/FilterComponent';
 import CardConsultas from '../../components/ConsultaRapidaComponent/CardConsultas';
 import PaginationRounded from '../../components/UIElements/PaginationRounded';
@@ -139,6 +140,8 @@ export default function ReadConsultaRapida(){
     const [lessCard, setLessCard] = useState(0);
     const [prevCard, setPrevCard] = useState(6);
 
+    const SeeOrEditData = useContext(AuthContext);
+
     const handleChange = (event, value) => {
         setLessCard(
             value === 1 ? 0 :
@@ -153,35 +156,35 @@ export default function ReadConsultaRapida(){
     };
 
     return(
-        <div className='class-GestionarConsultas'>
-            <FilterComponent
-                cardClassName={cardClassName}
-                cardOptionFunction={()=>setCardClassName(true)}
-                tableOptionFunction={()=>setCardClassName(false)}
-            />
-            <div className={ cardClassName === false ? "class-flexDirection" : ""}>
-                {DUMMY_DATA.filter((condition,key)=> ( key >= lessCard && key <= prevCard)).map((item,key)=>(
-                    <CardConsultas
-                        key={key}
-                        img={item.img}
-                        alt={item.alt}
-                        name={item.name}
-                        date={item.date}
-                        time={item.time}
-                        tipo="Consulta flash"
-                        especialidad="Pediatra"
-                        estado="Activo"
-                        className={cardClassName ? 'class-cardConsulta' : 'class-cardConsulta-table'}
-                        seeDetailFunction={()=>{}}
-                        editFunction={()=>{}}
-                    />
-                ))}
+            <div className='class-GestionarConsultas'>
+                <FilterComponent
+                    cardClassName={cardClassName}
+                    cardOptionFunction={()=>setCardClassName(true)}
+                    tableOptionFunction={()=>setCardClassName(false)}
+                />
+                <div className={ cardClassName === false ? "class-flexDirection" : ""}>
+                    {DUMMY_DATA.filter((condition,key)=> ( key >= lessCard && key <= prevCard)).map((item,key)=>(
+                        <CardConsultas
+                            key={key}
+                            img={item.img}
+                            alt={item.alt}
+                            name={item.name}
+                            date={item.date}
+                            time={item.time}
+                            tipo="Consulta flash"
+                            especialidad="Pediatra"
+                            estado="Activo"
+                            className={cardClassName ? 'class-cardConsulta' : 'class-cardConsulta-table'}
+                            seeDetailFunction={()=> SeeOrEditData.setSeeDetailConsultaRapida(true)}
+                            editFunction={()=> SeeOrEditData.setEditConsultaRapida(true)}
+                        />
+                    ))}
+                </div>
+                <PaginationRounded
+                    spacing={2}
+                    count={3}
+                    handleChange={handleChange}
+                />
             </div>
-            <PaginationRounded
-                spacing={2}
-                count={3}
-                handleChange={handleChange}
-            />
-        </div>
     )
 }

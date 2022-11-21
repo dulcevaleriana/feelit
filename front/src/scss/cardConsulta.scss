@@ -8,6 +8,9 @@
     align-items: center;
     margin-top: 20px;
     max-width: 200px;
+    border: 1px solid #9d9d9d8f;
+    padding: 20px;
+    border-radius: 20px;
 
     > div:first-child {
         display: grid;
@@ -58,6 +61,8 @@
     width: 100%;
     align-items: center;
     gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid #9d9d9d4a;
 
     > div:first-child {
         display: flex;
