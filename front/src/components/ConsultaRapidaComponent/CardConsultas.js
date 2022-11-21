@@ -1,6 +1,7 @@
 import React from 'react';
 import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
 import BasicButtons from '../UIElements/BasicButtons-MUI';
+import { Link } from "react-router-dom";
 
 export default function CardConsultas(props) {
     return (
@@ -17,20 +18,24 @@ export default function CardConsultas(props) {
                 <h5>{props.especialidad}</h5>
                 <h5>{props.estado}</h5>
                 </> : null}
-                </div>
+            </div>
             <div>
-                <BasicButtons
-                    onClick={props.seeDetailFunction}
-                    variantName="outlined"
-                    iconName={faEye}
-                    buttonName={props.className === 'class-cardConsulta-table' ? "Ver detalle" : ""}
-                />
-                <BasicButtons
-                    onClick={props.editFunction}
-                    variantName="contained"
-                    iconName={faPen}
-                    buttonName={props.className === 'class-cardConsulta-table' ? "Editar" : ""}
-                />
+                <Link to="/consultaRapida/EditOrSeeDetails">
+                    <BasicButtons
+                        onClick={props.seeDetailFunction}
+                        variantName="outlined"
+                        iconName={faEye}
+                        buttonName={props.className === 'class-cardConsulta-table' ? "Ver detalle" : ""}
+                    />
+                </Link>
+                <Link to="/consultaRapida/EditOrSeeDetails">
+                    <BasicButtons
+                        onClick={props.editFunction}
+                        variantName="contained"
+                        iconName={faPen}
+                        buttonName={props.className === 'class-cardConsulta-table' ? "Editar" : ""}
+                    />
+                </Link>
             </div>
         </div>
     )
