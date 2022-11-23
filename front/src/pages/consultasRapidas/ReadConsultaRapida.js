@@ -1,8 +1,10 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { AuthContext } from '../../shared/context/auth-context';
 import FilterComponent from '../../components/ConsultaRapidaComponent/FilterComponent';
 import CardConsultas from '../../components/ConsultaRapidaComponent/CardConsultas';
 import PaginationRounded from '../../components/UIElements/PaginationRounded';
+import NestedModal from '../../components/UIElements/NestedModal';
+import BasicButtons from '../../components/UIElements/BasicButtons-MUI';
 
 const DUMMY_DATA = [
     {
@@ -137,6 +139,7 @@ console.log("DUMMY_DATA",DUMMY_DATA)
 
 export default function ReadConsultaRapida(){
     const [cardClassName, setCardClassName] = useState(true);
+    const [modalDeleteCita, setModalDeleteCita] = useState(false);
     const [lessCard, setLessCard] = useState(0);
     const [prevCard, setPrevCard] = useState(6);
 
@@ -155,7 +158,33 @@ export default function ReadConsultaRapida(){
         );
     };
 
+    useEffect(()=>{
+        setModalDeleteCita(localStorage.modalDeleteCita);
+        console.log("modalDeleteCita",modalDeleteCita)
+    },[modalDeleteCita])
+
+    const handleClose = () => {
+        localStorage.removeItem("modalDeleteCita")
+        setModalDeleteCita(false);
+    }
+
     return(
+        <>
+            <NestedModal
+                withButton={false}
+                open={modalDeleteCita}
+                handleClose={handleClose}
+                title="Cita eliminada"
+                message="Dulce,la cita que selecciono fue eliminada"
+                cancelButton={false}
+                buttonOptions={
+                    <BasicButtons
+                        onClick={handleClose}
+                        variantName="contained"
+                        buttonName={"Entendido"}
+                    />
+                }
+            />
             <div className='class-GestionarConsultas'>
                 <FilterComponent
                     cardClassName={cardClassName}
@@ -186,5 +215,6 @@ export default function ReadConsultaRapida(){
                     handleChange={handleChange}
                 />
             </div>
+        </>
     )
 }
