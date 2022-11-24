@@ -45,15 +45,18 @@ export default function NestedModal(props) {
       >
         <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">{props.title}</h2>
-          <p id="parent-modal-description">
+          {props.message && <p id="parent-modal-description">
             {props.message}
-          </p>
+          </p>}
+          {props.body && <Box>
+            {props.body}
+          </Box>}
           <Box sx={{ display: 'flex', gap: '20px', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <BasicButtons
+            {props.cancelButton ? <BasicButtons
                 onClick={handleClose}
                 variantName="outlined"
-                buttonName={"No, continuar"}
-            />
+                buttonName={props.buttonNameCancel ? props.buttonNameCancel : "No, continuar"}
+            /> : null}
             {props.buttonOptions}
           </Box>
         </Box>

@@ -8,12 +8,16 @@ import MessageComponent from "../../components/ConsultaRapidaComponent/MessageCo
 
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 
-import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft, faClock, faX } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft, faClock, faX, faSearch, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import FormControl from '@mui/material/FormControl';
 import BasicSelect from "../../components/UIElements/BasicSelect";
 import CustomDay from "../../components/UIElements/CustomDay";
 import FormUserDataAgendarCita from "../../components/AgendarCita/FormUserDataAgendarCita";
+import NestedModal from "../../components/UIElements/NestedModal";
+
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 const DUMfilterArray = [
     {
@@ -44,6 +48,9 @@ const DUMfilterArray = [
 
 export default function AgendarCita(){
     const [step, setStep] = useState(0);
+    const [stepVerifyDate, setStepVerifyDate] = useState(false);
+    const [codigo] = useState("")
+    // , setCodigo
 
     return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : step === 2 ? "class-AgendarCita-step3" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
@@ -82,13 +89,52 @@ export default function AgendarCita(){
                 />
             </>}
             <div>
-            {step >= 1 && <>
+            {step === 1 && <>
                 <BasicButtons
                     onClick={()=>setStep(3)}
                     variantName="outlined"
-                    buttonName={step === 1 ? "Pagar día de la cita" : step === 2 ? "Esta no es mi cita" : ""}
-                    iconName={step === 1 ? faClock : step === 2 ? faX : null}
+                    buttonName="Pagar día de la cita"
+                    iconName={faClock}
                 />
+            </>}
+            {step === 2 && <>
+                <NestedModal
+                        withButton={true}
+                        name="Esta no es mi cita"
+                        icon={faX}
+                        variantName="outlined"
+                        title="Recuperar tu cita"
+                        message="Busca el codigo de tu cita en tu bandeja de entrada de correo o span
+                        para buscar tu cita"
+                        body={<>
+                            <FormControl>
+                                <InputLabel htmlFor="component-outlined">Escribe tu codigo</InputLabel>
+                                <OutlinedInput
+                                id="component-outlined"
+                                value={codigo}
+                                onChange={(event)=>{}}
+                                label="Telefono"
+                                />
+                            </FormControl>
+                            {stepVerifyDate && <PacienteData/>}
+                        </>}
+                        cancelButton={!stepVerifyDate}
+                        buttonNameCancel="Cancelar"
+                        buttonOptions={<>
+                            {stepVerifyDate && <BasicButtons
+                                onClick={()=>setStepVerifyDate(!stepVerifyDate)}
+                                variantName="outlined"
+                                buttonName="No soy yo"
+                                iconName={faX}
+                            />}
+                            <BasicButtons
+                                onClick={()=>setStepVerifyDate(!stepVerifyDate)}
+                                variantName="contained"
+                                buttonName={!stepVerifyDate ? "Buscar cita" : "Si soy yo"}
+                                iconName={!stepVerifyDate ? faSearch : faCheck}
+                            />
+                        </>}
+                    />
             </>}
             <BasicButtons
                 onClick={()=>setStep(step + 1)}
