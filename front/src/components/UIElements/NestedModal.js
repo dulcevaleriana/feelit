@@ -42,6 +42,7 @@ export default function NestedModal(props) {
         onClose={handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
+        className={props.className}
       >
         <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">{props.title}</h2>
@@ -70,6 +71,7 @@ export default function NestedModal(props) {
         onClose={props.handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
+        className={props.className}
       >
         <Box sx={{ ...style, width: 400 }}>
           <h2 id="parent-modal-title">{props.title}</h2>

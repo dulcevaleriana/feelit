@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DoctorGallery from '../../components/ConsultaRapidaComponent/DoctorGallery';
 import StaticTimePickerDemo from '../../components/UIElements/StaticTimePickerDemo';
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
@@ -47,10 +47,14 @@ const DUMfilterArray = [
 ]
 
 export default function AgendarCita(){
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState(localStorage.stepLS ? 2 : 0);
     const [stepVerifyDate, setStepVerifyDate] = useState(false);
     const [codigo] = useState("")
     // , setCodigo
+
+    useEffect(()=>{
+        localStorage.removeItem("stepLS")
+    },[step])
 
     return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : step === 2 ? "class-AgendarCita-step3" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
@@ -99,6 +103,7 @@ export default function AgendarCita(){
             </>}
             {step === 2 && <>
                 <NestedModal
+                        className="class-modalVerifyDate"
                         withButton={true}
                         name="Esta no es mi cita"
                         icon={faX}

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
-import { faFloppyDisk, faTrash, faCopy, faPen, faPlay, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faTrash, faCopy, faPen, faPlay, faDownload, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 import BasicSelect from "../../components/UIElements/BasicSelect";
 import DateTimeComponent from "../../components/UIElements/DateTimeComponent";
 import TimeInputComponent from "../../components/UIElements/TimeInputComponent";
@@ -57,6 +57,11 @@ export default function EditOrSeeDetailsComponent(props){
         History.push('/consultaRapida/ReadConsultaRapida')
     }
 
+    const paymentFunction = () => {
+        localStorage.setItem("stepLS",true)
+        History.push('/AgendarCita/create')
+    }
+
     return(
         <div className={`class-EditOrSeeDetailsComponent ${SeeOrEditData.seeDetailConsultaRapida === true ? "class-seeDetailConsultaRapida" : SeeOrEditData.editConsultaRapida === true ? "class-editConsultaRapida" : ""}`}>
             <div>
@@ -68,6 +73,12 @@ export default function EditOrSeeDetailsComponent(props){
                     <span>Mi cita con: "Juan Ortega"</span>
                 </div>
                 <FormControl>
+                    <BasicButtons
+                        onClick={paymentFunction}
+                        variantName="contained"
+                        buttonName={"Pagar ahora"}
+                        iconName={faMoneyBillTransfer}
+                    />
                     { SeeOrEditData.seeDetailConsultaRapida === true ? (
                         <BasicButtons
                             onClick={()=>{SeeOrEditData.setEditConsultaRapida(true) ; SeeOrEditData.setSeeDetailConsultaRapida(false)}}
