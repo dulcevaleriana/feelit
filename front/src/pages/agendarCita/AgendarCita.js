@@ -8,7 +8,7 @@ import MessageComponent from "../../components/ConsultaRapidaComponent/MessageCo
 
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 
-import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft, faClock, faX } from '@fortawesome/free-solid-svg-icons';
 
 import FormControl from '@mui/material/FormControl';
 import BasicSelect from "../../components/UIElements/BasicSelect";
@@ -45,7 +45,7 @@ const DUMfilterArray = [
 export default function AgendarCita(){
     const [step, setStep] = useState(0);
 
-    return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : step === 2 ? "class-AgendarCita-step3" : ""}>
+    return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : step === 2 ? "class-AgendarCita-step3" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
             <span>
                 <FormControl>
@@ -86,15 +86,15 @@ export default function AgendarCita(){
                 <BasicButtons
                     onClick={()=>setStep(3)}
                     variantName="outlined"
-                    buttonName="Pagar día de la cita"
-                    iconName={faClock}
+                    buttonName={step === 1 ? "Pagar día de la cita" : step === 2 ? "Esta no es mi cita" : ""}
+                    iconName={step === 1 ? faClock : step === 2 ? faX : null}
                 />
             </>}
             <BasicButtons
                 onClick={()=>setStep(step + 1)}
                 variantName="contained"
-                buttonName={step === 0 ? "Siguiente" : step === 1 ? "Pagar ahora" : ""}
-                iconName={step === 0 ? faAnglesRight : step === 1 ? faMoneyBillTransfer : ""}
+                buttonName={step === 0 ? "Siguiente" : step >= 1 ? "Pagar ahora" : ""}
+                iconName={step === 0 ? faAnglesRight : step >= 1 ? faMoneyBillTransfer : ""}
             />
             </div>
         </>}
