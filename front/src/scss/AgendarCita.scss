@@ -1,0 +1,73 @@
+.class-AgendarCita-step1 {
+    padding: 0px 5%;
+    display: grid;
+    grid-template-columns: 32.5% 32.5% 32.5%;
+    grid-gap: 20px;
+    height: calc(100vh - 107px);
+    align-content: center;
+
+    > span:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+
+        .MuiFormControl-root.css-1nrlq1o-MuiFormControl-root {
+            gap: 20px;
+        }
+    }
+
+    > div:nth-child(3) {
+        justify-self: end;
+    }
+
+    > div:last-child {
+        grid-column: 3;
+        justify-self: end;
+    }
+}
+
+.class-AgendarCita-step2 {
+    padding: 0px 5%;
+    display: grid;
+    grid-template-columns: 25% auto;
+    grid-gap: 20px;
+    height: calc(100vh - 107px);
+    align-content: center;
+
+    > div:nth-child(2) {
+        display: grid;
+        grid-template-columns: 50% auto;
+        gap: 20px;
+
+        > div:nth-last-child(2) {
+            grid-column: 1 / span 2;
+        }
+    }
+
+    > div:nth-child(3){
+        grid-column: 1;
+    }
+
+    > div:last-child {
+        display: flex;
+        gap: 20px;
+        justify-content: right;
+    }
+}
+
+.class-AgendarCita-step3 {
+    padding: 0px 5%;
+    display: grid;
+    grid-template-columns: 25% 25% auto;
+    grid-gap: 20px;
+    height: calc(100vh - 107px);
+    align-content: center;
+}
+
+.class-StaticTimePickerDemo,
+.class-CustomDay {
+    border: 1px solid #c4c4c4;
+    max-width: 340px;
+    justify-self: center;
+    display: flex;
+}

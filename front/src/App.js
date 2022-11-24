@@ -15,6 +15,7 @@ import ReadConsultaRapida from './pages/consultasRapidas/ReadConsultaRapida';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 import EditOrSeeDetailsComponent from './pages/consultasRapidas/EditOrSeeDetailsComponent';
+import AgendarCita from './pages/agendarCita/AgendarCita';
 
 const Home = lazy(() => import('./pages/Home'));
 const Users = lazy(() => import('./pages/users/Users'));
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
         <Route path="/consultaRapida/ReadConsultaRapida" component={ReadConsultaRapida} exact/>
         <Route path="/consultaRapida/EditOrSeeDetails" component={EditOrSeeDetailsComponent} exact/>
+        <Route path="/AgendarCita/create" component={AgendarCita} exact />
 
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>

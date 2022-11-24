@@ -19,6 +19,10 @@ const MainNavigation = (props) => {
             name:"Consulta Flash",
         },
         {
+            to:"/AgendarCita/create",
+            name:"Agendar Cita",
+        },
+        {
             to:"/consultaRapida/ReadConsultaRapida",
             name:"Gestionar Consultas",
         },

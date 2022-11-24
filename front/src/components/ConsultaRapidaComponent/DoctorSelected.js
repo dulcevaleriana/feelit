@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function DoctorSelected(){
 
-    return <div>
+    return <div className='class-DoctorSelected'>
         <h5>Has elegido para tu cita:</h5>
         <span className="class-select">
             <div>

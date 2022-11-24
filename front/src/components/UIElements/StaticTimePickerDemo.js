@@ -8,15 +8,17 @@ export default function StaticTimePickerDemo() {
   const [value, setValue] = React.useState(new Date());
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <StaticTimePicker
-        displayStaticWrapperAs="mobile"
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </LocalizationProvider>
+    <div className="class-StaticTimePickerDemo">
+      <LocalizationProvider dateAdapter={AdapterDateFns} >
+        <StaticTimePicker
+          displayStaticWrapperAs="mobile"
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
+    </div>
   );
 }
