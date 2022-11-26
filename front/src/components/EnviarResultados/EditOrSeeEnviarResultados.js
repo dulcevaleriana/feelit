@@ -2,10 +2,9 @@ import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
-import { faFloppyDisk, faTrash, faCopy, faPen, faPlay, faDownload, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faTrash, faCopy, faPen, faPlay, faDownload, faMoneyBillTransfer, faFileImport, faFile } from '@fortawesome/free-solid-svg-icons';
 import BasicSelect from "../../components/UIElements/BasicSelect";
-import DateTimeComponent from "../../components/UIElements/DateTimeComponent";
-import TimeInputComponent from "../../components/UIElements/TimeInputComponent";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { AuthContext } from "../../shared/context/auth-context";
 import NestedModal from "../../components/UIElements/NestedModal";
@@ -44,11 +43,24 @@ const statusArray = [
     }
 ]
 
-export default function EditOrSeeDetailsComponent(props){
+const arrayFileUpload = [
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"},
+    { cardFileElement: "ADD-FILE-WORK.pdf"}
+]
+
+export default function EditOrSeeEnviarResultados(props){
     const History = useHistory()
     const SeeOrEditData = useContext(AuthContext);
 
-    const boolean = true;
+    const boolean = false;
 
     const cleanAllSet = () => {
         SeeOrEditData.setEditConsultaRapida(false)
@@ -63,7 +75,7 @@ export default function EditOrSeeDetailsComponent(props){
     }
 
     return(
-        <div className={`class-EditOrSeeDetailsComponent ${SeeOrEditData.seeDetailConsultaRapida === true ? "class-seeDetailConsultaRapida" : SeeOrEditData.editConsultaRapida === true ? "class-editConsultaRapida" : ""}`}>
+        <div className={`class-EditOrSeeDetailsComponent class-EditOrSeeEnviarResultados ${SeeOrEditData.seeDetailConsultaRapida === true ? "class-seeDetailConsultaRapida" : SeeOrEditData.editConsultaRapida === true ? "class-editConsultaRapida" : ""}`}>
             <div>
                 <div>
                     <Link to="/consultaRapida/ReadConsultaRapida">
@@ -125,14 +137,6 @@ export default function EditOrSeeDetailsComponent(props){
                 <h5>* Si quiere cambiar de medico, debe crear otra cita </h5>
             </div>
             <form>
-                <FormControl>
-                    <DateTimeComponent disabled={SeeOrEditData.seeDetailConsultaRapida}/>
-                </FormControl>
-                <FormControl>
-                    <TimeInputComponent
-                        disabled={SeeOrEditData.seeDetailConsultaRapida}
-                    />
-                </FormControl>
                 { SeeOrEditData.seeDetailConsultaRapida === true ? (
                     <div>
                         <h5>Tipo de cita</h5>
@@ -165,46 +169,22 @@ export default function EditOrSeeDetailsComponent(props){
                     </FormControl>
                 )
                 : null }
-                { SeeOrEditData.seeDetailConsultaRapida === true ? (
-                    <div>
-                        <h5>Enlace de la cita (video cita)</h5>
-                        <label>https://github.com/dulcevaleriana/blog-practice/43466436467767</label>
-                        {boolean ? (
-                            <BasicButtons
-                                onClick={()=>{}}
-                                variantName="contained"
-                                iconName={faCopy}
-                                className={""}
-                            />
-                        ) : (
-                            <span>
-                                <BasicButtons
-                                    onClick={()=>{}}
-                                    variantName="contained"
-                                    iconName={faPlay}
-                                    className={""}
-                                />
-                                <BasicButtons
-                                    onClick={()=>{}}
-                                    variantName="contained"
-                                    iconName={faDownload}
-                                    className={""}
-                                />
-                            </span>
-                        )}
-                    </div>
-                )
-                : SeeOrEditData.editConsultaRapida === true ? (
-                    <div>
-                        <label>Enlace de la cita (video cita)</label>
-                        <h5>* Este enlace es auto generado, no se puede editar</h5>
-                    </div>
-                )
-                : null }
                 <FormControl>
                     <label>Mi mensaje</label>
                     <TextareaAutosize
-                        minRows={6}
+                        minRows={3}
+                        aria-label="maximum height"
+                        placeholder="Maximum 4 rows"
+                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua."
+                        style={{ }}
+                        disabled={SeeOrEditData.seeDetailConsultaRapida}
+                    />
+                </FormControl>
+                <FormControl>
+                    <label>Mensaje Doctor</label>
+                    <TextareaAutosize
+                        minRows={3}
                         aria-label="maximum height"
                         placeholder="Maximum 4 rows"
                         defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
@@ -214,6 +194,15 @@ export default function EditOrSeeDetailsComponent(props){
                     />
                 </FormControl>
             </form>
+            <div>
+                <h4>Documentos enviados</h4>
+                {arrayFileUpload.map((index, key)=>(
+                    <div key={key} style={{height:'10%'}} className="class-cardUploaded">
+                        <FontAwesomeIcon icon={faFile} size="lg"  />
+                        <h4>{index.cardFileElement}</h4>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

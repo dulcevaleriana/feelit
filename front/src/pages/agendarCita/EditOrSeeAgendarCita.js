@@ -44,11 +44,11 @@ const statusArray = [
     }
 ]
 
-export default function EditOrSeeDetailsComponent(props){
+export default function EditOrSeeAgendarCita(props){
     const History = useHistory()
     const SeeOrEditData = useContext(AuthContext);
 
-    const boolean = true;
+    const boolean = false;
 
     const cleanAllSet = () => {
         SeeOrEditData.setEditConsultaRapida(false)
