@@ -67,13 +67,7 @@ const MainNavigation = (props) => {
                 arrayLinks={auth.isLoggedIn ? arrayLinks_isLoggedIn_true : arrayLinks_isLoggedIn_flase}
                 onClick={() => setDisplayMenu(false)}
             />
-            {auth.isLoggedIn ? (
-                <button onClick={auth.logout}>LOGOUT</button>
-            ) : (
-                <Link to="/auth">
-                    <ImageAvatars />
-                </Link>
-            )}
+            <ImageAvatars />
         </Header>
     </React.Fragment>
 }
