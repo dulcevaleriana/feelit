@@ -32,15 +32,15 @@ const MainNavigation = (props) => {
         },
         {
             to:"/users",
-            name:"All User",
+            name:"",
         },
         {
-            to:`/users/${auth.userId}/UserPlaces`,
-            name:"User's places",
+            to:``,
+            name:"",
         },
         {
-            to:"/place/new",
-            name:"Create Places",
+            to:"",
+            name:"",
         }
     ]
 
