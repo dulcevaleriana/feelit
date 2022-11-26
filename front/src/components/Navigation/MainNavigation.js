@@ -23,6 +23,10 @@ const MainNavigation = (props) => {
             name:"Agendar Cita",
         },
         {
+            to:"/EnviarResultados/create",
+            name:"Enviar Resultados",
+        },
+        {
             to:"/consultaRapida/ReadConsultaRapida",
             name:"Gestionar Consultas",
         },

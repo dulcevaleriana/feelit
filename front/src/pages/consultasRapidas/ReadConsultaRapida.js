@@ -135,8 +135,6 @@ const DUMMY_DATA = [
     },
 ]
 
-console.log("DUMMY_DATA",DUMMY_DATA)
-
 export default function ReadConsultaRapida(){
     const [cardClassName, setCardClassName] = useState(true);
     const [modalDeleteCita, setModalDeleteCita] = useState(false);
