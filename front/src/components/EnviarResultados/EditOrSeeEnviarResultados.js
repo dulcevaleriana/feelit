@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
-import { faFloppyDisk, faTrash, faCopy, faPen, faPlay, faDownload, faMoneyBillTransfer, faFileImport, faFile } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faTrash, faPen, faMoneyBillTransfer, faFile } from '@fortawesome/free-solid-svg-icons';
 import BasicSelect from "../../components/UIElements/BasicSelect";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
@@ -59,8 +59,6 @@ const arrayFileUpload = [
 export default function EditOrSeeEnviarResultados(props){
     const History = useHistory()
     const SeeOrEditData = useContext(AuthContext);
-
-    const boolean = false;
 
     const cleanAllSet = () => {
         SeeOrEditData.setEditConsultaRapida(false)
