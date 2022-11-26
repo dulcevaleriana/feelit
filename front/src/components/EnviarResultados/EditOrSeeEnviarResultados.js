@@ -140,7 +140,7 @@ export default function EditOrSeeEnviarResultados(props){
                 { SeeOrEditData.seeDetailConsultaRapida === true ? (
                     <div>
                         <h5>Tipo de cita</h5>
-                        <label>{filterArray[0].name}</label>
+                        <label>{filterArray[2].name}</label>
                     </div>
                 )
                 : SeeOrEditData.editConsultaRapida === true ? (
@@ -169,20 +169,12 @@ export default function EditOrSeeEnviarResultados(props){
                     </FormControl>
                 )
                 : null }
+                <div>
+                    <h5>Paciente mensaje</h5>
+                    <label>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</label>
+                </div>
                 <FormControl>
                     <label>Mi mensaje</label>
-                    <TextareaAutosize
-                        minRows={3}
-                        aria-label="maximum height"
-                        placeholder="Maximum 4 rows"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua."
-                        style={{ }}
-                        disabled={SeeOrEditData.seeDetailConsultaRapida}
-                    />
-                </FormControl>
-                <FormControl>
-                    <label>Mensaje Doctor</label>
                     <TextareaAutosize
                         minRows={3}
                         aria-label="maximum height"
