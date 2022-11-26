@@ -12,6 +12,29 @@ import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 
+const DATA_TEMPORAL = [
+    {
+        title:'Nombre',
+        data:'Juana Perez'
+    },
+    {
+        title:'Teléfono',
+        data:'000-000-0000'
+    },
+    {
+        title:'Correo',
+        data:'juana.perez@gmail.com'
+    },
+    {
+        title:'Tipo de cita',
+        data:'Terapia inicial'
+    },
+    {
+        title:'Este es mi mensaje',
+        data:'Hola solo quiero decir que...'
+    }
+]
+
 export default function ConsultaRapida(){
     const [step, setStep] = useState(0);
 
@@ -23,7 +46,7 @@ export default function ConsultaRapida(){
         </>}
         {step === 1 && <>
             <DoctorSelected/>
-            <PacienteData/>
+            <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
             <FormPayment/>
         </>}
         {step === 2 && <>

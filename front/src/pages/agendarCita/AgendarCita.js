@@ -46,6 +46,29 @@ const DUMfilterArray = [
     },
 ]
 
+const DATA_TEMPORAL = [
+    {
+        title:'Nombre',
+        data:'Juana Perez'
+    },
+    {
+        title:'Teléfono',
+        data:'000-000-0000'
+    },
+    {
+        title:'Correo',
+        data:'juana.perez@gmail.com'
+    },
+    {
+        title:'Tipo de cita',
+        data:'Terapia inicial'
+    },
+    {
+        title:'Este es mi mensaje',
+        data:'Hola solo quiero decir que...'
+    }
+]
+
 export default function AgendarCita(){
     const [step, setStep] = useState(localStorage.stepLS ? 2 : 0);
     const [stepVerifyDate, setStepVerifyDate] = useState(false);
@@ -77,7 +100,7 @@ export default function AgendarCita(){
         </>}
         {step === 2 && <>
             <DoctorSelected/>
-            <PacienteData/>
+            <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
             <FormPayment/>
         </>}
         {step === 3 && <>

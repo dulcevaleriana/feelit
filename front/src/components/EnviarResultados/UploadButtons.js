@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import Stack from '@mui/material/Stack';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileImport, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { faFileImport, faFile } from '@fortawesome/free-solid-svg-icons';
 
 export default function UploadButtons(props) {
     const cardFile = "ADD-FILE-WORK.pdf"
+    const [modifyStyleTop, setModifyStyleTop] = useState(100)
     const [arrayFileUpload, setArrayFileUpload] = useState([])
     const filePicketRef = useRef()
 
@@ -14,18 +14,11 @@ export default function UploadButtons(props) {
             ...arr,
             { cardFileElement: cardFile}
         ])
+        setModifyStyleTop(modifyStyleTop === 10 ? 10 : modifyStyleTop - 10)
     }
     console.log("arrayFileUpload",arrayFileUpload)
     return (
-        <Stack direction="row" alignItems="center" spacing={2} className="class-UploadButtons">
-            <div>
-                {arrayFileUpload.map((index, key)=>(
-                    <div key={key}>
-                        <FontAwesomeIcon icon={faFilePdf} size="lg"  />
-                        <h4>{index.cardFileElement}</h4>
-                    </div>
-                ))}
-            </div>
+        <div direction="row" alignItems="center" spacing={2} className="class-UploadButtons">
             <input
                 id={props.id}
                 type="file"
@@ -34,10 +27,16 @@ export default function UploadButtons(props) {
                 accept=".jpg,.png,.jpeg,.pdf"
                 // onChange={pickerHandle}
             />
-            <button type='button' onClick={addPreviewFileUpload}>
+            <button type='button' onClick={addPreviewFileUpload} style={{height:`${modifyStyleTop}%`}} className={modifyStyleTop === 10 ? "class-cardUpload" : ""}>
                 <FontAwesomeIcon icon={faFileImport} size="lg"  />
                 <h4>Click aquí o arrastrar aquí para agregar documentos a enviar</h4>
             </button>
-        </Stack>
+            {arrayFileUpload.map((index, key)=>(
+                <div key={key} style={{height:'10%'}} className="class-cardUploaded">
+                    <FontAwesomeIcon icon={faFile} size="lg"  />
+                    <h4>{index.cardFileElement}</h4>
+                </div>
+            ))}
+        </div>
     );
 }
