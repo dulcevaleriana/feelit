@@ -10,7 +10,7 @@ export default function ImageAvatars() {
   return (
     <Stack direction="row" spacing={2} className="class-ImageAvatars">
         {auth.isLoggedIn ? (
-            <Link to="/auth">
+            <Link to="/" onClick={auth.logout}>
               <span>
                 <h4>Welcome</h4>
                 <h5>Remy Sharp</h5>

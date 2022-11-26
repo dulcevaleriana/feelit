@@ -19,6 +19,7 @@ import AgendarCita from './pages/agendarCita/AgendarCita';
 import EnviarResultados from './pages/EnviarResultados/EnviarResultados';
 import EditOrSeeAgendarCita from './pages/agendarCita/EditOrSeeAgendarCita';
 import EditOrSeeEnviarResultados from './components/EnviarResultados/EditOrSeeEnviarResultados';
+import CreateUserOrDoctor from './pages/paciente/CreateUserOrDoctor';
 
 const Home = lazy(() => import('./pages/Home'));
 const Users = lazy(() => import('./pages/users/Users'));
@@ -57,6 +58,8 @@ const App = () => {
   } else {
     routes = (
       <Switch>
+        <Route path="/CreateUserOrDoctor" component={CreateUserOrDoctor} exact />
+
         <Route path="/" component={Home} exact/>
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>

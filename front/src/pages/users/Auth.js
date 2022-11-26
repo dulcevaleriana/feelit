@@ -10,9 +10,11 @@ import { AuthContext } from '../../shared/context/auth-context';
 import ModalComponent from '../../components/UIElements/ModalComponent';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import ImageUpload from '../../components/UIElements/ImageUpload';
+import { useHistory } from 'react-router-dom';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
+  const History = useHistory();
   const [isLoginMode, setIsLoginMode] = useState(true);
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -159,6 +161,9 @@ const Auth = () => {
         </form>
         <button onClick={switchModeHandler}>
           SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+        </button>
+        <button onClick={()=>History.push('/CreateUserOrDoctor')}>
+         CREATE AN ORIGIAL ACCOUNT
         </button>
       </div>
     </>
