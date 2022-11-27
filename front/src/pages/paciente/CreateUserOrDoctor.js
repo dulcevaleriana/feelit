@@ -16,50 +16,49 @@ export default function CreateUserOrDoctor() {
         localStorage.removeItem("stepLS")
     },[step])
 
-    return <div className={step === 0 ? "class-EnviarResultados-step1" : step === 1 ? "class-EnviarResultados-step2" : "class-ConsultaRapida-step3"}>
-        {step ? <>
-            <span>
-                <FormControl>
-                    <label>Elige tu medico de preferencia, fecha y hora de la cita</label>
-                    <BasicButtons
-                        onClick={()=>setStep(true)}
-                        variantName="contained"
-                        buttonName="Paciente"
-                        className=""
-                    />
-                    <BasicButtons
-                        onClick={()=>setStep(false)}
-                        variantName="contained"
-                        buttonName="Doctor/a"
-                        className=""
-                    />
-                </FormControl>
+    return <div className={step ? "class-CreateUser" : "class-CreateUser class-CreateDoctor"}>
+        <span>
+            <FormControl>
+                <label>Elige tu medico de preferencia, fecha y hora de la cita</label>
+                <BasicButtons
+                    onClick={()=>setStep(true)}
+                    variantName="contained"
+                    buttonName="Paciente"
+                    className=""
+                />
+                <BasicButtons
+                    onClick={()=>setStep(false)}
+                    variantName="contained"
+                    buttonName="Doctor/a"
+                    className=""
+                />
+            </FormControl>
+            <div>
                 <div>
-                    <img src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png" alt=""/>
-                    <BasicButtons
-                        onClick={()=>{}}
-                        variantName="contained"
-                        buttonName="Doctor/a"
-                        className=""
-                        iconName={faCamera}
+                    <img
+                        src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png"
+                        alt=""
                     />
                 </div>
-                <FormControl>
-                    <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
-                    <OutlinedInput
-                    id="component-outlined"
-                    value={name}
-                    onChange={()=>{}}
-                    label="Nombre"
-                    />
-                </FormControl>
-            </span>
-            <FormUserDataCreateUser/>
-        </>
-        :
-        <>
-        <h1>DOCTOR</h1>
-        </>}
+                <BasicButtons
+                    onClick={()=>{}}
+                    variantName="contained"
+                    className=""
+                    iconName={faCamera}
+                />
+            </div>
+            <FormControl>
+                <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
+                <OutlinedInput
+                id="component-outlined"
+                value={name}
+                onChange={()=>{}}
+                label="Nombre"
+                />
+            </FormControl>
+        </span>
+        <FormUserDataCreateUser pacienteOrDoctor={step}/>
+        {!step && <h1>DOCTOR</h1>}
         <BasicButtons
             onClick={()=>{}}
             variantName="contained"

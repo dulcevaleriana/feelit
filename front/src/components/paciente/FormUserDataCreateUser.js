@@ -3,8 +3,9 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import BasicSelect from '../UIElements/BasicSelect';
 
-export default function FormUserDataCreateUser() {
+export default function FormUserDataCreateUser(props) {
     const [name, setName] = React.useState('Escriba aquí su nombre');
     const [telefono, setTelefono] = React.useState('Escriba aquí su teléfono');
     const [correo, setCorreo] = React.useState('Escriba aquí su correo');
@@ -20,6 +21,33 @@ export default function FormUserDataCreateUser() {
     const handleChangeCorreo = (event) => {
         setCorreo(event.target.value);
     };
+
+    const DUMfilterArray = [
+        {
+            value:10,
+            name:"nombre especialidad"
+        },
+        {
+            value:20,
+            name:"nombre especialidad"
+        },
+        {
+            value:30,
+            name:"nombre especialidad"
+        },
+        {
+            value:40,
+            name:"nombre especialidad"
+        },
+        {
+            value:50,
+            name:"nombre especialidad"
+        },
+        {
+            value:60,
+            name:"nombre especialidad"
+        },
+    ]
 
     return <Box>
         <FormControl>
@@ -67,6 +95,13 @@ export default function FormUserDataCreateUser() {
             label="Correo"
             />
         </FormControl>
+        {!(props.pacienteOrDoctor) && <FormControl>
+            <label>Elige tu medico de preferencia, fecha y hora de la cita</label>
+            <BasicSelect
+                name="Filtrar por especialidad"
+                filterArray={DUMfilterArray}
+            />
+        </FormControl>}
         <h5>* Al llenar estos campos esta de acuerdo con crear una cuenta para tener su cita</h5>
     </Box>
 }
