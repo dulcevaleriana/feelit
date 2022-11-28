@@ -5,6 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormUserDataCreateUser from "../../components/paciente/FormUserDataCreateUser";
+import AddDayAndTimeWork from "../../components/paciente/AddDayAndTimeWork";
 
 
 export default function CreateUserOrDoctor() {
@@ -58,7 +59,7 @@ export default function CreateUserOrDoctor() {
             </FormControl>
         </span>
         <FormUserDataCreateUser pacienteOrDoctor={step}/>
-        {!step && <h1>DOCTOR</h1>}
+        {!step && <AddDayAndTimeWork/>}
         <BasicButtons
             onClick={()=>{}}
             variantName="contained"
