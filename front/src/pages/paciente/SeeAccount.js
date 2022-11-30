@@ -1,5 +1,6 @@
 import React from 'react';
 import FormControl from '@mui/material/FormControl';
+import { useHistory } from 'react-router-dom';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faTrash, faPen, faEye } from '@fortawesome/free-solid-svg-icons';
 import NestedModal from "../../components/UIElements/NestedModal";
@@ -104,6 +105,7 @@ const DUMMY_DATA = [
 ]
 
 export default function SeeAccount(){
+    const history = useHistory();
 
     return(
         <div className='class-SeeAccount'>
@@ -113,7 +115,7 @@ export default function SeeAccount(){
                 </div>
                 <FormControl>
                     <BasicButtons
-                        onClick={()=>{}}
+                        onClick={()=>history.push(`/EditUserOrDoctor/${false}`)}
                         variantName="contained"
                         buttonName={"Editar"}
                         className={""}

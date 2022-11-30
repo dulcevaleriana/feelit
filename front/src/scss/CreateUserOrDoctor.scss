@@ -103,3 +103,14 @@
         justify-content: end;
     }
 }
+
+.class-editUser > span:first-child > div:first-child {
+    display: grid;
+    gap: 20px 0;
+    grid-template-columns: auto;
+    text-align: center;
+}
+
+.class-editUser > span:first-child > div:first-child label:first-child {
+    grid-column: 1;
+}
