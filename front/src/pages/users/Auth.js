@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Input from '../../components/UIElements/InputComponent';
 import {
   VALIDATOR_EMAIL,
@@ -11,11 +11,14 @@ import ModalComponent from '../../components/UIElements/ModalComponent';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import ImageUpload from '../../components/UIElements/ImageUpload';
 import { useHistory } from 'react-router-dom';
+import NestedModal from '../../components/UIElements/NestedModal';
+import BasicButtons from '../../components/UIElements/BasicButtons-MUI';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
   const History = useHistory();
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [modalDeleteAccount, setModalDeleteAccount] = useState(false);
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -105,8 +108,33 @@ const Auth = () => {
     }
   };
 
+  useEffect(()=>{
+      setModalDeleteAccount(localStorage.popUpAccountDeleted);
+      console.log("popUpAccountDeleted",localStorage.popUpAccountDeleted)
+  },[modalDeleteAccount])
+
+  const handleClose = () => {
+      localStorage.removeItem("popUpAccountDeleted")
+      setModalDeleteAccount(false);
+  }
+
   return (
     <>
+      <NestedModal
+          withButton={false}
+          open={modalDeleteAccount}
+          handleClose={handleClose}
+          title="Cuenta eliminada"
+          message="Dulce, su cuenta fue eliminada"
+          cancelButton={false}
+          buttonOptions={
+              <BasicButtons
+                  onClick={handleClose}
+                  variantName="contained"
+                  buttonName={"Entendido"}
+              />
+          }
+      />
       <ModalComponent
         headerTitle='You can not access for now'
         show={error}

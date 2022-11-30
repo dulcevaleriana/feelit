@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import FormControl from '@mui/material/FormControl';
 import { useHistory } from 'react-router-dom';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faTrash, faPen, faEye } from '@fortawesome/free-solid-svg-icons';
 import NestedModal from "../../components/UIElements/NestedModal";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const DUMMY_DATA = [
     {
@@ -106,6 +107,13 @@ const DUMMY_DATA = [
 
 export default function SeeAccount(){
     const history = useHistory();
+    const auth = useContext(AuthContext);
+
+    const deleteAccount = () => {
+        localStorage.setItem("popUpAccountDeleted",true);
+        auth.logout();
+        history.push("/auth");
+    }
 
     return(
         <div className='class-SeeAccount'>
@@ -127,11 +135,11 @@ export default function SeeAccount(){
                         icon={faTrash}
                         variantName="contained"
                         title="Eliminar Cuenta"
-                        message="Dulce, estas segura que quieres eliminar esta cita?"
+                        message="Dulce, estas segura que quieres eliminar tu cuenta?"
                         cancelButton={true}
                         buttonOptions={
                             <BasicButtons
-                                onClick={()=>{}}
+                                onClick={deleteAccount}
                                 variantName="contained"
                                 buttonName={"Eliminar"}
                             />
