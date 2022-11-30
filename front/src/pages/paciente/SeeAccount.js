@@ -142,37 +142,41 @@ export default function SeeAccount(){
                     <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
                 </div>
                 <div>
-                    <h5>Tipo de cita</h5>
-                    <label>oooooo</label>
+                    <h5>Nombre</h5>
+                    <label>Dulce Guzman</label>
                 </div>
                 <div>
-                    <h5>Tipo de cita</h5>
-                    <label>oooooo</label>
+                    <h5>Cédula</h5>
+                    <label>000-0000000-0</label>
                 </div>
                 <div>
-                    <h5>Tipo de cita</h5>
-                    <label>oooooo</label>
+                    <h5>Teléfono</h5>
+                    <label>849-000-0000</label>
                 </div>
                 <div>
-                    <h5>Tipo de cita</h5>
-                    <label>oooooo</label>
+                    <h5>Rol</h5>
+                    <label>Paciente</label>
                 </div>
                 <div>
-                    <h5>Tipo de cita</h5>
-                    <label>oooooo</label>
+                    <h5>Correo</h5>
+                    <label>Paciente@paciente.com</label>
+                </div>
+                <div>
+                    <h5>Horario laboral</h5>
+                    <label>M - T - T || 2:00 pm - 6:00 pm</label>
                 </div>
             </div>
             <div>
-                <div>
-                    <h4>Gestionar mis citas Recientes</h4>
-                    <BasicButtons
-                        onClick={()=>{}}
-                        variantName="contained"
-                        buttonName={"Ver más"}
-                        className={""}
-                        iconName={faEye}
-                    />
-                </div>
+                <h4>Gestionar mis citas Recientes</h4>
+                <BasicButtons
+                    onClick={()=>{}}
+                    variantName="contained"
+                    buttonName={"Ver más"}
+                    className={""}
+                    iconName={faEye}
+                />
+            </div>
+            <div>
                 {DUMMY_DATA.map((index, key)=>(
                     <div key={key}>
                         <div>
