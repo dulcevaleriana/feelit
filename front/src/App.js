@@ -20,6 +20,7 @@ import EnviarResultados from './pages/EnviarResultados/EnviarResultados';
 import EditOrSeeAgendarCita from './pages/agendarCita/EditOrSeeAgendarCita';
 import EditOrSeeEnviarResultados from './components/EnviarResultados/EditOrSeeEnviarResultados';
 import CreateUserOrDoctor from './pages/paciente/CreateUserOrDoctor';
+import SeeAccount from './pages/paciente/SeeAccount';
 
 const Home = lazy(() => import('./pages/Home'));
 const Users = lazy(() => import('./pages/users/Users'));
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/AgendarCita/EditOrSeeDetails" component={EditOrSeeAgendarCita} exact />
         <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
         <Route path="/EnviarResultados/EditOrSeeDetails" component={EditOrSeeEnviarResultados} exact />
+        <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
 
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>

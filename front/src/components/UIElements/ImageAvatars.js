@@ -10,10 +10,10 @@ export default function ImageAvatars() {
   return (
     <Stack direction="row" spacing={2} className="class-ImageAvatars">
         {auth.isLoggedIn ? (
-            <Link to="/" onClick={auth.logout}>
+            <Link to="/SeeAccount/:pacienteId">
               <span>
                 <h4>Welcome</h4>
-                <h5>Remy Sharp</h5>
+                <h5><span>Remy Sharp ||</span> <span onClick={auth.logout}>Log Out</span></h5>
               </span>
               <Avatar alt="Remy Sharp" src="https://th-thumbnailer.cdn-si-edu.com/5a79C6jJ8BrChMX5tgEKiMI_qqo=/1000x750/filters:no_upscale():focal(792x601:793x602)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/52/e4/52e44474-c2dc-41e0-bb77-42a904695196/this-image-shows-a-portrait-of-dragon-man-credit-chuang-zhao_web.jpg" />
             </Link>
