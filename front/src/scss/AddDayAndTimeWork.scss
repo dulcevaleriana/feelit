@@ -1,7 +1,9 @@
 .class-AddDayAndTimeWork {
     display: grid;
-    grid-template-rows: 76px auto;
+    grid-template-rows: 76px max-content max-content max-content;
     gap: 20px;
+    max-height: 511px;
+    overflow-y: auto;
 
     form {
         background: #e9e9e9;
@@ -23,5 +25,20 @@
         border-radius: 10px;
         align-items: center;
         gap: 20px;
+        max-height: 51px;
+        justify-content: space-between;
+
+        > span {
+            display: flex;
+            gap: 20px;
+        }
+
+        > div:last-child button  {
+            height: 50px;
+
+            svg {
+                position: absolute;
+            }
+        }
     }
 }

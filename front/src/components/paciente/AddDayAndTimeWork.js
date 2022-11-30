@@ -43,21 +43,23 @@ const DUMfilterArray = [
 export default function AddDayAndTimeWork(){
     const [timeStart, setTimeStart] = useState(dayjs('2014-08-18T21:11:54'));
     const [timeEnds, setTimeEnds] = useState(dayjs('2014-08-18T21:11:54'));
+    const [num, setNum] = useState(0);
     const [mapTimeCreated, setMapTimeCreated] = useState([]);
-
-    console.log("timeStart",timeStart)
-    console.log("timeEnds",timeEnds)
 
     const AddDayAndTimeWorkFuntion = () => {
         setMapTimeCreated([
             ...mapTimeCreated,
             {
+                id:num,
                 day:"LU",
                 timeStart:"0:00",
                 timeEnds:"0:00"
             }
         ])
+        setNum(num + 1)
     }
+
+    console.log("mapTimeCreated",mapTimeCreated)
 
     return(
         <div className='class-AddDayAndTimeWork'>
@@ -91,15 +93,20 @@ export default function AddDayAndTimeWork(){
                     variantName="contained"
                     className=""
                     iconName={faAdd}
+                    disabled={mapTimeCreated.length >= 7}
                 />
             </form>
-            {mapTimeCreated.map((index,key)=>(
-                <div>
-                    <h4>{index.day}</h4>
-                    <h4>{index.timeStart}</h4>
-                    <h4>{index.timeEnds}</h4>
+            {mapTimeCreated.map((index)=>(
+                <div key={index.id}>
+                    <span>
+                        <h4>{index.day}</h4>
+                        <h4>{index.timeStart}</h4>
+                        <h4>{index.timeEnds}</h4>
+                    </span>
                     <BasicButtons
-                        onClick={()=>{}}
+                        onClick={() => {
+                            setMapTimeCreated((item)=> item.filter((elem)=> elem.id === mapTimeCreated.id));
+                        }}
                         variantName="contained"
                         className=""
                         iconName={faX}
