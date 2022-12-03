@@ -14,7 +14,7 @@ export default function FormUserDataCreateUser(props) {
                 label={index.label}
                 validators={index.validators}
                 errorText={index.errorText}
-                onInput={()=> index.onInput}
+                onInput={index.onInput}
                 filterArray={index.filterArray ?? index.filterArray}
             />
         ))}

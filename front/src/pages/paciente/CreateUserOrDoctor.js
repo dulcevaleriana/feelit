@@ -39,10 +39,9 @@ export default function CreateUserOrDoctor() {
         false
     );
 
-    const switchDoctorOrPacient = (boolean) => {
-        setStep(boolean)
+    const switchDoctorOrPacient = () => {
 
-        if(boolean){
+        if(step){
             setFormData(
                 {
                     name: {
@@ -68,7 +67,7 @@ export default function CreateUserOrDoctor() {
                 },
                 false
             )
-            console.log("step true",formState.inputs)
+            // console.log("step true",formState.inputs)
         } else{
             setFormData(
                 {
@@ -99,15 +98,12 @@ export default function CreateUserOrDoctor() {
                 },
                 false
             )
-            console.log("step false",formState.inputs)
+            // console.log("step false",formState.inputs)
         }
     }
 
     const CreateDoctorOrPacienteFunction = async event => {
-        alert("HEREEEE")
         event.preventDefault();
-
-        console.log("formState.inputs",formState.inputs)
         console.log("step",step)
 
         if(step){
@@ -116,6 +112,7 @@ export default function CreateUserOrDoctor() {
             } catch(err){}
         } else{
             try{
+                alert("HEREEEE")
                 const formData = new FormData()
                 formData.append('name',formState.inputs.name.value)
                 formData.append('password',formState.inputs.password.value)
@@ -140,17 +137,23 @@ export default function CreateUserOrDoctor() {
                     address: "calle sadas santo domingo"
                 })
 
+                console.log("formData",formData)
+                console.log("formState.inputs",formState)
+
                 await sendRequest(
                   process.env.REACT_APP_ + "doctor/createDoctor",
                   'POST',
                   formData
                 )
 
-                console.log("formData",formData)
             } catch(err){}
         }
 
     }
+
+    useEffect(()=>{
+        switchDoctorOrPacient()
+    },[step])
 
     useEffect(()=>{
         localStorage.removeItem("stepLS")
@@ -170,13 +173,13 @@ export default function CreateUserOrDoctor() {
                 <FormControl>
                     <label>Elige tu medico de preferencia, fecha y hora de la cita</label>
                     <BasicButtons
-                        onClick={()=> switchDoctorOrPacient(true)}
+                        onClick={()=> setStep(true)}
                         variantName="contained"
                         buttonName="Paciente"
                         className=""
                     />
                     <BasicButtons
-                        onClick={()=> switchDoctorOrPacient(false)}
+                        onClick={()=> setStep(false)}
                         variantName="contained"
                         buttonName="Doctor/a"
                         className=""
@@ -206,7 +209,7 @@ export default function CreateUserOrDoctor() {
                         label:"Nombre",
                         validators:[],
                         errorText:"Please enter a valid Nombre.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -215,7 +218,7 @@ export default function CreateUserOrDoctor() {
                         label:"Cédula",
                         validators:[],
                         errorText:"Please enter a valid Cédula.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -224,7 +227,7 @@ export default function CreateUserOrDoctor() {
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -233,7 +236,7 @@ export default function CreateUserOrDoctor() {
                         label:"Correo",
                         validators:[],
                         errorText:"Please enter a valid Correo.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -242,7 +245,7 @@ export default function CreateUserOrDoctor() {
                         label:"Contraseña",
                         validators:[],
                         errorText:"Please enter a valid Contraseña.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     }
                 ]
                 :
@@ -254,7 +257,7 @@ export default function CreateUserOrDoctor() {
                         label:"Nombre",
                         validators:[],
                         errorText:"Please enter a valid Nombre.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -263,7 +266,7 @@ export default function CreateUserOrDoctor() {
                         label:"Cédula",
                         validators:[],
                         errorText:"Please enter a valid Cédula.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -272,7 +275,7 @@ export default function CreateUserOrDoctor() {
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -281,7 +284,7 @@ export default function CreateUserOrDoctor() {
                         label:"Correo",
                         validators:[],
                         errorText:"Please enter a valid Correo.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"input",
@@ -290,7 +293,7 @@ export default function CreateUserOrDoctor() {
                         label:"Contraseña",
                         validators:[],
                         errorText:"Please enter a valid Contraseña.",
-                        onInput:{inputHandler}
+                        onInput:inputHandler
                     },
                     {
                         element:"select",
@@ -299,7 +302,7 @@ export default function CreateUserOrDoctor() {
                         label:"Especialidad",
                         validators:[],
                         errorText:"Please enter a valid Especialidad.",
-                        onInput:{inputHandler},
+                        onInput:inputHandler,
                         filterArray:[
                             {
                                 value:10,
