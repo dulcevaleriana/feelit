@@ -59,8 +59,6 @@ export default function AddDayAndTimeWork(){
         setNum(num + 1)
     }
 
-    console.log("mapTimeCreated",mapTimeCreated)
-
     return(
         <div className='class-AddDayAndTimeWork'>
             <form>

@@ -66,9 +66,8 @@ const Auth = () => {
   };
 
   const authSubmitHandler = async event => {
+    alert("HEREEEEE")
     event.preventDefault();
-
-    console.log(formState.inputs)
 
     if(isLoginMode){
         try{
@@ -102,15 +101,12 @@ const Auth = () => {
         )
 
         auth.login(responseData.userId, responseData.token);
-        console.log("formData",formData)
-
       } catch (err) {}
     }
   };
 
   useEffect(()=>{
       setModalDeleteAccount(localStorage.popUpAccountDeleted);
-      console.log("popUpAccountDeleted",localStorage.popUpAccountDeleted)
   },[modalDeleteAccount])
 
   const handleClose = () => {
