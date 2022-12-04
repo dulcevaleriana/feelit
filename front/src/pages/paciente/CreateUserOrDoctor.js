@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faCamera, faCheck } from '@fortawesome/free-solid-svg-icons';
 import FormControl from '@mui/material/FormControl';
@@ -7,8 +7,10 @@ import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import ModalComponent from '../../components/UIElements/ModalComponent';
 import AddDayAndTimeWork from "../../components/paciente/AddDayAndTimeWork";
+import { AuthContext } from "../../shared/context/auth-context";
 
 export default function CreateUserOrDoctor() {
+    const auth = useContext(AuthContext);
     const [step, setStep] = useState(true);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -67,7 +69,6 @@ export default function CreateUserOrDoctor() {
                 },
                 false
             )
-            // console.log("step true",formState.inputs)
         } else{
             setFormData(
                 {
@@ -126,18 +127,16 @@ export default function CreateUserOrDoctor() {
                 },
                 false
             )
-            // console.log("step false",formState.inputs)
         }
     }
 
     const CreateDoctorOrPacienteFunction = async event => {
         event.preventDefault();
-        console.log("step",step)
 
         if(step){
             alert("NEWWWWWW")
             try{
-                await sendRequest(
+                const responseData = await sendRequest(
                     process.env.REACT_APP_ + "paciente/createPaciente",
                     'POST',
                     JSON.stringify({
@@ -151,11 +150,13 @@ export default function CreateUserOrDoctor() {
                         'Content-Type': 'application/json'
                     },
                 )
-                console.log("formState.inputs",formState.inputs)
+
+                auth.login(responseData.userId, responseData.token);
+
         } catch(err){}
         } else{
             try{
-                await sendRequest(
+                const responseData = await sendRequest(
                   process.env.REACT_APP_ + "doctor/createDoctor",
                   'POST',
                   JSON.stringify({
@@ -174,6 +175,8 @@ export default function CreateUserOrDoctor() {
                     'Content-Type': 'application/json'
                   },
                 )
+
+                auth.login(responseData.userId, responseData.token);
             } catch(err){}
         }
 
@@ -346,10 +349,8 @@ export default function CreateUserOrDoctor() {
                 variantName="contained"
                 buttonName="Listo"
                 iconName={faCheck}
+                type="submit"
             />
-            <button>
-                SAVE
-            </button>
         </form>
     </>
 }
