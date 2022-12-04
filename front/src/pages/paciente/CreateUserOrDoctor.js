@@ -92,9 +92,37 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     specialty: {
-                        value: '',
-                        isValid: false
-                    }
+                        value: "pediatra",
+                        isValid: true
+                    },
+                    laborDays: {
+                        value: {
+                            su: false,
+                            mo: true,
+                            tu: true,
+                            we: true,
+                            th: true,
+                            fr: true,
+                            sa: false
+                        },
+                        isValid: true
+                    },
+                    hourStart: {
+                        value: "8:00",
+                        isValid: true
+                    },
+                    hourFinish: {
+                        value: "17:00",
+                        isValid: true
+                    },
+                    location: {
+                        value: {
+                            lan: 23.42352,
+                            lng: 43.35453,
+                            address: "calle sadas santo domingo"
+                        },
+                        isValid: true
+                    },
                 },
                 false
             )
@@ -107,45 +135,45 @@ export default function CreateUserOrDoctor() {
         console.log("step",step)
 
         if(step){
+            alert("NEWWWWWW")
             try{
-
-            } catch(err){}
+                await sendRequest(
+                    process.env.REACT_APP_ + "paciente/createPaciente",
+                    'POST',
+                    JSON.stringify({
+                        cedula: formState.inputs.cedula.value,
+                        email: formState.inputs.email.value,
+                        password: formState.inputs.password.value,
+                        telefono: formState.inputs.telefono.value,
+                        name: formState.inputs.name.value,
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                )
+                console.log("formState.inputs",formState.inputs)
+        } catch(err){}
         } else{
             try{
-                alert("HEREEEE")
-                const formData = new FormData()
-                formData.append('name',formState.inputs.name.value)
-                formData.append('password',formState.inputs.password.value)
-                formData.append('cedula',formState.inputs.cedula.value)
-                formData.append('email', formState.inputs.email.value)
-                formData.append('telefono', formState.inputs.telefono.value)
-                formData.append('specialty', "pediatra")
-                formData.append('laborDays', {
-                    su: false,
-                    mo: true,
-                    tu: true,
-                    we: true,
-                    th: true,
-                    fr: true,
-                    sa: false
-                })
-                formData.append('hourStart', "8:00")
-                formData.append('hourFinish', "17:00")
-                formData.append('location', {
-                    lan: 23.42352,
-                    lng: 43.35453,
-                    address: "calle sadas santo domingo"
-                })
-
-                console.log("formData",formData)
-                console.log("formState.inputs",formState)
-
                 await sendRequest(
                   process.env.REACT_APP_ + "doctor/createDoctor",
                   'POST',
-                  formData
+                  JSON.stringify({
+                    name: formState.inputs.name.value,
+                    password: formState.inputs.password.value,
+                    cedula: formState.inputs.cedula.value,
+                    email: formState.inputs.email.value,
+                    specialty: formState.inputs.specialty.value,
+                    telefono: formState.inputs.telefono.value,
+                    laborDays: formState.inputs.laborDays.value,
+                    hourStart: formState.inputs.hourStart.value,
+                    hourFinish: formState.inputs.hourFinish.value,
+                    location: formState.inputs.location.value,
+                  }),
+                  {
+                    'Content-Type': 'application/json'
+                  },
                 )
-
             } catch(err){}
         }
 
@@ -204,7 +232,7 @@ export default function CreateUserOrDoctor() {
                 arrayInputs={step ? [
                     {
                         element:"input",
-                        id:"Nombre",
+                        id:"name",
                         type:"text",
                         label:"Nombre",
                         validators:[],
@@ -213,7 +241,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Cédula",
+                        id:"cedula",
                         type:"text",
                         label:"Cédula",
                         validators:[],
@@ -222,7 +250,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Teléfono",
+                        id:"telefono",
                         type:"tel",
                         label:"Teléfono",
                         validators:[],
@@ -231,7 +259,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Correo",
+                        id:"email",
                         type:"email",
                         label:"Correo",
                         validators:[],
@@ -240,7 +268,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Contraseña",
+                        id:"password",
                         type:"password",
                         label:"Contraseña",
                         validators:[],
@@ -252,7 +280,7 @@ export default function CreateUserOrDoctor() {
                 [
                     {
                         element:"input",
-                        id:"Nombre",
+                        id:"name",
                         type:"text",
                         label:"Nombre",
                         validators:[],
@@ -261,7 +289,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Cédula",
+                        id:"cedula",
                         type:"text",
                         label:"Cédula",
                         validators:[],
@@ -270,7 +298,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Teléfono",
+                        id:"telefono",
                         type:"tel",
                         label:"Teléfono",
                         validators:[],
@@ -279,7 +307,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Correo",
+                        id:"email",
                         type:"email",
                         label:"Correo",
                         validators:[],
@@ -288,7 +316,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"input",
-                        id:"Contraseña",
+                        id:"password",
                         type:"password",
                         label:"Contraseña",
                         validators:[],
@@ -297,7 +325,7 @@ export default function CreateUserOrDoctor() {
                     },
                     {
                         element:"select",
-                        id:"Especialidad",
+                        id:"specialty",
                         type:"select",
                         label:"Especialidad",
                         validators:[],
@@ -305,29 +333,9 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler,
                         filterArray:[
                             {
-                                value:10,
+                                value:"62b15e069cb7c9046ab0aef2",
                                 name:"nombre especialidad"
-                            },
-                            {
-                                value:20,
-                                name:"nombre especialidad"
-                            },
-                            {
-                                value:30,
-                                name:"nombre especialidad"
-                            },
-                            {
-                                value:40,
-                                name:"nombre especialidad"
-                            },
-                            {
-                                value:50,
-                                name:"nombre especialidad"
-                            },
-                            {
-                                value:60,
-                                name:"nombre especialidad"
-                            },
+                            }
                         ]
                     }
                 ]}

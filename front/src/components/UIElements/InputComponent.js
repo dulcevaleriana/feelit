@@ -72,8 +72,11 @@ const Input = props => {
       <FormControl>
         <label>{props.label}</label>
         <BasicSelect
-            name={props.placeholder}
-            filterArray={props.filterArray}
+          id={props.id}
+          value={inputState.value}
+          onChange={changeHandler}
+          name={props.placeholder}
+          filterArray={props.filterArray}
         />
       </FormControl>
     ) : (
