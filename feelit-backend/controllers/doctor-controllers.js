@@ -1,6 +1,8 @@
 const httpError = require('../models/http-error');
 const {validationResult} = require('express-validator');
 const Doctor = require('../models/doctor');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 //get all doctor
 const getAllDoctor = async (req,res,next)=>{
@@ -62,9 +64,17 @@ const postDoctor = async (req,res,next)=>{
         location
     } = req.body;
 
+    let hashPassword;
+
+    try{
+        hashPassword = await bcrypt.hash(password, 12);
+    } catch(err){
+        return next(new httpError('Could not create Doctor, please try again',500));
+    }
+
     const createDoctor = new Doctor({
         name,
-        password,
+        password: hashPassword,
         cedula,
         email,
         specialty,
@@ -73,7 +83,7 @@ const postDoctor = async (req,res,next)=>{
         hourStart,
         hourFinish,
         location,
-        status:true  
+        status:true
     })
 
     try {
@@ -82,7 +92,7 @@ const postDoctor = async (req,res,next)=>{
 
         if(ifCedulaExist){
             throw new httpError(`a user with this cedula: ${cedula} is already exist`,322)
-        } 
+        }
         if(ifEmailExist){
             throw new httpError(`a user with this email: ${email} is already exist`,322)
         }
@@ -92,7 +102,23 @@ const postDoctor = async (req,res,next)=>{
         return next(new httpError(`could not create this doctor account, try again please ${err}`,500))
     }
 
-    res.json({message:'this doctor was created succesfully!!',createDoctor: createDoctor.toObject({getters:true})})
+    let token;
+    try {
+        token = jwt.sign(
+            {
+                doctorId: createDoctor.id,
+                email: createDoctor.email
+            },
+            process.env.JWT_KEY,
+            {
+                expiresIn: '1h'
+            }
+        );
+    } catch(err){
+        return next(new httpError('Could not create user, please try again',400));
+    }
+
+    res.json({doctorId: createDoctor.id,email: createDoctor.email,token: token})
 }
 //patch a doctor
 const patchDoctor = async (req,res,next) => {
@@ -114,6 +140,13 @@ const patchDoctor = async (req,res,next) => {
         location
     } = req.body;
     let updateDoctor;
+    let hashPassword;
+
+    try{
+        hashPassword = await bcrypt.hash(password, 12);
+    } catch(err){
+        return next(new httpError('Could not create Doctor, please try again',500));
+    }
 
     try {
         updateDoctor = await Doctor.findById(doctorId);
@@ -123,7 +156,7 @@ const patchDoctor = async (req,res,next) => {
         }
 
         updateDoctor.name = name;
-        updateDoctor.password = password;
+        updateDoctor.password = hashPassword;
         updateDoctor.cedula = cedula;
         updateDoctor.email = email;
         updateDoctor.specialty = specialty;
@@ -132,7 +165,7 @@ const patchDoctor = async (req,res,next) => {
         updateDoctor.hourStart = hourStart;
         updateDoctor.hourFinish = hourFinish;
         updateDoctor.location = location;
-        
+
         await updateDoctor.save();
     } catch (err) {
         return next(new httpError(`Somethig went wrong, please try again 2 ${err}`,500));
@@ -195,7 +228,34 @@ const loginDoctor = async (req,res,next) => {
         return next(new httpError(`something went wrong ${err}`,404))
     }
 
-    res.json({message:`Welcome ${loginDoctor.name} you're logging`})
+    let isValidPassword;
+    try {
+        isValidPassword = await bcrypt.compare(password, loginDoctor.password);
+    } catch(err){
+        return next(new httpError(`login failed, review your credentials and try again ${err}`,500))
+    }
+
+    if(!isValidPassword){
+        return next(new httpError(`login failed, review your credentials and try again`,400))
+    }
+
+    let token;
+    try {
+        token = jwt.sign(
+            {
+                doctorId: loginDoctor.id,
+                email: loginDoctor.email
+            },
+            process.env.JWT_KEY,
+            {
+                expiresIn: '1h'
+            }
+        );
+    } catch(err){
+        return next(new httpError('Could not create user, please try again',400));
+    }
+
+    res.json({doctorId: loginDoctor.id,email: loginDoctor.email,token: token})
 }
 
 exports.getAllDoctor = getAllDoctor;
