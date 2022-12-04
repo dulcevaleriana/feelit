@@ -1,0 +1,166 @@
+.class-EditOrSeeDetailsComponent {
+    padding: 10px 5%;
+    display: grid;
+    grid-template-columns: 200px auto;
+    gap: 20px;
+    grid-template-rows: auto auto;
+
+    > div:first-child {
+        grid-column: 1 / span 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        > div:first-child {
+            gap: 20px;
+            display: flex;
+        }
+
+        > div:nth-child(2) {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+    }
+
+    > div:nth-child(2) {
+        display: grid;
+        gap: 20px;
+        text-align: center;
+
+        > div:first-child {
+            display: inline-block;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 50%;
+            grid-row: 1 / spam 4;
+
+            img {
+                width: auto;
+                height: 100%;
+                margin-left: -50px;
+            }
+        }
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 20px;
+        grid-template-rows: 56px auto;
+        width: 100%;
+        max-width: 1200px;
+        align-content: center;
+
+        > div:last-child {
+            grid-row: 3;
+            grid-column: 1 / span 3;
+        }
+    }
+}
+
+.class-seeDetailConsultaRapida {
+    fieldset.MuiOutlinedInput-notchedOutline.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+        border: none;
+    }
+    .MuiInputAdornment-root.MuiInputAdornment-positionEnd.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-1laqsz7-MuiInputAdornment-root {
+        display: none;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        max-width: 100%;
+
+        svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.MuiSelect-icon.MuiSelect-iconOutlined.Mui-disabled.css-hfutr2-MuiSvgIcon-root-MuiSelect-icon {
+            display: none;
+        }
+
+        > div:nth-child(3), > div:nth-child(4) {
+            display: grid;
+            padding: 0 14px;
+            color: #a79e9e;
+
+            > h5 { color: #a79e9e;}
+        }
+        > div:nth-child(5) {
+            display: grid;
+            padding: 0 14px;
+            color: #a79e9e;
+
+            span {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+                grid-template-columns: auto auto;
+                display: grid;
+                max-width: 125px;
+
+                svg {
+                    position: absolute;
+                }
+            }
+
+            > div:last-child {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+
+                button svg {
+                    position: absolute;
+                }
+            }
+        }
+        .MuiFormControl-root.css-1nrlq1o-MuiFormControl-root:last-child label {
+            padding: 0 13px;
+            color: #a7a5a5;
+            font-size: 10pt;
+        }
+        textarea {
+            border: none;
+            background: none;
+            color: #a7a5a5;
+            font-size: 12pt;
+        }
+    }
+}
+
+.class-EditOrSeeEnviarResultados {
+
+    form {
+        grid-template-rows: 78px auto;
+        max-width: inherit;
+
+        > div:nth-child(1),
+        > div:nth-child(2) {
+            display: grid;
+            padding: 0 14px;
+            color: #a79e9e;
+
+            h5 {
+                color: #a79e9e;
+            }
+        }
+
+        > div:last-child {
+            grid-row: 2;
+            grid-column: 1 / span 5;
+        }
+        > div:nth-child(4) {
+            display: grid;
+            padding: 0 14px;
+            color: #a79e9e;
+        }
+    }
+
+    > div:nth-child(4) {
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        gap: 20px;
+
+        h4 {
+            grid-column: 1 / span 4;
+        }
+    }
+}

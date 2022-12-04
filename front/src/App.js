@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import "./scss/GlobalStyle.scss";
@@ -11,8 +11,17 @@ import "./scss/GlobalStyle.scss";
 // import Auth from './pages/users/Auth';
 
 import ConsultaRapida from './pages/consultasRapidas/ConsultaRapida';
+import ReadConsultaRapida from './pages/consultasRapidas/ReadConsultaRapida';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
+import EditOrSeeDetailsComponent from './pages/consultasRapidas/EditOrSeeDetailsComponent';
+import AgendarCita from './pages/agendarCita/AgendarCita';
+import EnviarResultados from './pages/EnviarResultados/EnviarResultados';
+import EditOrSeeAgendarCita from './pages/agendarCita/EditOrSeeAgendarCita';
+import EditOrSeeEnviarResultados from './components/EnviarResultados/EditOrSeeEnviarResultados';
+import CreateUserOrDoctor from './pages/paciente/CreateUserOrDoctor';
+import SeeAccount from './pages/paciente/SeeAccount';
+import EditUserOrDoctor from './pages/paciente/EditUserOrDoctor';
 
 const Home = lazy(() => import('./pages/Home'));
 const Users = lazy(() => import('./pages/users/Users'));
@@ -24,6 +33,9 @@ const Auth = lazy(() => import('./pages/users/Auth'));
 const App = () => {
   const { token, login, logout, userId } = useAuth();
 
+  const [editConsultaRapida, setEditConsultaRapida] = useState(false);
+  const [seeDetailConsultaRapida, setSeeDetailConsultaRapida] = useState(false);
+
   let routes;
 
   if (token) {
@@ -31,6 +43,15 @@ const App = () => {
       <Switch>
         <Route path="/" component={Home} exact/>
         <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
+        <Route path="/consultaRapida/ReadConsultaRapida" component={ReadConsultaRapida} exact/>
+        <Route path="/consultaRapida/EditOrSeeDetails" component={EditOrSeeDetailsComponent} exact/>
+        <Route path="/AgendarCita/create" component={AgendarCita} exact />
+        <Route path="/AgendarCita/EditOrSeeDetails" component={EditOrSeeAgendarCita} exact />
+        <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
+        <Route path="/EnviarResultados/EditOrSeeDetails" component={EditOrSeeEnviarResultados} exact />
+        <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
+        <Route path="/EditUserOrDoctor/:pacienteOrDoctor" component={EditUserOrDoctor} exact />
+
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
         <Route path="/place/new" component={NewPlace} exact/>
@@ -41,6 +62,8 @@ const App = () => {
   } else {
     routes = (
       <Switch>
+        <Route path="/CreateUserOrDoctor" component={CreateUserOrDoctor} exact />
+
         <Route path="/" component={Home} exact/>
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
@@ -56,7 +79,11 @@ const App = () => {
       token: token,
       userId: userId,
       login: login,
-      logout: logout
+      logout: logout,
+      editConsultaRapida: editConsultaRapida,
+      seeDetailConsultaRapida: seeDetailConsultaRapida,
+      setEditConsultaRapida: setEditConsultaRapida,
+      setSeeDetailConsultaRapida: setSeeDetailConsultaRapida
     }}
   >
     <Router>

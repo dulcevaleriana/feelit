@@ -16,19 +16,31 @@ const MainNavigation = (props) => {
     const arrayLinks_isLoggedIn_true = [
         {
             to:"/consultaRapida/Create",
-            name:"Consulta Rapida",
+            name:"Consulta Flash",
+        },
+        {
+            to:"/AgendarCita/create",
+            name:"Agendar Cita",
+        },
+        {
+            to:"/EnviarResultados/create",
+            name:"Enviar Resultados",
+        },
+        {
+            to:"/consultaRapida/ReadConsultaRapida",
+            name:"Gestionar Consultas",
         },
         {
             to:"/users",
-            name:"All User",
+            name:"",
         },
         {
-            to:`/users/${auth.userId}/UserPlaces`,
-            name:"User's places",
+            to:``,
+            name:"",
         },
         {
-            to:"/place/new",
-            name:"Create Places",
+            to:"",
+            name:"",
         }
     ]
 
@@ -55,13 +67,7 @@ const MainNavigation = (props) => {
                 arrayLinks={auth.isLoggedIn ? arrayLinks_isLoggedIn_true : arrayLinks_isLoggedIn_flase}
                 onClick={() => setDisplayMenu(false)}
             />
-            {auth.isLoggedIn ? (
-                <button onClick={auth.logout}>LOGOUT</button>
-            ) : (
-                <Link to="/auth">
-                    <ImageAvatars />
-                </Link>
-            )}
+            <ImageAvatars />
         </Header>
     </React.Fragment>
 }

@@ -1,0 +1,108 @@
+.class-GestionarConsultas{
+    padding: 10px 5%;
+    display: grid;
+    grid-template-rows: 132px calc(100vh - (65px + 32px + 132px + 80px)) 32px;
+
+    > div:nth-child(2){
+        display: flex;
+        gap: 6px;
+        padding: 20px 0;
+        align-items: center;
+    }
+
+    > .css-1p5q5e5-MuiStack-root {
+        display: flex;
+        align-items: flex-end;
+    }
+}
+
+.class-filterComponent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    > div:first-child {
+        display: grid;
+        grid-template-columns: 200px auto 130px;
+        gap: 20px;
+        align-items: center;
+
+        > div:nth-child(2)  {
+            display: grid;
+            grid-template-columns: 200px auto;
+        }
+
+        > div:last-child {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: 100%;
+
+            > div {
+                height: 100%;
+                width: 50%;
+
+                > button {
+                    width: 100%;
+                    position: relative;
+
+                    svg {
+                        position: absolute;
+                    }
+                }
+
+                > button:first-child {
+                    border-radius: 4px 0 0 4px;
+                }
+
+                > button:last-child {
+                    border-radius: 0 4px 4px 0;
+                }
+
+                > button.class-notSelected {
+                    background-color: #9d9d9d;
+                }
+            }
+        }
+    }
+
+    > div:last-child {
+        display: grid;
+        grid-template-columns: auto 200px 182px;
+        gap: 20px;
+        align-items: center;
+
+        > div:first-child {
+            display: flex;
+            flex-direction: revert;
+            gap: 20px;
+        }
+
+        > div:last-child {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+
+            button {
+                width: 100%;
+                position: relative;
+
+                svg {
+                    position: absolute;
+                }
+            }
+
+            > div:first-child button {
+                border-radius: 4px 0 0 4px;
+            }
+
+            > div:last-child button {
+                border-radius: 0 4px 4px 0;
+            }
+
+            button.class-notSelected {
+                background-color: #9d9d9d;
+            }
+        }
+    }
+}

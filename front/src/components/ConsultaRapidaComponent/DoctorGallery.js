@@ -41,7 +41,7 @@ export default function DoctorGallery() {
         setCounterSelect(counterSelect + 1)
     }
 
-    return <div>
+    return <div className="class-DoctorGallery">
         <h5>Elige tu medico de preferencia, fecha y hora de la cita</h5>
         <div>
             <FontAwesomeIcon 

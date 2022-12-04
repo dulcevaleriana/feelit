@@ -4,12 +4,36 @@ import StaticTimePickerDemo from '../../components/UIElements/StaticTimePickerDe
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
 import PacienteData from '../../components/ConsultaRapidaComponent/PacienteData';
 import FormPayment from '../../components/ConsultaRapidaComponent/FormPayment';
+import MessageComponent from "../../components/ConsultaRapidaComponent/MessageComponent";
 
 import FormUserData from '../../components/ConsultaRapidaComponent/FormUserData';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
+
+const DATA_TEMPORAL = [
+    {
+        title:'Nombre',
+        data:'Juana Perez'
+    },
+    {
+        title:'Teléfono',
+        data:'000-000-0000'
+    },
+    {
+        title:'Correo',
+        data:'juana.perez@gmail.com'
+    },
+    {
+        title:'Tipo de cita',
+        data:'Terapia inicial'
+    },
+    {
+        title:'Este es mi mensaje',
+        data:'Hola solo quiero decir que...'
+    }
+]
 
 export default function ConsultaRapida(){
     const [step, setStep] = useState(0);
@@ -22,11 +46,11 @@ export default function ConsultaRapida(){
         </>}
         {step === 1 && <>
             <DoctorSelected/>
-            <PacienteData/>
+            <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
             <FormPayment/>
         </>}
         {step === 2 && <>
-            <span>thank u</span>
+            <MessageComponent />
         </>}
         {step !== 2 && <>
             <BasicButtons

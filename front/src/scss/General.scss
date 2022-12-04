@@ -19,6 +19,27 @@ button {
     align-items: center;
 }
 
+.class-ImageAvatars {
+    justify-content: right;
+
+    > a {
+        display: grid;
+        grid-template-columns: auto 40px;
+        gap: 20px;
+        align-items: center;
+        text-decoration: none;
+        text-align: right;
+
+        h5 {
+            text-decoration: none;
+            color: #1976d2;
+            font-weight: bold;
+            display: flex;
+            gap: 10px;
+        }
+    }
+}
+
 /*react-transition-library*/
 
 .slide-in-left-enter {

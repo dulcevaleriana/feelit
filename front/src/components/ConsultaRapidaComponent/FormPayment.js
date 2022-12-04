@@ -21,48 +21,44 @@ export default function FormPayment(){
     >
         <h5>Realiza el pago:</h5>
         <div>
-          <ComboBox 
+          <ComboBox
             name="Tipo de seguro"
             top100Films={top100Films}
           />
         </div>
-        <TextField 
-            id="outlined-basic" 
-            label="Número de seguro" 
+        <TextField
+            id="outlined-basic"
+            label="Número de seguro"
             placeholder='0000-0000-0000-0000'
-            variant="outlined" 
+            variant="outlined"
         />
-        <TextField 
-            id="outlined-basic" 
-            label="Outlined" 
-            variant="outlined" 
+        <TextField
+            id="outlined-basic"
+            label="Nombre"
+            variant="outlined"
+            type="text"
+            placeholder='escribe el nombre de tu tarjeta'
         />
         <TextField
           id="filled-number"
-          label="Number"
+          label="Numero"
           type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
+          variant="outlined"
+          placeholder='0000-0000-0000-0000'
         />
         <TextField
           id="filled-number"
-          label="Number"
+          label="Fecha vencimiento"
           type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
+          variant="outlined"
+          placeholder='00/00'
         />
         <TextField
           id="filled-number"
-          label="Number"
+          label="CVV"
           type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
+          variant="outlined"
+          placeholder='000'
         />
     </Box>
 }

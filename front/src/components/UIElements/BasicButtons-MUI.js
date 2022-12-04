@@ -13,7 +13,7 @@ export default function BasicButtons(props) {
   if(props.to){
     return <Stack spacing={props.spacing} direction="row">
       <Link to={props.to}>
-        <Button variant={props.variantName} onClick={props.onClick} disabled={props.disabled} type={props.type}>
+        <Button variant={props.variantName} onClick={props.onClick} disabled={props.disabled} type={props.type} className={props.className}>
           <span>{props.buttonName}</span>
           {props.iconName && <FontAwesomeIcon icon={props.iconName} size="lg"  />}
         </Button>
@@ -22,7 +22,7 @@ export default function BasicButtons(props) {
   }
   return (
     <Stack spacing={props.spacing} direction="row">
-      <Button variant={props.variantName} onClick={props.onClick} disabled={props.disabled}>
+      <Button variant={props.variantName} onClick={props.onClick} disabled={props.disabled} className={props.className}>
         <span>{props.buttonName}</span>
         {props.iconName && <FontAwesomeIcon icon={props.iconName} size="lg"  />}
       </Button>
