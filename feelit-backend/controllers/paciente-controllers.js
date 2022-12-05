@@ -57,7 +57,8 @@ const postPaciente = async (req,res,next)=>{
         password: hashPassword,
         telefono,
         name,
-        status:true
+        status:true,
+        rol:'pacienteRol'
     })
 
     try {
@@ -81,7 +82,8 @@ const postPaciente = async (req,res,next)=>{
         token = jwt.sign(
             {
                 pacienteId: createPaciente.id,
-                email: createPaciente.email
+                email: createPaciente.email,
+                rol: createPaciente.rol
             },
             process.env.JWT_KEY,
             {
@@ -92,7 +94,7 @@ const postPaciente = async (req,res,next)=>{
         return next(new httpError('Could not create user, please try again',400));
     }
 
-    res.status(201).json({pacienteId: createPaciente.id, email: createPaciente.email, token: token});
+    res.status(201).json({pacienteId: createPaciente.id, email: createPaciente.email, rol: createPaciente.rol, token: token});
 }
 //patch a doctor
 const patchPaciente = async (req,res,next) => {

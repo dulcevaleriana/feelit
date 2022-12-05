@@ -5,25 +5,49 @@ const doctorSchema = mongoose.Schema({
     password:{ type:String, required:true, minlength: 6 },
     cedula:{ type:String, required:true, maxlength: 13, unique: true },
     email:{ type:String, required:true, unique: true },
-    specialty:{type:mongoose.Types.ObjectId, required:true, ref:'Specialty'},
     telefono:{ type:String, required:true, maxlength: 12 },
-    laborDays:{
-        su:{ type:Boolean, required:true },
-        mo:{ type:Boolean, required:true },
-        tu:{ type:Boolean, required:true },
-        we:{ type:Boolean, required:true },
-        th:{ type:Boolean, required:true },
-        fr:{ type:Boolean, required:true },
-        sa:{ type:Boolean, required:true }
-    },
-    hourStart:{ type:String, required:true },
-    hourFinish:{ type:String, required:true },
-    location:{
-        lan:{ type:Number, required:true },
-        lng:{ type:Number, required:true },
-        address:{ type:String, required:true }
-    },
     status:{ type:Boolean, required:true },
+    address:{type:String, require:false},
+    googleMapsLink:{type:String, require:false},
+    horario:{
+        lun:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false }
+        },
+        mar:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false },
+        },
+        mir:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false },
+        },
+        jue:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false },
+        },
+        vie:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false },
+        },
+        sab:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false },
+        },
+        dom:{
+            estado:{ type:Boolean, required:false },
+            horarioEntrada:{ type:Number, required:false },
+            horarioSalida:{ type:Number, required:false },
+        }
+    },
+    specialty:{type:mongoose.Types.ObjectId, required:true, ref:'Specialty'},
+    rol:{ type:mongoose.Types.ObjectId, required:true, ref:'Rol' },
     agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}],
     consultaRapida:[{type:mongoose.Types.ObjectId, required:true, ref:'ConsultasRapidas'}],
     enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}]

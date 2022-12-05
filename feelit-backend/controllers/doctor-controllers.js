@@ -58,10 +58,9 @@ const postDoctor = async (req,res,next)=>{
         email,
         specialty,
         telefono,
-        laborDays,
-        hourStart,
-        hourFinish,
-        location
+        address,
+        googleMapsLink,
+        horario
     } = req.body;
 
     let hashPassword;
@@ -79,11 +78,11 @@ const postDoctor = async (req,res,next)=>{
         email,
         specialty,
         telefono,
-        laborDays,
-        hourStart,
-        hourFinish,
-        location,
-        status:true
+        address,
+        googleMapsLink,
+        horario,
+        status:true,
+        rol:'doctorRol'
     })
 
     try {
@@ -107,7 +106,8 @@ const postDoctor = async (req,res,next)=>{
         token = jwt.sign(
             {
                 doctorId: createDoctor.id,
-                email: createDoctor.email
+                email: createDoctor.email,
+                rol: createDoctor.rol
             },
             process.env.JWT_KEY,
             {
@@ -118,7 +118,7 @@ const postDoctor = async (req,res,next)=>{
         return next(new httpError('Could not create user, please try again',400));
     }
 
-    res.json({doctorId: createDoctor.id,email: createDoctor.email,token: token})
+    res.json({doctorId: createDoctor.id,email: createDoctor.email, rol: createDoctor.rol, token: token})
 }
 //patch a doctor
 const patchDoctor = async (req,res,next) => {
@@ -134,10 +134,9 @@ const patchDoctor = async (req,res,next) => {
         email,
         specialty,
         telefono,
-        laborDays,
-        hourStart,
-        hourFinish,
-        location
+        address,
+        googleMapsLink,
+        horario
     } = req.body;
     let updateDoctor;
     let hashPassword;
@@ -161,10 +160,9 @@ const patchDoctor = async (req,res,next) => {
         updateDoctor.email = email;
         updateDoctor.specialty = specialty;
         updateDoctor.telefono = telefono;
-        updateDoctor.laborDays = laborDays;
-        updateDoctor.hourStart = hourStart;
-        updateDoctor.hourFinish = hourFinish;
-        updateDoctor.location = location;
+        updateDoctor.address = address;
+        updateDoctor.googleMapsLink = googleMapsLink;
+        updateDoctor.horario = horario;
 
         await updateDoctor.save();
     } catch (err) {
