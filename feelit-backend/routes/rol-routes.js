@@ -10,16 +10,18 @@ router.get('/:rId',rolControllers.getRolById)
 //post a rol
 router.post(
     '/createRol',
-    check(),
+    [check('rolName').not().isEmpty()],
     rolControllers.postRol
 )
 //patch a rol
 router.patch(
-    '/createRol',
-    check(),
+    '/patchRol',
+    [check('rolName').not().isEmpty()],
     rolControllers.pathRol
 )
 //delete a rol
 router.delete('/:rId',rolControllers.unactiveRol)
 //active a rol
 router.get('/active/:rId',rolControllers.activeRol)
+
+module.exports = router;
