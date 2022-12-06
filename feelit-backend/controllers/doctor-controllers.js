@@ -60,7 +60,7 @@ const postDoctor = async (req,res,next)=>{
         telefono,
         address,
         googleMapsLink,
-        horario
+        horario,
     } = req.body;
 
     let hashPassword;
@@ -82,7 +82,7 @@ const postDoctor = async (req,res,next)=>{
         googleMapsLink,
         horario,
         status:true,
-        rol:'doctorRol'
+        rol:'638f3dc51af87455b52cf7d4'
     })
 
     try {
@@ -202,7 +202,7 @@ const activeDoctor = async (req,res,next) => {
         return next(new httpError(`we can't find this doctor ${err}`,404))
     }
 
-    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
+    res.status(201).json({message:`doctor's account was succesfull active again, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
 }
 //login doctor
 const loginDoctor = async (req,res,next) => {
@@ -217,9 +217,6 @@ const loginDoctor = async (req,res,next) => {
 
         if(!loginDoctor){
             return next(new httpError(`we can't find your account`,404))
-        }
-        if(loginDoctor && loginDoctor.password !== password){
-            return next(new httpError(`you wrote your password wrong, try again`,404))
         }
 
     } catch (err){
@@ -242,7 +239,8 @@ const loginDoctor = async (req,res,next) => {
         token = jwt.sign(
             {
                 doctorId: loginDoctor.id,
-                email: loginDoctor.email
+                email: loginDoctor.email,
+                rol: loginDoctor.rol
             },
             process.env.JWT_KEY,
             {
@@ -253,7 +251,7 @@ const loginDoctor = async (req,res,next) => {
         return next(new httpError('Could not create user, please try again',400));
     }
 
-    res.json({doctorId: loginDoctor.id,email: loginDoctor.email,token: token})
+    res.json({doctorId: loginDoctor.id,email: loginDoctor.email,rol: loginDoctor.rol,token: token})
 }
 
 exports.getAllDoctor = getAllDoctor;

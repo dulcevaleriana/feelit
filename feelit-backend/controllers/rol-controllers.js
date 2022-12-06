@@ -54,6 +54,7 @@ const postRol = async (req,res,next) => {
         if(noDuplicateName.length === 1){
             throw new httpError('This Rol was already exist',404)
         }
+        await createRol.save();
     }catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404))
     }

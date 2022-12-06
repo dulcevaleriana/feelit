@@ -10,13 +10,13 @@ router.get('/:rId',rolControllers.getRolById)
 //post a rol
 router.post(
     '/createRol',
-    [check('rolName').not().isEmpty()],
+    check('rolName').not().isEmpty(),
     rolControllers.postRol
 )
 //patch a rol
 router.patch(
-    '/patchRol',
-    [check('rolName').not().isEmpty()],
+    '/:rId',
+    check('rolName').not().isEmpty(),
     rolControllers.pathRol
 )
 //delete a rol
