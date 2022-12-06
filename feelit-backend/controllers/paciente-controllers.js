@@ -58,7 +58,7 @@ const postPaciente = async (req,res,next)=>{
         telefono,
         name,
         status:true,
-        rol:'pacienteRol'
+        rol:'638f3ddd1af87455b52cf7d7'
     })
 
     try {
@@ -167,7 +167,7 @@ const activePaciente = async (req,res,next) => {
         return next(new httpError(`something went wrong ${err}`,500))
     }
 
-    res.status(201).json({message:`doctor's account was succesfull off, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
+    res.status(201).json({message:`doctor's account was succesfull active again, now it status is: ${setDoctorStatusTrue.status}: `,setDoctorStatusTrue:setDoctorStatusTrue.toObject({getters:true})})
 }
 //login paciente
 const loginPaciente = async (req,res,next) => {
@@ -180,9 +180,6 @@ const loginPaciente = async (req,res,next) => {
     try {
         loginPaciente = await Paciente.findOne({email:email})
 
-        if(loginPaciente && loginPaciente.password !== password){
-            return next(new httpError(`your password are wrong, try again`,404))
-        }
         if(!loginPaciente){
             return next(new httpError(`we can't find a paciente with this email`,404))
         }
@@ -207,7 +204,8 @@ const loginPaciente = async (req,res,next) => {
         token = jwt.sign(
             {
                 pacienteId: loginPaciente.id,
-                email: loginPaciente.email
+                email: loginPaciente.email,
+                rol: loginPaciente.rol
             },
             process.env.JWT_KEY,
             {
@@ -219,7 +217,7 @@ const loginPaciente = async (req,res,next) => {
     }
 
 
-    res.json({pacienteId: loginPaciente.id,email: loginPaciente.email,token:token})
+    res.json({pacienteId: loginPaciente.id,email: loginPaciente.email,rol: loginPaciente.rol,token:token})
 }
 
 exports.getAllPaciente = getAllPaciente;
