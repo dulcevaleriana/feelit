@@ -12,8 +12,14 @@ import { AuthContext } from "../../shared/context/auth-context";
 export default function CreateUserOrDoctor() {
     const auth = useContext(AuthContext);
     const [step, setStep] = useState(true);
+    const [getHorario, setGetHorario] = useState([]);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    const passDataFunction = (time) => {
+        setGetHorario(time);
+        console.log("getHorario",getHorario)
+    }
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -92,35 +98,55 @@ export default function CreateUserOrDoctor() {
                         value: '',
                         isValid: false
                     },
+                    address: {
+                        value: '',
+                        isValid: true
+                    },
+                    googleMapsLink: {
+                        value: '',
+                        isValid: true
+                    },
                     specialty: {
-                        value: "pediatra",
+                        value: "62b15e069cb7c9046ab0aef2",
                         isValid: true
                     },
-                    laborDays: {
+                    horario: {
                         value: {
-                            su: false,
-                            mo: true,
-                            tu: true,
-                            we: true,
-                            th: true,
-                            fr: true,
-                            sa: false
-                        },
-                        isValid: true
-                    },
-                    hourStart: {
-                        value: "8:00",
-                        isValid: true
-                    },
-                    hourFinish: {
-                        value: "17:00",
-                        isValid: true
-                    },
-                    location: {
-                        value: {
-                            lan: 23.42352,
-                            lng: 43.35453,
-                            address: "calle sadas santo domingo"
+                            lun:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            },
+                            mar:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            },
+                            mir:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            },
+                            jue:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            },
+                            vie:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            },
+                            sab:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            },
+                            dom:{
+                                estado:true,
+                                horarioEntrada:800,
+                                horarioSalida:1700
+                            }
                         },
                         isValid: true
                     },
@@ -166,10 +192,9 @@ export default function CreateUserOrDoctor() {
                     email: formState.inputs.email.value,
                     specialty: formState.inputs.specialty.value,
                     telefono: formState.inputs.telefono.value,
-                    laborDays: formState.inputs.laborDays.value,
-                    hourStart: formState.inputs.hourStart.value,
-                    hourFinish: formState.inputs.hourFinish.value,
-                    location: formState.inputs.location.value,
+                    address: formState.inputs.address.value,
+                    googleMapsLink: formState.inputs.googleMapsLink.value,
+                    horario: formState.inputs.horario.value,
                   }),
                   {
                     'Content-Type': 'application/json'
@@ -184,9 +209,6 @@ export default function CreateUserOrDoctor() {
 
     useEffect(()=>{
         switchDoctorOrPacient()
-    },[step])
-
-    useEffect(()=>{
         localStorage.removeItem("stepLS")
     },[step])
 
@@ -343,7 +365,7 @@ export default function CreateUserOrDoctor() {
                     }
                 ]}
             />
-            {!step && <AddDayAndTimeWork/>}
+            {!step && <AddDayAndTimeWork passDataFunction={passDataFunction}/>}
             <BasicButtons
                 onClick={()=>{}}
                 variantName="contained"

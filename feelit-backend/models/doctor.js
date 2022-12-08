@@ -10,41 +10,9 @@ const doctorSchema = mongoose.Schema({
     address:{type:String, require:false},
     googleMapsLink:{type:String, require:false},
     horario:{
-        lun:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false }
-        },
-        mar:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false },
-        },
-        mir:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false },
-        },
-        jue:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false },
-        },
-        vie:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false },
-        },
-        sab:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false },
-        },
-        dom:{
-            estado:{ type:Boolean, required:false },
-            horarioEntrada:{ type:Number, required:false },
-            horarioSalida:{ type:Number, required:false },
-        }
+        dia:{type:String, require:false},
+        entrada:{type:String, require:false},
+        salida:{type:String, require:false}
     },
     specialty:{type:mongoose.Types.ObjectId, required:true, ref:'Specialty'},
     rol:{ type:mongoose.Types.ObjectId, required:true, ref:'Rol' },
