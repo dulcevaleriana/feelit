@@ -9,11 +9,13 @@ const doctorSchema = mongoose.Schema({
     status:{ type:Boolean, required:true },
     address:{type:String, require:false},
     googleMapsLink:{type:String, require:false},
-    horario:{
-        dia:{type:String, require:false},
-        entrada:{type:String, require:false},
-        salida:{type:String, require:false}
-    },
+    horario:[
+        {
+            dia:{type:String, require:false},
+            entrada:{type:String, require:false},
+            salida:{type:String, require:false}
+        }
+    ],
     specialty:{type:mongoose.Types.ObjectId, required:true, ref:'Specialty'},
     rol:{ type:mongoose.Types.ObjectId, required:true, ref:'Rol' },
     agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}],

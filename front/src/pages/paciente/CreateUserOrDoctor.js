@@ -16,11 +16,6 @@ export default function CreateUserOrDoctor() {
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-    const passDataFunction = (time) => {
-        setGetHorario(time);
-        console.log("getHorario",getHorario)
-    }
-
     const [formState, inputHandler, setFormData] = useForm(
         {
             name: {
@@ -111,43 +106,7 @@ export default function CreateUserOrDoctor() {
                         isValid: true
                     },
                     horario: {
-                        value: {
-                            lun:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            },
-                            mar:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            },
-                            mir:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            },
-                            jue:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            },
-                            vie:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            },
-                            sab:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            },
-                            dom:{
-                                estado:true,
-                                horarioEntrada:800,
-                                horarioSalida:1700
-                            }
-                        },
+                        value: getHorario,
                         isValid: true
                     },
                 },
@@ -194,7 +153,7 @@ export default function CreateUserOrDoctor() {
                     telefono: formState.inputs.telefono.value,
                     address: formState.inputs.address.value,
                     googleMapsLink: formState.inputs.googleMapsLink.value,
-                    horario: formState.inputs.horario.value,
+                    horario: getHorario,
                   }),
                   {
                     'Content-Type': 'application/json'
@@ -210,6 +169,7 @@ export default function CreateUserOrDoctor() {
     useEffect(()=>{
         switchDoctorOrPacient()
         localStorage.removeItem("stepLS")
+        // eslint-disable-next-line
     },[step])
 
     return <>
@@ -365,7 +325,7 @@ export default function CreateUserOrDoctor() {
                     }
                 ]}
             />
-            {!step && <AddDayAndTimeWork passDataFunction={passDataFunction}/>}
+            {!step && <AddDayAndTimeWork sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>}
             <BasicButtons
                 onClick={()=>{}}
                 variantName="contained"

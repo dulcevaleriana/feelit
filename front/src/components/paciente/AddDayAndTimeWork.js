@@ -40,12 +40,11 @@ const DUMfilterArray = [
     },
 ]
 
-export default function AddDayAndTimeWork(props){
+const AddDayAndTimeWork = (props) => {
     const [timeStart, setTimeStart] = useState(dayjs(''));
     const [timeEnds, setTimeEnds] = useState(dayjs(''));
     const [day, setDay] = useState('');
     const [mapTimeCreated, setMapTimeCreated] = useState([]);
-    const [sendTimeCreated, setSendTimeCreated] = useState([]);
 
     const AddDayAndTimeWorkFuntion = (value) => {
         let mapTimeConditional = mapTimeCreated.filter(e => e.dia === value)
@@ -59,15 +58,14 @@ export default function AddDayAndTimeWork(props){
                     salida:timeEnds
                 }
             ])
-            setSendTimeCreated([
-                ...sendTimeCreated,
+            props.passDataFunction([
+                ...props.sendTimeCreated,
                 {
                     dia:day,
                     entrada:JSON.stringify(timeStart),
                     salida:JSON.stringify(timeEnds)
                 }
             ])
-            props.passDataFunction(sendTimeCreated)
         } else {
             return alert("Este día ya esta agregado")
         }
@@ -106,7 +104,14 @@ export default function AddDayAndTimeWork(props){
                     variantName="contained"
                     className=""
                     iconName={faAdd}
-                    disabled={mapTimeCreated.length >= 7}
+                    disabled={
+                        mapTimeCreated.length >= 7 ||
+                        isNaN(timeStart.$H) ||
+                        isNaN(timeStart.$m) ||
+                        isNaN(timeEnds.$H) ||
+                        isNaN(timeEnds.$m) ||
+                        day === ''
+                    }
                 />
             </form>
             <div>
@@ -118,10 +123,7 @@ export default function AddDayAndTimeWork(props){
                         <h4>{`${index.salida.$H}:${index.salida.$m}`}</h4>
                     </span>
                     <BasicButtons
-                        onClick={() => {
-                            setMapTimeCreated((item)=> item.filter((elem)=> elem.dia === mapTimeCreated.dia));
-                            setSendTimeCreated((item)=> item.filter((elem)=> elem.dia === sendTimeCreated.dia));
-                        }}
+                        onClick={() => setMapTimeCreated((item)=> item.filter((elem)=> elem.key === key))}
                         variantName="contained"
                         className=""
                         iconName={faX}
@@ -132,3 +134,5 @@ export default function AddDayAndTimeWork(props){
         </div>
     )
 }
+
+export default AddDayAndTimeWork;
