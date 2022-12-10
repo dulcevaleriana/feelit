@@ -6,9 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function BasicSelect(props) {
-  console.log("props.filterArray",props.filterArray)
-  console.log("typeof props.filterArray",typeof props.filterArray)
-  console.log("typeof props.filterArray",typeof props.filterArray.getSpecialty)
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -17,7 +15,7 @@ export default function BasicSelect(props) {
           labelId="demo-simple-select-label"
           id={props.id}
           value={props.value}
-          label="Age"
+          label={props.name}
           onChange={props.onChange}
           disabled={props.disabled}
         >

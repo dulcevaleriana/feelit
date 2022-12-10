@@ -22,6 +22,7 @@ import EditOrSeeEnviarResultados from './components/EnviarResultados/EditOrSeeEn
 import CreateUserOrDoctor from './pages/paciente/CreateUserOrDoctor';
 import SeeAccount from './pages/paciente/SeeAccount';
 import EditUserOrDoctor from './pages/paciente/EditUserOrDoctor';
+import AuthDoctorOrPaciente from './pages/paciente/AuthDoctorOrPaciente';
 
 const Home = lazy(() => import('./pages/Home'));
 const Users = lazy(() => import('./pages/users/Users'));
@@ -56,6 +57,7 @@ const App = () => {
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
         <Route path="/place/new" component={NewPlace} exact/>
         <Route path="/place/:placeId" component={UpdatePlace} exact/>
+        <Route path="/authOLD" component={Auth} exact/>
         <Redirect to="/"/>
       </Switch>
     );
@@ -67,7 +69,7 @@ const App = () => {
         <Route path="/" component={Home} exact/>
         <Route path="/users" component={Users} exact/>
         <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
-        <Route path="/auth" component={Auth} exact/>
+        <Route path="/auth" component={AuthDoctorOrPaciente} exact/>
         <Redirect to="/auth"/>
       </Switch>
     );

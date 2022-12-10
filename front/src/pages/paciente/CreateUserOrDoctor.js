@@ -14,7 +14,6 @@ export default function CreateUserOrDoctor() {
     const [step, setStep] = useState(true);
     const [getHorario, setGetHorario] = useState([]);
     const [getSpecialty, setSpecialty] = useState([]);
-    const [proof, setProof] = useState([]);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -23,10 +22,6 @@ export default function CreateUserOrDoctor() {
             try{
                 const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/')
                 setSpecialty(specialty)
-                setProof([getSpecialty.map((index) => ({
-                    value: index._id,
-                    name: index.specialtyName
-                }))])
             } catch(err){
                 console.log(err)
             }
@@ -34,8 +29,6 @@ export default function CreateUserOrDoctor() {
         getSpecialtyFunction()
     },[sendRequest])
 
-    proof && console.log("proof",proof)
-    getSpecialty && console.log("getSpecialty",getSpecialty)
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -123,7 +116,7 @@ export default function CreateUserOrDoctor() {
                         isValid: true
                     },
                     specialty: {
-                        value: "62b15e069cb7c9046ab0aef2",
+                        value: '',
                         isValid: true
                     },
                     horario: {
@@ -140,7 +133,6 @@ export default function CreateUserOrDoctor() {
         event.preventDefault();
 
         if(step){
-            alert("NEWWWWWW")
             try{
                 const responseData = await sendRequest(
                     process.env.REACT_APP_ + "paciente/createPaciente",
@@ -337,7 +329,7 @@ export default function CreateUserOrDoctor() {
                         validators:[],
                         errorText:"Please enter a valid Especialidad.",
                         onInput:inputHandler,
-                        filterArray:getSpecialty,
+                        filterArray:getSpecialty
                     }
                 ]}
             />
@@ -345,7 +337,7 @@ export default function CreateUserOrDoctor() {
             <BasicButtons
                 onClick={()=>{}}
                 variantName="contained"
-                buttonName="Listo"
+                buttonName="Crear cuenta"
                 iconName={faCheck}
                 type="submit"
             />
