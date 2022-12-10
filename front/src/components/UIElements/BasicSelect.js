@@ -6,7 +6,9 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function BasicSelect(props) {
-
+  console.log("props.filterArray",props.filterArray)
+  console.log("typeof props.filterArray",typeof props.filterArray)
+  console.log("typeof props.filterArray",typeof props.filterArray.getSpecialty)
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -19,7 +21,8 @@ export default function BasicSelect(props) {
           onChange={props.onChange}
           disabled={props.disabled}
         >
-            {props.filterArray.map((item,key)=> <MenuItem value={item.value} key={key}>{item.name}</MenuItem>)}
+            {props.filterArray.length > 0 && props.filterArray.map((item,key)=> <MenuItem value={item.value} key={key}>{item.name}</MenuItem>)}
+            {typeof props.filterArray.getSpecialty === 'object' && props.filterArray.getSpecialty.map((item,key)=> item.status === true && <MenuItem value={item._id} key={key}>{item.specialtyName}</MenuItem>)}
         </Select>
       </FormControl>
     </Box>

@@ -13,8 +13,29 @@ export default function CreateUserOrDoctor() {
     const auth = useContext(AuthContext);
     const [step, setStep] = useState(true);
     const [getHorario, setGetHorario] = useState([]);
+    const [getSpecialty, setSpecialty] = useState([]);
+    const [proof, setProof] = useState([]);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    useEffect(()=>{
+        const getSpecialtyFunction = async () => {
+            try{
+                const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/')
+                setSpecialty(specialty)
+                setProof([getSpecialty.map((index) => ({
+                    value: index._id,
+                    name: index.specialtyName
+                }))])
+            } catch(err){
+                console.log(err)
+            }
+        }
+        getSpecialtyFunction()
+    },[sendRequest])
+
+    proof && console.log("proof",proof)
+    getSpecialty && console.log("getSpecialty",getSpecialty)
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -316,12 +337,7 @@ export default function CreateUserOrDoctor() {
                         validators:[],
                         errorText:"Please enter a valid Especialidad.",
                         onInput:inputHandler,
-                        filterArray:[
-                            {
-                                value:"62b15e069cb7c9046ab0aef2",
-                                name:"nombre especialidad"
-                            }
-                        ]
+                        filterArray:getSpecialty,
                     }
                 ]}
             />
