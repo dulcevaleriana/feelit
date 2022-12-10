@@ -42,7 +42,7 @@ export default function AuthDoctorOrPaciente(){
                 },
               );
 
-              auth.login(responseData.userId, responseData.token);
+              auth.login(responseData.userId, responseData.token, responseData.rol);
               console.log("responseData",responseData)
             } catch(err) {}
 
@@ -60,7 +60,7 @@ export default function AuthDoctorOrPaciente(){
               },
             )
 
-            auth.login(responseData.userId, responseData.token);
+            auth.login(responseData.userId, responseData.token, responseData.rol);
           } catch (err) {}
         }
       };

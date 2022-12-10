@@ -1,14 +1,7 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useContext } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import "./scss/GlobalStyle.scss";
-
-// import Home from './pages/Home';
-// import Users  from './pages/users/Users';
-// import UserPlaces  from './pages/users/UserPlaces';
-// import NewPlace from './pages/places/NewPlace';
-// import UpdatePlace from './pages/places/UpdatePlace';
-// import Auth from './pages/users/Auth';
 
 import ConsultaRapida from './pages/consultasRapidas/ConsultaRapida';
 import ReadConsultaRapida from './pages/consultasRapidas/ReadConsultaRapida';
@@ -32,12 +25,15 @@ const UpdatePlace = lazy(() => import('./pages/places/UpdatePlace'));
 const Auth = lazy(() => import('./pages/users/Auth'));
 
 const App = () => {
-  const { token, login, logout, userId } = useAuth();
+  const auth = useContext(AuthContext);
+  const { token, login, logout, userId, rolDP } = useAuth();
 
   const [editConsultaRapida, setEditConsultaRapida] = useState(false);
   const [seeDetailConsultaRapida, setSeeDetailConsultaRapida] = useState(false);
 
   let routes;
+  console.log("auth.rol",auth.rol)
+  console.log("rolDP",rolDP)
 
   if (token) {
     routes = (
@@ -80,6 +76,7 @@ const App = () => {
       isLoggedIn: !!token,
       token: token,
       userId: userId,
+      rol: rolDP,
       login: login,
       logout: logout,
       editConsultaRapida: editConsultaRapida,
