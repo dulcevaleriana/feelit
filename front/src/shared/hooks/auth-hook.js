@@ -5,7 +5,7 @@ export const useAuth = () => {
     const [token, setToken] = useState(false);
     const [tokenExpirationDates, setTokenExpirationDates] = useState();
     const [userId, setUserId] = useState();
-    const [rolDP, setRol] = useState()
+    const [rol, setRol] = useState()
 
     const login = useCallback((uid, token, rol, expirationDate) => {
       setToken(token);
@@ -17,7 +17,7 @@ export const useAuth = () => {
         {
           userId: uid,
           token: token,
-          rolDP: rol,
+          rol: rol,
           expiration: tokenExpirationDate.toISOString()
         }
       ))
@@ -47,5 +47,5 @@ export const useAuth = () => {
       }
     },[login])
 
-    return { token, login, logout, userId, rolDP }
+    return { token, login, logout, userId, rol }
 }

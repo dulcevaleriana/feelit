@@ -1,4 +1,5 @@
 import React, {useState,useContext} from 'react';
+import { useHistory } from "react-router-dom";
 import Input from '../../components/UIElements/InputComponent';
 import { useForm } from '../../shared/hooks/form-hook';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
@@ -8,6 +9,8 @@ import ModalComponent from '../../components/UIElements/ModalComponent';
 
 export default function AuthDoctorOrPaciente(){
   const auth = useContext(AuthContext);
+  const History = useHistory()
+
   const [isPaciente, setIsPaciente] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -42,7 +45,7 @@ export default function AuthDoctorOrPaciente(){
                 },
               );
 
-              auth.login(responseData.userId, responseData.token, responseData.rol);
+              auth.login(responseData.pacienteId, responseData.token, responseData.rol);
               console.log("responseData",responseData)
             } catch(err) {}
 
@@ -60,9 +63,10 @@ export default function AuthDoctorOrPaciente(){
               },
             )
 
-            auth.login(responseData.userId, responseData.token, responseData.rol);
+            auth.login(responseData.doctorId, responseData.token, responseData.rol);
           } catch (err) {}
         }
+        History.push('/')
       };
 
     return <>
