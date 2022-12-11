@@ -43,7 +43,6 @@ export default function ImageAvatars() {
           <>
             <Link to="/auth">
               <h5>Login</h5>
-              <Avatar alt="Remy Sharp" src="https://w7.pngwing.com/pngs/831/88/png-transparent-user-profile-computer-icons-user-interface-mystique-miscellaneous-user-interface-design-smile.png" />
             </Link>
           </>
         )}
