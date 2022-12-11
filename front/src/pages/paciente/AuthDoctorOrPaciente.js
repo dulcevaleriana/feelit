@@ -77,20 +77,22 @@ export default function AuthDoctorOrPaciente(){
         >
         {error}
       </ModalComponent>
-      <div className='class-AuthDoctorOrPaciente'>
+      <div className={isPaciente ? "class-AuthDoctorOrPaciente" : "class-AuthDoctorOrPaciente class-DoctorLogin"}>
             <form onSubmit={authSubmitHandler}>
                 {isLoading && <h1>Loading...</h1>}
-                <h1>Iniciar Sección como "Doctor/Paciente"</h1>
-                <BasicButtons
-                    onClick={()=>setIsPaciente(true)}
-                    variantName={isPaciente === true ? "contained" : "outlined"}
-                    buttonName="Soy Paciente"
-                />
-                <BasicButtons
-                    onClick={()=>setIsPaciente(false)}
-                    variantName={isPaciente === false ? "contained" : "outlined"}
-                    buttonName="Soy Doctor"
-                />
+                <h1>Iniciar Sección como <br/> {isPaciente ? "Paciente" : "Doctor"}</h1>
+                <div>
+                  <BasicButtons
+                      onClick={()=>setIsPaciente(true)}
+                      variantName={isPaciente === true ? "contained" : "outlined"}
+                      buttonName="Soy Paciente"
+                  />
+                  <BasicButtons
+                      onClick={()=>setIsPaciente(false)}
+                      variantName={isPaciente === false ? "contained" : "outlined"}
+                      buttonName="Soy Doctor"
+                  />
+                </div>
                 <Input
                     element='input'
                     id='email'
@@ -115,8 +117,15 @@ export default function AuthDoctorOrPaciente(){
                     buttonName="Iniciar seccion"
                     type="submit"
                 />
+                <BasicButtons
+                    onClick={()=>History.push('/CreateUserOrDoctor')}
+                    variantName="outlined"
+                    buttonName="Crear cuenta"
+                />
             </form>
-            <img src='https://cdn.pixabay.com/photo/2020/11/03/15/31/doctor-5710152_960_720.jpg' alt='imgs'/>
+            <div>
+              <img src={isPaciente ? 'https://cdn.pixabay.com/photo/2020/11/03/15/32/doctor-5710160_960_720.jpg' : 'https://cdn.pixabay.com/photo/2020/11/03/15/31/doctor-5710152_960_720.jpg'} alt='imgs'/>
+            </div>
         </div>
     </>
 }
