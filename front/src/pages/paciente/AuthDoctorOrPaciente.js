@@ -46,7 +46,6 @@ export default function AuthDoctorOrPaciente(){
               );
 
               auth.login(responseData.pacienteId, responseData.token, responseData.rol);
-              console.log("responseData",responseData)
             } catch(err) {}
 
         } else {
@@ -66,20 +65,18 @@ export default function AuthDoctorOrPaciente(){
             auth.login(responseData.doctorId, responseData.token, responseData.rol);
           } catch (err) {}
         }
-        History.push('/')
       };
 
     return <>
-        <ModalComponent
-            headerTitle='You can not access for now'
-            show={error}
-            onCancel={clearError}
-        >
+      <ModalComponent
+          headerTitle='You can not access for now'
+          show={error}
+          onCancel={clearError}
+      >
         {error}
       </ModalComponent>
       <div className={isPaciente ? "class-AuthDoctorOrPaciente" : "class-AuthDoctorOrPaciente class-DoctorLogin"}>
             <form onSubmit={authSubmitHandler}>
-                {isLoading && <h1>Loading...</h1>}
                 <h1>Iniciar Sección como <br/> {isPaciente ? "Paciente" : "Doctor"}</h1>
                 <div>
                   <BasicButtons
@@ -103,9 +100,8 @@ export default function AuthDoctorOrPaciente(){
                     onInput={inputHandler}
                 />
                 <Input
-                    element='input'
+                    element='password'
                     id='password'
-                    type='text'
                     label="Contraseñas"
                     validators={[]}
                     errorText='Debe poner una clave correcta'
@@ -122,6 +118,7 @@ export default function AuthDoctorOrPaciente(){
                     variantName="outlined"
                     buttonName="Crear cuenta"
                 />
+                {isLoading && <h1>Loading...</h1>}
             </form>
             <div>
               <img src={isPaciente ? 'https://cdn.pixabay.com/photo/2020/11/03/15/32/doctor-5710160_960_720.jpg' : 'https://cdn.pixabay.com/photo/2020/11/03/15/31/doctor-5710152_960_720.jpg'} alt='imgs'/>

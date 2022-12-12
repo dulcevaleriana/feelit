@@ -149,7 +149,7 @@ export default function CreateUserOrDoctor() {
                     },
                 )
 
-                auth.login(responseData.userId, responseData.token);
+                auth.login(responseData.userId, responseData.token, responseData.rol);
 
         } catch(err){}
         } else{
@@ -173,7 +173,7 @@ export default function CreateUserOrDoctor() {
                   },
                 )
 
-                auth.login(responseData.userId, responseData.token);
+                auth.login(responseData.userId, responseData.token, responseData.rol);
             } catch(err){}
         }
 
@@ -265,7 +265,7 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:'password',
                         id:"password",
                         type:"password",
                         label:"Contraseña",
@@ -313,8 +313,8 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
-                        id:"password",
+                        element:'password',
+                        id:'password',
                         type:"password",
                         label:"Contraseña",
                         validators:[],
