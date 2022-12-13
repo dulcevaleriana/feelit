@@ -9,6 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+// 000-000-0000
+
 const inputReducer = (state, action) => {
 
   switch (action.type) {
@@ -30,6 +32,7 @@ const inputReducer = (state, action) => {
 };
 
 const Input = props => {
+  const [data, setData] = useState("")
   const [showPassword, setShowPassword] = useState(false);
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.value || '',
@@ -58,9 +61,27 @@ const Input = props => {
     });
   };
 
+  const functionMask = (event, text) => {
+    const arrayMask = text.split("");
+    const arrayEvent = event.split("");
+    let countMin = event.length - 1;
+    let countMax = text.length;
+
+    if(countMin <= (countMax - 1)) {
+
+      if(arrayMask[countMin] === "-" && arrayEvent[countMin] !== "-"){
+        let arrEvent = event.split("");
+        arrEvent.splice((countMin), 0, arrayMask[countMin])
+        setData(arrEvent.join(''))
+      } else {
+        setData(event)
+      }
+
+    }
+  }
+
   const element =
     props.element === 'input' ? (
-      <>
       <FormControl className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
         <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
         <OutlinedInput
@@ -73,10 +94,9 @@ const Input = props => {
           placeholder={props.placeholder}
         />
       </FormControl>
-      </>
     ) : props.element === 'select' ? (
       <FormControl>
-        <label>{props.label}</label>
+        <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
         <BasicSelect
           id={props.id}
           value={inputState.value}
@@ -105,7 +125,12 @@ const Input = props => {
           </InputAdornment>
         }
       />
-    ) :(
+    ) : props.element === 'telephone' ?  (
+      <FormControl className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
+        <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
+        <input type="text" onChange={(e)=>functionMask(e.target.value,"000-000-0000")} value={data} />
+      </FormControl>
+    ):(
       <div className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
         <label htmlFor={props.id}>{props.label}</label>
         <textarea

@@ -247,7 +247,7 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:"telephone",
                         id:"telefono",
                         type:"tel",
                         label:"Teléfono",
@@ -295,7 +295,7 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:"telephone",
                         id:"telefono",
                         type:"tel",
                         label:"Teléfono",
