@@ -13,6 +13,7 @@ export default function CreateUserOrDoctor() {
     const auth = useContext(AuthContext);
     const [step, setStep] = useState(true);
     const [getHorario, setGetHorario] = useState([]);
+    const [getTelephone, setGetTelephone] = useState("");
     const [getSpecialty, setSpecialty] = useState([]);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -78,8 +79,8 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     telefono: {
-                        value: '',
-                        isValid: false
+                        value: getTelephone,
+                        isValid: true
                     }
                 },
                 false
@@ -104,8 +105,8 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     telefono: {
-                        value: '',
-                        isValid: false
+                        value: getTelephone,
+                        isValid: true
                     },
                     address: {
                         value: '',
@@ -141,7 +142,7 @@ export default function CreateUserOrDoctor() {
                         cedula: formState.inputs.cedula.value,
                         email: formState.inputs.email.value,
                         password: formState.inputs.password.value,
-                        telefono: formState.inputs.telefono.value,
+                        telefono: getTelephone,
                         name: formState.inputs.name.value,
                     }),
                     {
@@ -163,7 +164,7 @@ export default function CreateUserOrDoctor() {
                     cedula: formState.inputs.cedula.value,
                     email: formState.inputs.email.value,
                     specialty: formState.inputs.specialty.value,
-                    telefono: formState.inputs.telefono.value,
+                    telefono: getTelephone,
                     address: formState.inputs.address.value,
                     googleMapsLink: formState.inputs.googleMapsLink.value,
                     horario: getHorario,
@@ -184,6 +185,9 @@ export default function CreateUserOrDoctor() {
         localStorage.removeItem("stepLS")
         // eslint-disable-next-line
     },[step])
+
+    console.log("formState.inputs",formState.inputs)
+    console.log("getTelephone",getTelephone)
 
     return <>
         <ModalComponent
@@ -253,7 +257,8 @@ export default function CreateUserOrDoctor() {
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetTelephone(data)
                     },
                     {
                         element:"input",
@@ -301,7 +306,8 @@ export default function CreateUserOrDoctor() {
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetTelephone(data)
                     },
                     {
                         element:"input",

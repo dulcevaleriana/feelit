@@ -9,8 +9,6 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-// 000-000-0000
-
 const inputReducer = (state, action) => {
 
   switch (action.type) {
@@ -73,10 +71,11 @@ const Input = props => {
         let arrEvent = event.split("");
         arrEvent.splice((countMin), 0, arrayMask[countMin])
         setData(arrEvent.join(''))
+        props.passData(arrEvent.join(''))
       } else {
         setData(event)
+        props.passData(event)
       }
-
     }
   }
 
@@ -128,7 +127,11 @@ const Input = props => {
     ) : props.element === 'telephone' ?  (
       <FormControl className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
         <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
-        <input type="text" onChange={(e)=>functionMask(e.target.value,"000-000-0000")} value={data} />
+        <input
+          type="text"
+          onChange={(e)=>functionMask(e.target.value,"000-000-0000")}
+          value={data}
+        />
       </FormControl>
     ):(
       <div className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
