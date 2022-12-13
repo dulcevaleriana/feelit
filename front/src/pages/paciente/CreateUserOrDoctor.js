@@ -14,6 +14,7 @@ export default function CreateUserOrDoctor() {
     const [step, setStep] = useState(true);
     const [getHorario, setGetHorario] = useState([]);
     const [getTelephone, setGetTelephone] = useState("");
+    const [getCedula, setGetCedula] = useState("");
     const [getSpecialty, setSpecialty] = useState([]);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -71,8 +72,8 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     cedula: {
-                        value: '',
-                        isValid: false
+                        value: getCedula,
+                        isValid: true
                     },
                     email: {
                         value: '',
@@ -97,8 +98,8 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     cedula: {
-                        value: '',
-                        isValid: false
+                        value: getCedula,
+                        isValid: true
                     },
                     email: {
                         value: '',
@@ -139,7 +140,7 @@ export default function CreateUserOrDoctor() {
                     process.env.REACT_APP_ + "paciente/createPaciente",
                     'POST',
                     JSON.stringify({
-                        cedula: formState.inputs.cedula.value,
+                        cedula: getCedula,
                         email: formState.inputs.email.value,
                         password: formState.inputs.password.value,
                         telefono: getTelephone,
@@ -161,7 +162,7 @@ export default function CreateUserOrDoctor() {
                   JSON.stringify({
                     name: formState.inputs.name.value,
                     password: formState.inputs.password.value,
-                    cedula: formState.inputs.cedula.value,
+                    cedula: getCedula,
                     email: formState.inputs.email.value,
                     specialty: formState.inputs.specialty.value,
                     telefono: getTelephone,
@@ -186,8 +187,7 @@ export default function CreateUserOrDoctor() {
         // eslint-disable-next-line
     },[step])
 
-    console.log("formState.inputs",formState.inputs)
-    console.log("getTelephone",getTelephone)
+    console.log("getCedula",getCedula)
 
     return <>
         <ModalComponent
@@ -242,23 +242,26 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:"mask",
                         id:"cedula",
                         type:"text",
                         label:"Cédula",
                         validators:[],
                         errorText:"Please enter a valid Cédula.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetCedula(data),
+                        mask:"000-0000000-0"
                     },
                     {
-                        element:"telephone",
+                        element:"mask",
                         id:"telefono",
-                        type:"tel",
+                        type:"text",
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
                         onInput:inputHandler,
-                        passData: (data)=>setGetTelephone(data)
+                        passData: (data)=>setGetTelephone(data),
+                        mask:"000-000-0000"
                     },
                     {
                         element:"input",
@@ -291,23 +294,26 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:"mask",
                         id:"cedula",
                         type:"text",
                         label:"Cédula",
                         validators:[],
                         errorText:"Please enter a valid Cédula.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetCedula(data),
+                        mask:"000-0000000-0"
                     },
                     {
-                        element:"telephone",
+                        element:"mask",
                         id:"telefono",
-                        type:"tel",
+                        type:"text",
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
                         onInput:inputHandler,
-                        passData: (data)=>setGetTelephone(data)
+                        passData: (data)=>setGetTelephone(data),
+                        mask:"000-000-0000"
                     },
                     {
                         element:"input",

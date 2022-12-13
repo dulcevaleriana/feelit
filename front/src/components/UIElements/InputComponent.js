@@ -124,13 +124,17 @@ const Input = props => {
           </InputAdornment>
         }
       />
-    ) : props.element === 'telephone' ?  (
+    ) : props.element === 'mask' ?  (
       <FormControl className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
         <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
-        <input
-          type="text"
-          onChange={(e)=>functionMask(e.target.value,"000-000-0000")}
+        <OutlinedInput
+          id={props.id}
+          type={props.type}
           value={data}
+          onChange={(e)=>functionMask(e.target.value,props.mask)}
+          label={props.label}
+          onBlur={touchHandler}
+          placeholder={props.placeholder}
         />
       </FormControl>
     ):(
