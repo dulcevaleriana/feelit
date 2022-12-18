@@ -40,12 +40,16 @@ const MainNavigation = (props) => {
 
     const arrayLinks_isLoggedIn_flase = [
         {
-            to:"/users",
-            name:"All User",
+            to:"/consultaRapida/Create",
+            name:"Consulta Flash",
         },
         {
-            to:"/users/w2/UserPlaces",
-            name:"User's places",
+            to:"/AgendarCita/create",
+            name:"Agendar Cita",
+        },
+        {
+            to:"/EnviarResultados/create",
+            name:"Enviar Resultados",
         }
     ]
 

@@ -33,8 +33,8 @@ export default function Routers(props){
                     <Route path="/AgendarCita/create" component={AgendarCita} exact />
                     <Route path="/AgendarCita/EditOrSeeDetails" component={EditOrSeeAgendarCita} exact />
                     <Route path="/EnviarResultados/EditOrSeeDetails" component={EditOrSeeEnviarResultados} exact />
-
                     <Route path="/" component={Home} exact/>
+
                     <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
                     <Route path="/EditUserOrDoctor/:pacienteOrDoctor" component={EditUserOrDoctor} exact />
                     <Redirect to="/"/>
@@ -47,8 +47,8 @@ export default function Routers(props){
                     <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
                     <Route path="/AgendarCita/create" component={AgendarCita} exact />
                     <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
-
                     <Route path="/" component={Home} exact/>
+
                     <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
                     <Route path="/EditUserOrDoctor/:pacienteOrDoctor" component={EditUserOrDoctor} exact />
                     <Redirect to="/"/>
@@ -62,8 +62,11 @@ export default function Routers(props){
         <>
             <Switch>
               <Route path="/CreateUserOrDoctor" component={CreateUserOrDoctor} exact />
-
               <Route path="/" component={Home} exact/>
+              <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
+              <Route path="/AgendarCita/create" component={AgendarCita} exact />
+              <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
+
               <Route path="/users" component={Users} exact/>
               <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
               <Route path="/users" component={Users} exact/>
