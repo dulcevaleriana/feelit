@@ -26,6 +26,30 @@
             padding-right: 5%;
         }
     }
+
+    > div:nth-child(3){
+        >div:nth-child(2) {
+            display: flex;
+            padding-right: 5%;
+            height: 86%;
+            position: relative;
+
+            > a:last-child {
+                background: #e2e6eb;
+                position: absolute;
+                right: 5%;
+                top: 14%;
+                bottom: 0;
+                width: 192px;
+                border-radius: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #1976d2;
+                font-weight: 500;
+            }
+        }
+    }
 }
 
 .class-ActionAreaCard{
@@ -67,6 +91,29 @@
             grid-template-columns: auto auto;
             padding: 0;
             gap: 10px;
+        }
+    }
+}
+
+.class-CardConsultas{
+    margin: 20px 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none !important;
+
+    > button {
+        padding: 20px;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        background: transparent;
+        box-shadow: none;
+
+        > img  {
+            height: 100px;
+            width: 100px;
+            border-radius: 1000px;
         }
     }
 }
