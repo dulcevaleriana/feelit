@@ -1,13 +1,19 @@
 import React, {useContext} from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { AuthContext } from "../shared/context/auth-context";
+import ListChat from "../components/HomeComponent/listChat";
+import CitasPendientes from "../components/HomeComponent/citasPendientes";
+import UltimasConsultas from "../components/HomeComponent/ultimasConsultas";
 
 export default function Home() {
     const auth = useContext(AuthContext);
     console.log("auth",auth)
 
-    return <div>
-        Home
+    return <div className="class-Home">
+        <ListChat/>
+        <CitasPendientes/>
+        <UltimasConsultas/>
+        {/* Home
         <br/>
         <Link to="/AgendarCita/EditOrSeeDetails">/AgendarCita/EditOrSeeDetails</Link>
         <br/>
@@ -18,6 +24,6 @@ export default function Home() {
         <Link to={`/users/${auth.userId}/UserPlaces`}>User's places</Link>
         <br/>
         <Link to="/place/new">Create Places</Link>
-        <br/>
+        <br/> */}
     </div>
 }

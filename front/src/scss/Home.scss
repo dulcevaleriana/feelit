@@ -1,0 +1,11 @@
+.class-Home{
+    padding: 10px 5%;
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-rows: 60vh calc(40vh - 65px - 20px - 20px);
+    gap: 20px;
+
+    > div:first-child{
+        grid-row: 1 / span 2;
+    }
+}
