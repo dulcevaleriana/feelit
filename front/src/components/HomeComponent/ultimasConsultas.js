@@ -48,7 +48,7 @@ export default function UltimasConsultas(){
             Ultimas consultas
         </Typography>
         <div>
-            {DUMMY_MEET_LIST.filter((index,key)=>key <= 5).map((index,key)=><CardConsultas key={key} img={index.img}/>)}
+            {DUMMY_MEET_LIST.filter((index,key)=>key <= 6).map((index,key)=><CardConsultas key={key} img={index.img}/>)}
             <Link to="/">Ver más</Link>
         </div>
     </div>

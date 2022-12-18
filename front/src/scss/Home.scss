@@ -33,12 +33,13 @@
             padding-right: 5%;
             height: 86%;
             position: relative;
+            gap: 20px;
 
             > a:last-child {
                 background: #e2e6eb;
                 position: absolute;
                 right: 5%;
-                top: 14%;
+                top: 0;
                 bottom: 0;
                 width: 192px;
                 border-radius: 10px;
@@ -96,7 +97,7 @@
 }
 
 .class-CardConsultas{
-    margin: 20px 0;
+    margin: 0;
     padding: 0;
     background: transparent;
     box-shadow: none !important;
@@ -109,11 +110,18 @@
         text-align: center;
         background: transparent;
         box-shadow: none;
+        align-items: center;
+        align-self: center;
+        height: 100%;
 
         > img  {
             height: 100px;
             width: 100px;
             border-radius: 1000px;
+        }
+
+        > div:nth-child(2) {
+            padding: 0;
         }
     }
 }
