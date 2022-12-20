@@ -7,7 +7,7 @@ import { CardActionArea } from '@mui/material';
 
 export default function ActionAreaCard(props) {
   return (
-    <Card sx={{ maxWidth: 345 }} className="class-ActionAreaCard">
+    <Card sx={{ maxWidth: 345 }} className="class-ActionAreaCard" onClick={()=>props.onClick()}>
       <CardActionArea>
         <CardMedia
           component="img"

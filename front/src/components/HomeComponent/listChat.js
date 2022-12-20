@@ -41,13 +41,13 @@ const DUMMY_CHAT_LIST = [
     }
 ]
 
-export default function ListChat(){
+export default function ListChat(props){
     return <div>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Consultas recientes
         </Typography>
         <div>
-            {DUMMY_CHAT_LIST.map((index, key) => <ActionAreaCard key={key} img={index.img}/>)}
+            {DUMMY_CHAT_LIST.map((index, key) => <ActionAreaCard key={key} img={index.img} onClick={()=>props.onClick()}/>)}
         </div>
     </div>
 }
