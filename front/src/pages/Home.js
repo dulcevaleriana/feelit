@@ -4,6 +4,7 @@ import { AuthContext } from "../shared/context/auth-context";
 import ListChat from "../components/HomeComponent/listChat";
 import CitasPendientes from "../components/HomeComponent/citasPendientes";
 import UltimasConsultas from "../components/HomeComponent/ultimasConsultas";
+import ChatComponent from "../components/HomeComponent/ChatComponent";
 
 export default function Home() {
     const auth = useContext(AuthContext);
@@ -20,7 +21,7 @@ export default function Home() {
 
     return <div className="class-Home">
         <ListChat onClick={proofFunction}/>
-        {activeChat ? <h1 onClick={proofFunctionFalse}> Volver ChatComponent</h1> : <>
+        {activeChat ? <ChatComponent onClick={proofFunctionFalse}/> : <>
             <CitasPendientes/>
             <UltimasConsultas/>
         </>}
