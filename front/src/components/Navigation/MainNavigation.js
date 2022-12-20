@@ -57,7 +57,7 @@ const MainNavigation = (props) => {
         <Header className="class-MainNavigation">
             {matches && (displayMenu ? <CloseIcon onClick={() => setDisplayMenu(!displayMenu)}/> : <MenuIcon onClick={() => setDisplayMenu(!displayMenu)}/> )}
             <h1>
-                <Link to="/">Feelit</Link>
+                <Link to={auth.isLoggedIn ? "/" : "/Home"}>Feelit</Link>
             </h1>
             <NavsLinks
                 show={matches ? displayMenu : true}

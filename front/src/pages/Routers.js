@@ -62,7 +62,7 @@ export default function Routers(props){
         <>
             <Switch>
               <Route path="/CreateUserOrDoctor" component={CreateUserOrDoctor} exact />
-              <Route path="/" component={Home} exact/>
+              <Route path="/Home" component={Home} exact/>
               <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
               <Route path="/AgendarCita/create" component={AgendarCita} exact />
               <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
@@ -74,8 +74,8 @@ export default function Routers(props){
               <Route path="/place/new" component={NewPlace} exact/>
               <Route path="/place/:placeId" component={UpdatePlace} exact/>
               <Route path="/authOLD" component={Auth} exact/>
-              <Route path="/auth" component={AuthDoctorOrPaciente} exact/>
-              <Redirect to="/auth"/>
+              <Route path="/" component={AuthDoctorOrPaciente} exact/>
+              <Redirect to="/"/>
             </Switch>
         </>
     )

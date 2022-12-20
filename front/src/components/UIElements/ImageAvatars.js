@@ -41,7 +41,7 @@ export default function ImageAvatars() {
             </Link>
         ) : (
           <>
-            <Link to="/auth">
+            <Link to="/">
               <h5>Login</h5>
             </Link>
           </>
