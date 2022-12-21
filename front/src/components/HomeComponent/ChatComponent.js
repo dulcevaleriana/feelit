@@ -1,9 +1,9 @@
 import React from "react";
 import BasicButtons from "../UIElements/BasicButtons-MUI";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAnglesLeft, faPen, faFaceSmile, faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faFaceSmile, faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import ActionAreaCard from "../UIElements/ActionAreaCard";
-import Typography from '@mui/material/Typography';
+import ChatDetails from "./ChatDetails";
 import Input from '../../components/UIElements/InputComponent';
 import ChatMessageServices from "./ChatMessageServices";
 import ChatMessage from "./ChatMessage";
@@ -19,26 +19,7 @@ export default function ChatComponent(props){
             />
             <ActionAreaCard img='https://d29fhpw069ctt2.cloudfront.net/photo/thumb/23181/photo-1467051989526-23a939d703d8.jpg' onClick={()=>props.onClick()}/>
         </div>
-        <div>
-            <Typography gutterBottom variant="h6" component="div">
-                Nombre Apellido
-            </Typography>
-            <BasicButtons
-                onClick={()=>props.onClick()}
-                variantName="outlined"
-                buttonName={"Editar"}
-                iconName={faPen}
-            />
-            <Typography variant="body2" color="text.secondary">
-                Revisar Resultados (RD$ 800)
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                Cita Consulta (RD$ 1,500)
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                Consulta rapida (RD$ 500)
-            </Typography>
-        </div>
+        <ChatDetails onClick={()=>{}}/>
         <div>
             <ChatMessageServices/>
             <ChatMessage/>
