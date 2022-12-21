@@ -9,7 +9,7 @@ import ChatMessageServices from "./ChatMessageServices";
 import ChatMessage from "./ChatMessage";
 
 export default function ChatComponent(props){
-    return <div>
+    return <div className="class-ChatComponent">
         <div>
             <BasicButtons
                 onClick={()=>props.onClick()}
@@ -31,7 +31,7 @@ export default function ChatComponent(props){
                 element='input'
                 id='ADD_COLUMN_NAME_HERE'
                 type='text'
-                label=''
+                label='Enviar respuesta'
                 validators={[]}
                 errorText=''
                 onInput={()=>{}}
