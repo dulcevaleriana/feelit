@@ -26,8 +26,6 @@ export default function NestedModal(props) {
     setOpen(false);
   };
 
-  console.log("props.closeNow",props.closeNow)
-
   let modalReturn;
 
   props.withButton === true ? modalReturn = (
