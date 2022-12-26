@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: 345px auto;
     gap: 20px;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 122px);
     grid-template-rows: 209px auto 100px;
     padding-right: 5%;
 
@@ -45,6 +45,9 @@
         gap: 20px;
         flex-direction: column;
         text-align: center;
+        position: relative;
+        max-height: 488px;
+        overflow-y: auto;
     }
 
     > div:last-child,
@@ -66,5 +69,33 @@
     fieldset.MuiOutlinedInput-notchedOutline.css-1d3z3hw-MuiOutlinedInput-notchedOutline,
     fieldset.MuiOutlinedInput-notchedOutline.css-1d3z3hw-MuiOutlinedInput-notchedOutline:hover {
         border-color: transparent;
+    }
+}
+
+.class-ChatMessageServices {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+
+    > div:first-child {
+        border: 1px solid #c1c1c1;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border-radius: 0 20px 20px;
+    }
+
+    > p:last-child {
+        text-align: right;
+    }
+
+    > div:last-child {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
     }
 }

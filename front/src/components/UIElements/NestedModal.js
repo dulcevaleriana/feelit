@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import BasicButtons from './BasicButtons-MUI';
@@ -18,7 +18,7 @@ const style = {
 };
 
 export default function NestedModal(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -26,20 +26,22 @@ export default function NestedModal(props) {
     setOpen(false);
   };
 
+  console.log("props.closeNow",props.closeNow)
+
   let modalReturn;
 
   props.withButton === true ? modalReturn = (
     <div>
         <BasicButtons
-            onClick={handleOpen}
+            onClick={props.handleClose ? props.handleClose : handleOpen}
             variantName={props.variantName}
             buttonName={props.name}
             iconName={props.icon}
             className={props.className}
         />
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={props.closeNow ? props.closeNow : open}
+        onClose={props.handleClose ? props.handleClose : handleClose}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
         className={props.className}

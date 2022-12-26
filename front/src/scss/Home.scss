@@ -2,8 +2,9 @@
     padding: 10px 0 10px 5%;
     display: grid;
     grid-template-columns: 345px auto;
-    grid-template-rows: 60vh calc(40vh - 65px - 36px - 20px);
+    grid-template-rows: 60vh calc(40vh - 65px - 57px - 20px);
     gap: 20px;
+    height: calc(100vh - 120px);
 
     > div:first-child{
         grid-row: 1 / span 2;
