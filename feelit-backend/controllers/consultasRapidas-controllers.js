@@ -97,13 +97,13 @@ const postconsultasRapidas = async (req,res,next)=>{
         idPaciente,
         idDoctor,
         time,
-        message,
+        messagePaciente,
     } = req.body;
     const createConsultasRapidas = new ConsultasRapidas({
         idPaciente,
         idDoctor,
         time,
-        message,
+        messagePaciente,
         dateCreated:todayFunction(),
         status:true,
         link:uuidv4()
@@ -155,7 +155,8 @@ const patchconsultasRapidas = async (req,res,next) => {
         idPaciente,
         idDoctor,
         time,
-        message,
+        messagePaciente,
+        chat
     } = req.body;
     const consultaFlashId = req.params.crId;
     let verifyconsultaFlashId;
@@ -172,7 +173,7 @@ const patchconsultasRapidas = async (req,res,next) => {
 
         if(!verifyconsultaFlashId){
             throw new httpError(`We can't find this flash date`,404)
-        }    
+        }
         if(!paciente){
             return next(new httpError(`we don't find any paciente`,404));
         }
@@ -184,7 +185,8 @@ const patchconsultasRapidas = async (req,res,next) => {
         }
 
         verifyconsultaFlashId.time = time;
-        verifyconsultaFlashId.message = message;
+        verifyconsultaFlashId.messagePaciente = messagePaciente;
+        verifyconsultaFlashId.chat = [ ... verifyconsultaFlashId.chat, chat]
 
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -195,7 +197,7 @@ const patchconsultasRapidas = async (req,res,next) => {
         await verifyconsultaFlashId.save({session:sess});
         await paciente.save({session:sess});
         await doctor.save({session:sess});
-        
+
         sess.commitTransaction();
 
     } catch(err){

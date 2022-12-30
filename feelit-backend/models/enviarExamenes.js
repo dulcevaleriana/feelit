@@ -17,9 +17,9 @@ const enviarExamenesSchema = mongoose.Schema({
     chat:[
         {
             idOwner:{ type: mongoose.Types.ObjectId, required: false, ref: 'Paciente' || 'Doctor'},
-            message:{type:String, require:false},
-            date:{type:String, require:false},
-            time:{type:String, require:false}
+            messageChat:{type:String, require:false},
+            dateChat:{type:String, require:false},
+            timeChat:{type:String, require:false}
         }
     ]
 })
