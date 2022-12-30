@@ -31,9 +31,15 @@ const DATA_TEMPORAL = [
 export default function PopUpConsultaRapida(props){
     let [step, setStep] = useState(0);
 
+    const closeModal = () => {
+        props.handleClose();
+        setStep(0);
+    }
+
     console.log({step})
 
     return <NestedModal
+        className="class-PopUpConsultaRapida"
         withButton={true}
         closeNow={props.closeNow}
         name={props.buttonName}
@@ -41,26 +47,24 @@ export default function PopUpConsultaRapida(props){
         handleClose={props.handleClose}
         title="CONSULTA RAPIDA"
         cancelButton={false}
-        body={<form>
+        body={<form className={step === 1 ? "class-gridChange" : ""}>
             { step === 0 ? <>
-            00000
                 <StaticTimePickerDemo/>
                 <textarea placeholder="jjjjjjjjj"></textarea>
             </> :
             <>
-            111111
                 <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
                 <FormPayment/>
             </>}
         </form>}
         buttonOptions={<>
             <BasicButtons
-                onClick={step === 0 ? props.handleClose : ()=>setStep(step - 1)}
+                onClick={step === 0 ? closeModal : ()=>setStep(step - 1)}
                 variantName="outlined"
                 buttonName={step === 0 ? "Cancelar" : "Volver"}
             />
             <BasicButtons
-                onClick={step === 1 ? props.handleClose : ()=>setStep(step + 1)}
+                onClick={step === 1 ? closeModal : ()=>setStep(step + 1)}
                 variantName="contained"
                 buttonName={step === 1 ? "Solicitar" : "Siguiente"}
             />
