@@ -16,7 +16,8 @@ const enviarExamenesSchema = mongoose.Schema({
     link:{ type:String, required:true, unique:true },
     chat:[
         {
-            idOwner:{ type: mongoose.Types.ObjectId, required: false, ref: 'Paciente' || 'Doctor'},
+            idOwner:{ type: mongoose.Types.ObjectId, required: false, ref: 'model_type' },
+            model_type: { type: String, enum: ['Paciente', 'Doctor'], required: false },
             messageChat:{type:String, require:false},
             dateChat:{type:String, require:false},
             timeChat:{type:String, require:false}
