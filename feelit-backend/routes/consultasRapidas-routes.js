@@ -28,14 +28,22 @@ router.patch(
     '/:crId',
     [
         check('idPaciente').not().isEmpty(),
-        check('idDoctor').not().isEmpty(),
-        // check('time').not().isEmpty(),
-        // check('messagePaciente').not().isEmpty()
+        check('idDoctor').not().isEmpty()
     ],
     consultasRapidasControllers.patchconsultasRapidas)
-//delete a: consultas rapidas
-router.delete('/:crId',consultasRapidasControllers.deleteconsultasRapidas)
-//active a: consultas rapidas
-router.get('/active/:crId',consultasRapidasControllers.activeConsultasRapidas)
+//delete a: consultas rapidas with a message of Doctor
+router.patch(
+    '/desactive/:crId',
+    [
+        check('messageCancelDoctor').not().isEmpty()
+    ],
+    consultasRapidasControllers.deleteconsultasRapidas)
+//active a: consultas rapidas with a message of Doctor
+router.patch(
+    '/active/:crId',
+    [
+        check('messageCancelDoctor').not().isEmpty()
+    ],
+    consultasRapidasControllers.activeConsultasRapidas)
 
 module.exports = router;

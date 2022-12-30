@@ -208,6 +208,9 @@ const patchconsultasRapidas = async (req,res,next) => {
 }
 //delete a: consultas rapidas
 const deleteconsultasRapidas = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const consultaFlashId = req.params.crId;
     let deleteconsultaRapidas;
 
@@ -217,10 +220,12 @@ const deleteconsultasRapidas = async (req,res,next) => {
         if(!deleteconsultaRapidas){
             throw new httpError('We can`t find this date',404)
         }
-    
+
         deleteconsultaRapidas.status = false;
+        deleteconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
+
         await deleteconsultaRapidas.save();
-        
+
     } catch(err){
         return next(new httpError(`somethign went wrong ${err}`,422));
     }
@@ -230,6 +235,9 @@ const deleteconsultasRapidas = async (req,res,next) => {
 
 //active a: consultas rapidas
 const activeConsultasRapidas = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const consultaFlashId = req.params.crId;
     let activeconsultaRapidas;
 
@@ -239,10 +247,12 @@ const activeConsultasRapidas = async (req,res,next) => {
         if(!activeconsultaRapidas){
             throw new httpError('We can`t find this date',404)
         }
-    
+
         activeconsultaRapidas.status = true;
+        activeconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
+
         await activeconsultaRapidas.save();
-        
+
     } catch(err){
         return next(new httpError(`somethign went wrong ${err}`,422));
     }
