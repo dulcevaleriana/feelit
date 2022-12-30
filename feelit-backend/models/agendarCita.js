@@ -6,8 +6,17 @@ const agendarCitaSchema = mongoose.Schema({
     date:{type: String, required: true, maxlength: 10},
     time:{type: String, required: true, maxlength: 6},
     status:{type: Boolean, required: true},
-    message:{type: String, required: true},
-    link:{ type:String, required:true, unique:true }
+    messagePaciente:{type: String, required: true},
+    messageCancelDoctor:{type: String, required: false},
+    link:{ type:String, required:true, unique:true },
+    chat:[
+        {
+            idOwner:{ type: mongoose.Types.ObjectId, required: false, ref: 'Paciente' || 'Doctor'},
+            message:{type:String, require:false},
+            date:{type:String, require:false},
+            time:{type:String, require:false}
+        }
+    ]
 });
 
 module.exports = mongoose.model('AgendarCita',agendarCitaSchema);
