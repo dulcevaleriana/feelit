@@ -6,12 +6,14 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from "react-router-dom";
 import PopUpConsultaRapida from "../../pages/consultasRapidas/PopUpConsultaRapida";
 import PopUpAgendarCita from "../../pages/agendarCita/PopUpAgendarCita";
+import PopUpEnviarResultados from "../../pages/EnviarResultados/PopUpEnviarResultados";
 
 export default function ChatDetails(props){
     const auth = useContext(AuthContext);
     const history = useHistory();
     const [consultaRapidaBoolean, setConsultaRapidaBoolean] = useState(false)
     const [agendarCita, setAgendarCita] = useState(false)
+    const [enviarResultados, setEnviarResultados] = useState(false)
 
     return <div>
         <Typography gutterBottom variant="h6" component="div">
@@ -41,11 +43,11 @@ export default function ChatDetails(props){
             />
         </>
         : auth.rol === "638f3ddd1af87455b52cf7d7" ? <>
-            <BasicButtons
-                onClick={()=>{}}
+            <PopUpEnviarResultados
+                handleClose={()=>setEnviarResultados(!enviarResultados)}
+                buttonName="Revisar Resultados (RD$ 800)"
                 variantName="contained"
-                buttonName={"Revisar Resultados (RD$ 800)"}
-                // disabled={true}
+                closeNow={enviarResultados}
             />
             <PopUpAgendarCita
                 handleClose={()=>setAgendarCita(!agendarCita)}
