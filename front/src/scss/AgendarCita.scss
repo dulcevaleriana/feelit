@@ -127,3 +127,56 @@
         }
     }
 }
+
+.class-PopUpAgendarCita {
+    > div:nth-child(3) {
+        width: 52vw;
+
+        > div:nth-child(2) form {
+            padding: 0;
+            display: grid;
+            grid-template-columns: 32.5% 32.5% 32.5%;
+            grid-gap: 20px;
+            align-content: center;
+            margin: 20px 0;
+
+            > div:nth-child(3) {
+                display: grid;
+                gap: 20px;
+            }
+        }
+
+        > div:nth-child(2) > form.class-gridChange {
+            grid-template-columns:auto auto;
+
+            > div:first-child {
+                gap: 20px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            > form {
+                display: grid;
+                grid-template-columns: 50% auto;
+                gap: 20px;
+
+                > h5,
+                > div:nth-child(4),
+                > div:nth-child(5) {
+                    grid-column: 1 / span 2;
+                    width: 100%;
+                    margin: 0;
+                }
+
+                > div {
+                    margin: 0;
+                    width: 100%;
+
+                    .css-viou3o-MuiAutocomplete-root {
+                        width: auto;
+                    }
+                }
+            }
+        }
+    }
+}

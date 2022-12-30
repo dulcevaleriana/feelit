@@ -66,7 +66,6 @@ const Auth = () => {
   };
 
   const authSubmitHandler = async event => {
-    alert("HEREEEEE")
     event.preventDefault();
 
     if(isLoginMode){

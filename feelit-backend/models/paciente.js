@@ -7,6 +7,7 @@ const pacienteSchema = mongoose.Schema({
     telefono:{ type:String, required:true, maxlength: 12 },
     name:{ type:String, required:true },
     status:{ type:Boolean, required:true },
+    rol:{ type:mongoose.Types.ObjectId, required:true, ref:'Rol' },
     agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}],
     consultaRapida:[{type:mongoose.Types.ObjectId, required:true, ref:'ConsultasRapidas'}],
     enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}]

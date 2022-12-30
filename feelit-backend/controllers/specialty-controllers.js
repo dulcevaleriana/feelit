@@ -71,7 +71,7 @@ const patchSpecialty = async (req,res,next) => {
     try {
         const verifyNotDuplicatedName = await Specialty.find({specialtyName:specialtyName});
         verifyspecialtyId = await Specialty.findById(specialtyId);
-    
+
         if(!verifyspecialtyId){
             throw new httpError('Could not find any specialty',404)
         }
@@ -98,7 +98,7 @@ const deleteSpecialty = async (req,res,next) => {
         if(!deleteSpecialtyId){
             throw new httpError('Could not find any specialty',404)
         }
-    
+
         deleteSpecialtyId.status = false;
 
         await deleteSpecialtyId.save();
@@ -119,7 +119,7 @@ const activeSpecialty = async (req,res,next) => {
         if(!activeSpecialtyId){
             throw new httpError('Could not find any specialty',404)
         }
-    
+
         activeSpecialtyId.status = true;
 
         await activeSpecialtyId.save();

@@ -15,11 +15,12 @@ export default function BasicSelect(props) {
           labelId="demo-simple-select-label"
           id={props.id}
           value={props.value}
-          label="Age"
+          label={props.name}
           onChange={props.onChange}
           disabled={props.disabled}
         >
-            {props.filterArray.map((item,key)=> <MenuItem value={item.value} key={key}>{item.name}</MenuItem>)}
+            {props.filterArray.length > 0 && props.filterArray.map((item,key)=> <MenuItem value={item.value} key={key}>{item.name}</MenuItem>)}
+            {typeof props.filterArray.getSpecialty === 'object' && props.filterArray.getSpecialty.map((item,key)=> item.status === true && <MenuItem value={item._id} key={key}>{item.specialtyName}</MenuItem>)}
         </Select>
       </FormControl>
     </Box>

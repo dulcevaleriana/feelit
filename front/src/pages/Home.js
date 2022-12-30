@@ -1,22 +1,29 @@
-import React, {useContext} from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState} from "react";
+// import { Link } from "react-router-dom";
 import { AuthContext } from "../shared/context/auth-context";
+import ListChat from "../components/HomeComponent/listChat";
+import CitasPendientes from "../components/HomeComponent/citasPendientes";
+import UltimasConsultas from "../components/HomeComponent/ultimasConsultas";
+import ChatComponent from "../components/HomeComponent/ChatComponent";
 
 export default function Home() {
     const auth = useContext(AuthContext);
+    const [activeChat, setActiveChat] = useState(false)
+    console.log("auth",auth)
 
-    return <div>
-        Home
-        <br/>
-        <Link to="/AgendarCita/EditOrSeeDetails">/AgendarCita/EditOrSeeDetails</Link>
-        <br/>
-        <Link to="/EnviarResultados/EditOrSeeDetails">/EnviarResultados/EditOrSeeDetails</Link>
-        <br/>
-        <Link to="/users">All User</Link>
-        <br/>
-        <Link to={`/users/${auth.userId}/UserPlaces`}>User's places</Link>
-        <br/>
-        <Link to="/place/new">Create Places</Link>
-        <br/>
+    const proofFunction = () => {
+        setActiveChat(true)
+    }
+
+    const proofFunctionFalse = () => {
+        setActiveChat(false)
+    }
+
+    return <div className="class-Home">
+        <ListChat onClick={proofFunction}/>
+        {activeChat ? <ChatComponent onClick={proofFunctionFalse}/> : <>
+            <CitasPendientes/>
+            <UltimasConsultas/>
+        </>}
     </div>
 }

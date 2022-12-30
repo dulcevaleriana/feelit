@@ -13,7 +13,17 @@ const MainNavigation = (props) => {
     const matches = useMediaQuery('(max-width:992px)');
     const auth = useContext(AuthContext);
 
-    const arrayLinks_isLoggedIn_true = [
+    const arrayLinks_isLoggedIn_Doctor_true = [
+        {
+            to:"/AgendarCita/create",
+            name:"Agendar Cita",
+        },
+        {
+            to:"/consultaRapida/ReadConsultaRapida",
+            name:"Gestionar Consultas",
+        }
+    ]
+    const arrayLinks_isLoggedIn_Paciente_true = [
         {
             to:"/consultaRapida/Create",
             name:"Consulta Flash",
@@ -25,33 +35,21 @@ const MainNavigation = (props) => {
         {
             to:"/EnviarResultados/create",
             name:"Enviar Resultados",
-        },
-        {
-            to:"/consultaRapida/ReadConsultaRapida",
-            name:"Gestionar Consultas",
-        },
-        {
-            to:"/users",
-            name:"",
-        },
-        {
-            to:``,
-            name:"",
-        },
-        {
-            to:"",
-            name:"",
         }
     ]
 
     const arrayLinks_isLoggedIn_flase = [
         {
-            to:"/users",
-            name:"All User",
+            to:"/consultaRapida/Create",
+            name:"Consulta Flash",
         },
         {
-            to:"/users/w2/UserPlaces",
-            name:"User's places",
+            to:"/AgendarCita/create",
+            name:"Agendar Cita",
+        },
+        {
+            to:"/EnviarResultados/create",
+            name:"Enviar Resultados",
         }
     ]
 
@@ -59,12 +57,12 @@ const MainNavigation = (props) => {
         <Header className="class-MainNavigation">
             {matches && (displayMenu ? <CloseIcon onClick={() => setDisplayMenu(!displayMenu)}/> : <MenuIcon onClick={() => setDisplayMenu(!displayMenu)}/> )}
             <h1>
-                <Link to="/">Feelit</Link>
+                <Link to={auth.isLoggedIn ? "/" : "/Home"}>Feelit</Link>
             </h1>
             <NavsLinks
                 show={matches ? displayMenu : true}
                 className={matches && displayMenu ? " class-responsive class-NavsLinks " : " class-NavsLinks "}
-                arrayLinks={auth.isLoggedIn ? arrayLinks_isLoggedIn_true : arrayLinks_isLoggedIn_flase}
+                arrayLinks={(auth.isLoggedIn && auth.rol === "638f3dc51af87455b52cf7d4") ? arrayLinks_isLoggedIn_Doctor_true : (auth.isLoggedIn && auth.rol === "638f3ddd1af87455b52cf7d7") ? arrayLinks_isLoggedIn_Paciente_true : arrayLinks_isLoggedIn_flase}
                 onClick={() => setDisplayMenu(false)}
             />
             <ImageAvatars />

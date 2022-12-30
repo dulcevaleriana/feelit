@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faCamera, faCheck } from '@fortawesome/free-solid-svg-icons';
 import FormControl from '@mui/material/FormControl';
@@ -7,11 +7,30 @@ import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import ModalComponent from '../../components/UIElements/ModalComponent';
 import AddDayAndTimeWork from "../../components/paciente/AddDayAndTimeWork";
+import { AuthContext } from "../../shared/context/auth-context";
 
 export default function CreateUserOrDoctor() {
+    const auth = useContext(AuthContext);
     const [step, setStep] = useState(true);
+    const [getHorario, setGetHorario] = useState([]);
+    const [getTelephone, setGetTelephone] = useState("");
+    const [getCedula, setGetCedula] = useState("");
+    const [getSpecialty, setSpecialty] = useState([]);
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    useEffect(()=>{
+        const getSpecialtyFunction = async () => {
+            try{
+                const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/')
+                setSpecialty(specialty)
+            } catch(err){
+                console.log(err)
+            }
+        }
+        getSpecialtyFunction()
+    },[sendRequest])
+
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -53,21 +72,20 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     cedula: {
-                        value: '',
-                        isValid: false
+                        value: getCedula,
+                        isValid: true
                     },
                     email: {
                         value: '',
                         isValid: false
                     },
                     telefono: {
-                        value: '',
-                        isValid: false
+                        value: getTelephone,
+                        isValid: true
                     }
                 },
                 false
             )
-            // console.log("step true",formState.inputs)
         } else{
             setFormData(
                 {
@@ -80,100 +98,84 @@ export default function CreateUserOrDoctor() {
                         isValid: false
                     },
                     cedula: {
-                        value: '',
-                        isValid: false
+                        value: getCedula,
+                        isValid: true
                     },
                     email: {
                         value: '',
                         isValid: false
                     },
                     telefono: {
+                        value: getTelephone,
+                        isValid: true
+                    },
+                    address: {
                         value: '',
-                        isValid: false
+                        isValid: true
+                    },
+                    googleMapsLink: {
+                        value: '',
+                        isValid: true
                     },
                     specialty: {
-                        value: "pediatra",
+                        value: '',
                         isValid: true
                     },
-                    laborDays: {
-                        value: {
-                            su: false,
-                            mo: true,
-                            tu: true,
-                            we: true,
-                            th: true,
-                            fr: true,
-                            sa: false
-                        },
-                        isValid: true
-                    },
-                    hourStart: {
-                        value: "8:00",
-                        isValid: true
-                    },
-                    hourFinish: {
-                        value: "17:00",
-                        isValid: true
-                    },
-                    location: {
-                        value: {
-                            lan: 23.42352,
-                            lng: 43.35453,
-                            address: "calle sadas santo domingo"
-                        },
+                    horario: {
+                        value: getHorario,
                         isValid: true
                     },
                 },
                 false
             )
-            // console.log("step false",formState.inputs)
         }
     }
 
     const CreateDoctorOrPacienteFunction = async event => {
         event.preventDefault();
-        console.log("step",step)
 
         if(step){
-            alert("NEWWWWWW")
             try{
-                await sendRequest(
+                const responseData = await sendRequest(
                     process.env.REACT_APP_ + "paciente/createPaciente",
                     'POST',
                     JSON.stringify({
-                        cedula: formState.inputs.cedula.value,
+                        cedula: getCedula,
                         email: formState.inputs.email.value,
                         password: formState.inputs.password.value,
-                        telefono: formState.inputs.telefono.value,
+                        telefono: getTelephone,
                         name: formState.inputs.name.value,
                     }),
                     {
                         'Content-Type': 'application/json'
                     },
                 )
-                console.log("formState.inputs",formState.inputs)
+
+                auth.login(responseData.userId, responseData.token, responseData.rol);
+
         } catch(err){}
         } else{
             try{
-                await sendRequest(
+                const responseData = await sendRequest(
                   process.env.REACT_APP_ + "doctor/createDoctor",
                   'POST',
                   JSON.stringify({
                     name: formState.inputs.name.value,
                     password: formState.inputs.password.value,
-                    cedula: formState.inputs.cedula.value,
+                    cedula: getCedula,
                     email: formState.inputs.email.value,
                     specialty: formState.inputs.specialty.value,
-                    telefono: formState.inputs.telefono.value,
-                    laborDays: formState.inputs.laborDays.value,
-                    hourStart: formState.inputs.hourStart.value,
-                    hourFinish: formState.inputs.hourFinish.value,
-                    location: formState.inputs.location.value,
+                    telefono: getTelephone,
+                    address: formState.inputs.address.value,
+                    googleMapsLink: formState.inputs.googleMapsLink.value,
+                    horario: getHorario,
                   }),
                   {
                     'Content-Type': 'application/json'
                   },
                 )
+
+                auth.login(responseData.userId, responseData.token, responseData.rol);
             } catch(err){}
         }
 
@@ -181,11 +183,11 @@ export default function CreateUserOrDoctor() {
 
     useEffect(()=>{
         switchDoctorOrPacient()
+        localStorage.removeItem("stepLS")
+        // eslint-disable-next-line
     },[step])
 
-    useEffect(()=>{
-        localStorage.removeItem("stepLS")
-    },[step])
+    console.log("getCedula",getCedula)
 
     return <>
         <ModalComponent
@@ -240,22 +242,26 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:"mask",
                         id:"cedula",
                         type:"text",
                         label:"Cédula",
                         validators:[],
                         errorText:"Please enter a valid Cédula.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetCedula(data),
+                        mask:"000-0000000-0"
                     },
                     {
-                        element:"input",
+                        element:"mask",
                         id:"telefono",
-                        type:"tel",
+                        type:"text",
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetTelephone(data),
+                        mask:"000-000-0000"
                     },
                     {
                         element:"input",
@@ -267,7 +273,7 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:'password',
                         id:"password",
                         type:"password",
                         label:"Contraseña",
@@ -288,22 +294,26 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
+                        element:"mask",
                         id:"cedula",
                         type:"text",
                         label:"Cédula",
                         validators:[],
                         errorText:"Please enter a valid Cédula.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetCedula(data),
+                        mask:"000-0000000-0"
                     },
                     {
-                        element:"input",
+                        element:"mask",
                         id:"telefono",
-                        type:"tel",
+                        type:"text",
                         label:"Teléfono",
                         validators:[],
                         errorText:"Please enter a valid Teléfono.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        passData: (data)=>setGetTelephone(data),
+                        mask:"000-000-0000"
                     },
                     {
                         element:"input",
@@ -315,8 +325,8 @@ export default function CreateUserOrDoctor() {
                         onInput:inputHandler
                     },
                     {
-                        element:"input",
-                        id:"password",
+                        element:'password',
+                        id:'password',
                         type:"password",
                         label:"Contraseña",
                         validators:[],
@@ -331,25 +341,18 @@ export default function CreateUserOrDoctor() {
                         validators:[],
                         errorText:"Please enter a valid Especialidad.",
                         onInput:inputHandler,
-                        filterArray:[
-                            {
-                                value:"62b15e069cb7c9046ab0aef2",
-                                name:"nombre especialidad"
-                            }
-                        ]
+                        filterArray:getSpecialty
                     }
                 ]}
             />
-            {!step && <AddDayAndTimeWork/>}
+            {!step && <AddDayAndTimeWork sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>}
             <BasicButtons
                 onClick={()=>{}}
                 variantName="contained"
-                buttonName="Listo"
+                buttonName="Crear cuenta"
                 iconName={faCheck}
+                type="submit"
             />
-            <button>
-                SAVE
-            </button>
         </form>
     </>
 }

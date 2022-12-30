@@ -19,10 +19,6 @@ router.post(
         check('email').normalizeEmail().isEmail(),
         check('specialty').not().isEmpty(),
         check('telefono').isLength({min:12}),
-        check('laborDays').not().isEmpty(),
-        check('hourStart').not().isEmpty(),
-        check('hourFinish').not().isEmpty(),
-        check('location').not().isEmpty(),
     ],
     doctorControllers.postDoctor)
 //patch a doctor
@@ -35,10 +31,6 @@ router.patch(
         check('email').normalizeEmail().isEmail(),
         check('specialty').not().isEmpty(),
         check('telefono').isLength({min:12}),
-        check('laborDays').not().isEmpty(),
-        check('hourStart').not().isEmpty(),
-        check('hourFinish').not().isEmpty(),
-        check('location').not().isEmpty(),
     ],
     doctorControllers.patchDoctor)
 //delete a doctor
