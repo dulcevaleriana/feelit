@@ -21,6 +21,8 @@ button {
 
 .class-ImageAvatars {
     justify-content: right;
+    align-items: center;
+    text-align: right;
 
     > a {
         display: grid;
@@ -38,6 +40,11 @@ button {
             gap: 10px;
         }
     }
+}
+
+a {
+    text-decoration: solid;
+    font-weight: 500;
 }
 
 /*react-transition-library*/

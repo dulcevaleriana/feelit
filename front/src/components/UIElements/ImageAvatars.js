@@ -30,16 +30,18 @@ export default function ImageAvatars() {
 
   return (
     <Stack direction="row" spacing={2} className="class-ImageAvatars">
-        {auth.isLoggedIn ? (
+        {auth.isLoggedIn ? ( <>
+          <span>
             <Link to="/SeeAccount/:pacienteId">
-              <span>
-                <h4>Welcome</h4>
-                <h5><span>{getUser?.getDoctorById ? getUser.getDoctorById.name : getUser?.getPacienteById ? getUser.getPacienteById.name : "User Name"}</span></h5>
-                <span onClick={auth.logout}>Log Out</span>
-              </span>
-              <Avatar alt="User Name" src="https://th-thumbnailer.cdn-si-edu.com/5a79C6jJ8BrChMX5tgEKiMI_qqo=/1000x750/filters:no_upscale():focal(792x601:793x602)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/52/e4/52e44474-c2dc-41e0-bb77-42a904695196/this-image-shows-a-portrait-of-dragon-man-credit-chuang-zhao_web.jpg" />
+              <h4>Welcome</h4>
+              <h5><span>{getUser?.getDoctorById ? getUser.getDoctorById.name : getUser?.getPacienteById ? getUser.getPacienteById.name : "User Name"}</span></h5>
             </Link>
-        ) : (
+            <Link to="/">
+              <span onClick={auth.logout}>Log Out</span>
+            </Link>
+          </span>
+          <Avatar alt="User Name" src="https://th-thumbnailer.cdn-si-edu.com/5a79C6jJ8BrChMX5tgEKiMI_qqo=/1000x750/filters:no_upscale():focal(792x601:793x602)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/52/e4/52e44474-c2dc-41e0-bb77-42a904695196/this-image-shows-a-portrait-of-dragon-man-credit-chuang-zhao_web.jpg" />
+          </>) : (
           <>
             <Link to="/">
               <h5>Login</h5>
