@@ -5,11 +5,13 @@ import BasicButtons from "../UIElements/BasicButtons-MUI";
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from "react-router-dom";
 import PopUpConsultaRapida from "../../pages/consultasRapidas/PopUpConsultaRapida";
+import PopUpAgendarCita from "../../pages/agendarCita/PopUpAgendarCita";
 
 export default function ChatDetails(props){
     const auth = useContext(AuthContext);
     const history = useHistory();
     const [consultaRapidaBoolean, setConsultaRapidaBoolean] = useState(false)
+    const [agendarCita, setAgendarCita] = useState(false)
 
     return <div>
         <Typography gutterBottom variant="h6" component="div">
@@ -45,11 +47,11 @@ export default function ChatDetails(props){
                 buttonName={"Revisar Resultados (RD$ 800)"}
                 // disabled={true}
             />
-            <BasicButtons
-                onClick={()=>{}}
+            <PopUpAgendarCita
+                handleClose={()=>setAgendarCita(!agendarCita)}
+                buttonName="Cita Consulta (RD$ 1,500)"
                 variantName="contained"
-                buttonName={"Cita Consulta (RD$ 1,500)"}
-                // disabled={true}
+                closeNow={agendarCita}
             />
             <PopUpConsultaRapida
                 handleClose={()=>setConsultaRapidaBoolean(!consultaRapidaBoolean)}
