@@ -60,7 +60,7 @@ const getconsultasRapidasByDoctor = async (req,res,next) => {
 
     try {
         getConsultasRapidasDoctor = await ConsultasRapidas.find({idDoctor:doctorId});
-        
+
         if(getConsultasRapidasDoctor.length < 1){
             throw new httpError(`could not find any flash consult with this doctor`,404)
         }
@@ -105,7 +105,7 @@ const postconsultasRapidas = async (req,res,next)=>{
         time,
         messagePaciente,
         dateCreated:todayFunction(),
-        status:true,
+        status:'Pendiente',
         link:uuidv4()
     })
 
@@ -221,7 +221,7 @@ const deleteconsultasRapidas = async (req,res,next) => {
             throw new httpError('We can`t find this date',404)
         }
 
-        deleteconsultaRapidas.status = false;
+        deleteconsultaRapidas.status = 'Rechazado';
         deleteconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
 
         await deleteconsultaRapidas.save();
@@ -248,7 +248,7 @@ const activeConsultasRapidas = async (req,res,next) => {
             throw new httpError('We can`t find this date',404)
         }
 
-        activeconsultaRapidas.status = true;
+        activeconsultaRapidas.status = 'Aprobado';
         activeconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
 
         await activeconsultaRapidas.save();

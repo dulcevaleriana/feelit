@@ -12,7 +12,8 @@ const enviarExamenesSchema = mongoose.Schema({
         }
     ],
     dateCreated:{type: String, required: true, maxlength: 10},
-    status:{type: Boolean, required: true},
+    status:{type: String, required: true, ref: 'status_list'},
+    status_list:{ type: String, enum: ['Pendiente','Aprobado','Rechazado','Completado'], require: true},
     link:{ type:String, required:true, unique:true },
     chat:[
         {
