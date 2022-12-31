@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const agendarCitaSchema = mongoose.Schema({
     idPaciente:{ type: mongoose.Types.ObjectId, required: true, ref: 'Paciente'},
     idDoctor:{ type: mongoose.Types.ObjectId, required: true, ref: 'Doctor' },
-    date:{type: String, required: true, maxlength: 10},
-    time:{type: String, required: true, maxlength: 6},
+    date:{type: Date, required: true},
+    time:{type: String, required: true},
     paymentStatus:{type: Boolean, required: true},
     status:{type: String, required: true, ref: 'status_list'},
     status_list:{ type: String, enum: ['Pendiente','Aprobado','Rechazado','Completado'], require: true},

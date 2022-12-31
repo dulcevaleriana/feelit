@@ -100,15 +100,16 @@ const postAgendarCita = async (req,res,next) => {
         idDoctor,
         date,
         time,
-        message,
+        messagePaciente,
     } = req.body;
     const createAgendarCita = new AgendarCita({
         idPaciente,
         idDoctor,
         date,
         time,
+        messagePaciente,
+        paymentStatus:false,
         status: 'Pendiente',
-        message,
         link: uuidv4(),
         chat:[]
     })
@@ -164,7 +165,7 @@ const patchAgendarCita = async (req,res,next) => {
     const {
         date,
         time,
-        message,
+        messagePaciente,
         chat
     } = req.body;
     const agendarCitaId = req.params.acId;
@@ -200,7 +201,7 @@ const patchAgendarCita = async (req,res,next) => {
 
         updateAgendarCita.date = date;
         updateAgendarCita.time = time;
-        updateAgendarCita.message = message;
+        updateAgendarCita.messagePaciente = messagePaciente;
         updateAgendarCita.chat = [... updateAgendarCita.chat, chat]
 
         await updateAgendarCita.save();
