@@ -25,7 +25,7 @@ const getAgendarCitaById = async (req,res,next)=>{
 
     try {
         getAgendarCitaId = await AgendarCita.findById(agendarCitaId);
-        
+
         if(!getAgendarCitaId){
             throw new httpError('Could not find this date',404)
         }
@@ -43,7 +43,7 @@ const getAgendarCitaByStatus = async (req,res,next) => {
 
     try {
         getAgendarCitaStatus = await AgendarCita.find({status:agendarCitaStatus})
-        
+
         if(getAgendarCitaStatus.length === 0 || agendarCitaStatus === undefined){
             throw new httpError(`Could not find dates with status ${req.params.ToF}`,404)
         }
@@ -61,8 +61,7 @@ const getAgendarCitaByDoctor = async (req,res,next) => {
 
     try {
         getAgendarCitaDoctor = await AgendarCita.find({idDoctor:doctorId})
-        
-        
+
         if(!getAgendarCitaDoctor){
             throw new httpError(`Could not find any dates with this doctor`,404)
         }
@@ -101,16 +100,17 @@ const postAgendarCita = async (req,res,next) => {
         idDoctor,
         date,
         time,
-        message, 
+        message,
     } = req.body;
     const createAgendarCita = new AgendarCita({
         idPaciente,
         idDoctor,
         date,
         time,
-        status: true,
+        status: 'Pendiente',
         message,
-        link: uuidv4()
+        link: uuidv4(),
+        chat:[]
     })
 
     try {
@@ -130,7 +130,7 @@ const postAgendarCita = async (req,res,next) => {
         if(verifyPacienteDates || verifyDoctorDates){
             const verifyPacienteTime = pacienteDates.find(d => d.time === time)
             const verifyDoctorTime = doctorDates.find(d => d.time === time)
-    
+
             if(verifyPacienteTime || verifyDoctorTime){
                 throw new httpError(`We can't save this date with the same date and hour`,404)
             }
@@ -164,7 +164,8 @@ const patchAgendarCita = async (req,res,next) => {
     const {
         date,
         time,
-        message, 
+        message,
+        chat
     } = req.body;
     const agendarCitaId = req.params.acId;
     let updateAgendarCita;
@@ -191,7 +192,7 @@ const patchAgendarCita = async (req,res,next) => {
         if(verifyPacienteDates || verifyDoctorDates){
             const verifyPacienteTime = pacienteDates.find(d => d.time === time)
             const verifyDoctorTime = doctorDates.find(d => d.time === time)
-    
+
             if(verifyPacienteTime || verifyDoctorTime){
                 throw new httpError(`We can't save this date with the same date and hour`,404)
             }
@@ -200,6 +201,7 @@ const patchAgendarCita = async (req,res,next) => {
         updateAgendarCita.date = date;
         updateAgendarCita.time = time;
         updateAgendarCita.message = message;
+        updateAgendarCita.chat = [... updateAgendarCita.chat, chat]
 
         await updateAgendarCita.save();
 
@@ -211,6 +213,9 @@ const patchAgendarCita = async (req,res,next) => {
 }
 //delete a: agendar cita
 const deleteAgendarCita = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const agendarCitaId = req.params.acId;
     let deleteAgendaCita;
 
@@ -220,8 +225,10 @@ const deleteAgendarCita = async (req,res,next) => {
         if(!deleteAgendaCita){
             throw new httpError('We can`t find this date',404)
         }
-    
-        deleteAgendaCita.status = false;
+
+        deleteAgendaCita.status = 'Rechazado';
+        deleteAgendaCita.messageCancelDoctor = messageCancelDoctor;
+
         deleteAgendaCita.save();
 
     }catch(err){
@@ -233,6 +240,9 @@ const deleteAgendarCita = async (req,res,next) => {
 
 //active a: agendar cita
 const activeAgendarCita = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const agendarCitaId = req.params.acId;
     let deleteAgendaCita;
 
@@ -242,8 +252,10 @@ const activeAgendarCita = async (req,res,next) => {
         if(!deleteAgendaCita){
             throw new httpError('We can`t find this date',404)
         }
-    
+
         deleteAgendaCita.status = true;
+        deleteAgendaCita.messageCancelDoctor = messageCancelDoctor;
+
         deleteAgendaCita.save();
 
     }catch(err){

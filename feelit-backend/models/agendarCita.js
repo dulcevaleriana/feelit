@@ -5,6 +5,7 @@ const agendarCitaSchema = mongoose.Schema({
     idDoctor:{ type: mongoose.Types.ObjectId, required: true, ref: 'Doctor' },
     date:{type: String, required: true, maxlength: 10},
     time:{type: String, required: true, maxlength: 6},
+    paymentStatus:{type: Boolean, required: true},
     status:{type: String, required: true, ref: 'status_list'},
     status_list:{ type: String, enum: ['Pendiente','Aprobado','Rechazado','Completado'], require: true},
     messagePaciente:{type: String, required: true},

@@ -105,8 +105,10 @@ const postconsultasRapidas = async (req,res,next)=>{
         time,
         messagePaciente,
         dateCreated:todayFunction(),
+        paymentStatus:false,
         status:'Pendiente',
-        link:uuidv4()
+        link:uuidv4(),
+        chat:[]
     })
 
     try {
