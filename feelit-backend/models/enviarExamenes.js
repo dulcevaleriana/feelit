@@ -6,10 +6,7 @@ const enviarExamenesSchema = mongoose.Schema({
     messagePaciente:{type: String, required: true},
     messageCancelDoctor:{type: String, required: false},
     docUpload:[
-        {
-            type: String,
-            required: true
-        }
+        { doc:{ type: String, required: true } }
     ],
     dateCreated:{type: String, required: true, maxlength: 10},
     paymentStatus:{type: Boolean, required: true},

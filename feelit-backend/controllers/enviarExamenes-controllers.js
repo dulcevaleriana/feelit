@@ -79,7 +79,7 @@ const getEnviarExamenesByDate = async (req,res,next) => {
         getEnviarExamenesDate = await EnviarExamenes.find({dateCreated:consultasRapidasDate})
         if(getEnviarExamenesDate < 1){
             throw new httpError(`Could not find any with this date`,404)
-        }    
+        }
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404))
     }
@@ -95,18 +95,19 @@ const postEnviarExamenes = async (req,res,next) => {
     const {
         idPaciente,
         idDoctor,
-        message,
+        messagePaciente,
         docUpload
     } = req.body;
     const createEnviarExamenes = new EnviarExamenes({
         idPaciente,
         idDoctor,
-        message,
+        messagePaciente,
         docUpload,
-        messageDoctor:' ',
         dateCreated:todayFunction(),
-        status:true,
-        link:uuidv4()
+        status:'Pendiente',
+        paymentStatus:false,
+        link:uuidv4(),
+        chat:[]
     })
 
     try {
@@ -146,8 +147,9 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
         return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
-        message,
-        docUpload
+        messagePaciente,
+        docUpload,
+        chat
     } = req.body;
     const enviarExamenesId = req.params.eeId;
     const pacienteId = req.params.pId;
@@ -165,9 +167,15 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
         if(verifyPacienteId === false){
             throw new httpError('Could not find any exams sended by you',404)
         }
-        
-        verifyenviarExamenesId.message = message;
+
+        verifyenviarExamenesId.messagePaciente = messagePaciente;
         verifyenviarExamenesId.docUpload = verifyenviarExamenesId.docUpload.concat(docUpload);
+
+        if( verifyenviarExamenesId.status === 'Aprobado' && verifyenviarExamenesId.paymentStatus === true ){
+            verifyenviarExamenesId.chat = [... verifyenviarExamenesId.chat, chat]
+        } else {
+            throw new httpError(`you have to pay to start this chat`,404)
+        }
 
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -180,7 +188,7 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
         await getDoctor.save({session:sess});
 
         sess.commitTransaction();
-        
+
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404));
     }
@@ -194,7 +202,7 @@ const patchEnviarExamenesByDoctor = async (req,res,next) => {
         return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
-        messageDoctor
+        messageCancelDoctor
     } = req.body;
     const enviarExamenesId = req.params.eeId;
     const doctorId = req.params.dId;
@@ -209,12 +217,12 @@ const patchEnviarExamenesByDoctor = async (req,res,next) => {
         if(!verifyenviarExamenesId){
             throw new httpError('Could not find any exams sended',404)
         }
-    
+
         if(verifyDoctorId === false){
             throw new httpError('Could not find any exams sended for you, dr',404)
         }
 
-        verifyenviarExamenesId.messageDoctor = messageDoctor;
+        verifyenviarExamenesId.messageCancelDoctor = messageCancelDoctor;
 
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -236,6 +244,9 @@ const patchEnviarExamenesByDoctor = async (req,res,next) => {
 }
 //delete a: enviar examenes
 const deleteEnviarExamenes = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const enviarExamenesId = req.params.eeId;
     let deleteEnviarExamenes;
 
@@ -245,8 +256,11 @@ const deleteEnviarExamenes = async (req,res,next) => {
         if(!deleteEnviarExamenes){
             throw new httpError('We can`t find any exam sended',404)
         }
-    
-        deleteEnviarExamenes.status = false;
+
+        // move this to a payment function (in a future)
+        deleteEnviarExamenes.paymentStatus = false;
+        deleteEnviarExamenes.messageCancelDoctor = messageCancelDoctor;
+        deleteEnviarExamenes.status = 'Rechazado';
 
         await deleteEnviarExamenes.save();
     } catch(err){
@@ -257,6 +271,9 @@ const deleteEnviarExamenes = async (req,res,next) => {
 }
 //active a: enviar examenes
 const activeEnviarExamenes = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const enviarExamenesId = req.params.eeId;
     let activeEnviarExamenes;
 
@@ -266,8 +283,11 @@ const activeEnviarExamenes = async (req,res,next) => {
         if(!activeEnviarExamenes){
             throw new httpError('We can`t find any exam sended',404)
         }
-    
-        activeEnviarExamenes.status = true;
+
+        // move this to a payment function (in a future)
+        activeEnviarExamenes.paymentStatus = false;
+        activeEnviarExamenes.messageCancelDoctor = messageCancelDoctor;
+        activeEnviarExamenes.status = 'Rechazado';
 
         await activeEnviarExamenes.save();
     } catch(err){

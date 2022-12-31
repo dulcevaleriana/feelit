@@ -19,7 +19,7 @@ router.post(
     [
         check('idPaciente').not().isEmpty(),
         check('idDoctor').not().isEmpty(),
-        check('message').not().isEmpty(),
+        check('messagePaciente').not().isEmpty(),
         check('docUpload').not().isEmpty()
     ],
     enviarExamenesControllers.postEnviarExamenes)
@@ -27,18 +27,24 @@ router.post(
 router.patch(
     '/:eeId/:pId',
     [
-        check('message').not().isEmpty(),
+        check('messagePaciente').not().isEmpty(),
         check('docUpload').not().isEmpty()
     ],
     enviarExamenesControllers.patchEnviarExamenesByPaciente)
 //patch a: enviar examenes by doctor
 router.patch(
     '/doctorMessage/:eeId/:dId',
-    check('messageDoctor').not().isEmpty(),
+    check('messageCancelDoctor').not().isEmpty(),
     enviarExamenesControllers.patchEnviarExamenesByDoctor)
 //delete a: enviar examenes
-router.delete('/:eeId',enviarExamenesControllers.deleteEnviarExamenes)
+router.patch(
+    '/desactive/:eeId',
+    check('messageCancelDoctor').not().isEmpty(),
+    enviarExamenesControllers.deleteEnviarExamenes)
 //active a: enviar examenes
-router.get('/active/:eeId',enviarExamenesControllers.activeEnviarExamenes)
+router.patch(
+    '/active/:eeId',
+    check('messageCancelDoctor').not().isEmpty(),
+    enviarExamenesControllers.activeEnviarExamenes)
 
 module.exports = router;
