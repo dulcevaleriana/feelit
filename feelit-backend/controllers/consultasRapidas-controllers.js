@@ -188,7 +188,12 @@ const patchconsultasRapidas = async (req,res,next) => {
 
         verifyconsultaFlashId.time = time;
         verifyconsultaFlashId.messagePaciente = messagePaciente;
-        verifyconsultaFlashId.chat = [ ... verifyconsultaFlashId.chat, chat]
+
+        if( verifyconsultaFlashId.status === 'Aprobado' && verifyconsultaFlashId.paymentStatus === true ){
+            verifyconsultaFlashId.chat = [ ... verifyconsultaFlashId.chat, chat]
+        } else {
+            throw new httpError(`you have to pay to start this chat`,404)
+        }
 
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -224,6 +229,8 @@ const deleteconsultasRapidas = async (req,res,next) => {
         }
 
         deleteconsultaRapidas.status = 'Rechazado';
+        // move this to a payment function (in a future)
+        activeconsultaRapidas.paymentStatus = false;
         deleteconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
 
         await deleteconsultaRapidas.save();
@@ -251,6 +258,8 @@ const activeConsultasRapidas = async (req,res,next) => {
         }
 
         activeconsultaRapidas.status = 'Aprobado';
+        // move this to a payment function (in a future)
+        activeconsultaRapidas.paymentStatus = true;
         activeconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
 
         await activeconsultaRapidas.save();

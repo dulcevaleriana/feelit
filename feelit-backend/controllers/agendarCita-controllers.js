@@ -186,7 +186,7 @@ const patchAgendarCita = async (req,res,next) => {
             throw new httpError(`We can't find this date`,404)
         }
 
-        if(updateAgendarCita.status === false){
+        if(updateAgendarCita.status === 'Rechazado'){
             throw new httpError(`We can't modified a date canceled`,404)
         }
 
@@ -202,7 +202,12 @@ const patchAgendarCita = async (req,res,next) => {
         updateAgendarCita.date = date;
         updateAgendarCita.time = time;
         updateAgendarCita.messagePaciente = messagePaciente;
-        updateAgendarCita.chat = [... updateAgendarCita.chat, chat]
+
+        if( updateAgendarCita.status === 'Aprobado' && updateAgendarCita.paymentStatus === true ){
+            updateAgendarCita.chat = [... updateAgendarCita.chat, chat]
+        } else {
+            throw new httpError(`you have to pay to start this chat`,404)
+        }
 
         await updateAgendarCita.save();
 
@@ -228,6 +233,8 @@ const deleteAgendarCita = async (req,res,next) => {
         }
 
         deleteAgendaCita.status = 'Rechazado';
+        // move this to a payment function (in a future)
+        deleteAgendaCita.paymentStatus = false;
         deleteAgendaCita.messageCancelDoctor = messageCancelDoctor;
 
         deleteAgendaCita.save();
@@ -254,7 +261,9 @@ const activeAgendarCita = async (req,res,next) => {
             throw new httpError('We can`t find this date',404)
         }
 
-        deleteAgendaCita.status = true;
+        deleteAgendaCita.status = 'Aprobado';
+        // move this to a payment function (in a future)
+        deleteAgendaCita.paymentStatus = true;
         deleteAgendaCita.messageCancelDoctor = messageCancelDoctor;
 
         deleteAgendaCita.save();

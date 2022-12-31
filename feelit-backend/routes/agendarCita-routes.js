@@ -31,7 +31,7 @@ router.patch(
     agendarCitaControllers.patchAgendarCita)
 //delete a: agendar cita with doctor's message
 router.patch(
-    '/:acId',
+    '/desactive/:acId',
     [
         check('messageCancelDoctor').not().isEmpty()
     ],
