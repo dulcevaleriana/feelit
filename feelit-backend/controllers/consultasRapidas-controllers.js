@@ -230,7 +230,7 @@ const deleteconsultasRapidas = async (req,res,next) => {
 
         deleteconsultaRapidas.status = 'Rechazado';
         // move this to a payment function (in a future)
-        activeconsultaRapidas.paymentStatus = false;
+        deleteconsultaRapidas.paymentStatus = false;
         deleteconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
 
         await deleteconsultaRapidas.save();
