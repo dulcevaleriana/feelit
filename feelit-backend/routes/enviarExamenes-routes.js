@@ -31,20 +31,19 @@ router.patch(
         check('docUpload').not().isEmpty()
     ],
     enviarExamenesControllers.patchEnviarExamenesByPaciente)
-//patch a: enviar examenes by doctor
-router.patch(
-    '/doctorMessage/:eeId/:dId',
-    check('messageCancelDoctor').not().isEmpty(),
-    enviarExamenesControllers.patchEnviarExamenesByDoctor)
 //delete a: enviar examenes
-router.patch(
+router.get(
     '/desactive/:eeId',
-    check('messageCancelDoctor').not().isEmpty(),
+    [
+        check('messageCancelDoctor').not().isEmpty()
+    ],
     enviarExamenesControllers.deleteEnviarExamenes)
 //active a: enviar examenes
-router.patch(
+router.get(
     '/active/:eeId',
-    check('messageCancelDoctor').not().isEmpty(),
+    [
+        check('messageCancelDoctor').not().isEmpty()
+    ],
     enviarExamenesControllers.activeEnviarExamenes)
 
 module.exports = router;

@@ -103,6 +103,7 @@ const postEnviarExamenes = async (req,res,next) => {
         idDoctor,
         messagePaciente,
         docUpload,
+        messageCancelDoctor:'',
         dateCreated:todayFunction(),
         status:'Pendiente',
         paymentStatus:false,
@@ -195,53 +196,6 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
 
     res.status(201).json({message:'Your exam sended was edited succesfully',verifyenviarExamenesId})
 }
-//patch a: enviar examenes by doctor
-const patchEnviarExamenesByDoctor = async (req,res,next) => {
-    const error = validationResult(req);
-    if(!error.isEmpty()){
-        return next(new httpError('Invalid inputs passed, please check your data',422));
-    }
-    const {
-        messageCancelDoctor
-    } = req.body;
-    const enviarExamenesId = req.params.eeId;
-    const doctorId = req.params.dId;
-    let verifyenviarExamenesId;
-
-    try {
-        verifyenviarExamenesId = await EnviarExamenes.findById(enviarExamenesId);
-        const verifyDoctorId = verifyenviarExamenesId.idDoctor.toString() === doctorId;
-        const getPaciente = await Paciente.findById(verifyenviarExamenesId.idPaciente.toString());
-        const getDoctor = await Doctor.findById(verifyenviarExamenesId.idDoctor.toString());
-
-        if(!verifyenviarExamenesId){
-            throw new httpError('Could not find any exams sended',404)
-        }
-
-        if(verifyDoctorId === false){
-            throw new httpError('Could not find any exams sended for you, dr',404)
-        }
-
-        verifyenviarExamenesId.messageCancelDoctor = messageCancelDoctor;
-
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-
-        getPaciente.enviarExamenes.push(verifyenviarExamenesId);
-        getDoctor.enviarExamenes.push(verifyenviarExamenesId);
-
-        await verifyenviarExamenesId.save({session:sess});
-        await getPaciente.save({session:sess});
-        await getPaciente.save({session:sess});
-
-        sess.commitTransaction();
-
-    } catch(err){
-        return next(new httpError(`somenthing went wrong ${err}`,404));
-    }
-
-    res.status(201).json({message:'Dr. , Your exam response was sended succesfully',verifyenviarExamenesId})
-}
 //delete a: enviar examenes
 const deleteEnviarExamenes = async (req,res,next) => {
     const {
@@ -257,12 +211,12 @@ const deleteEnviarExamenes = async (req,res,next) => {
             throw new httpError('We can`t find any exam sended',404)
         }
 
+        deleteEnviarExamenes.status = 'Rechazado';
         // move this to a payment function (in a future)
         deleteEnviarExamenes.paymentStatus = false;
         deleteEnviarExamenes.messageCancelDoctor = messageCancelDoctor;
-        deleteEnviarExamenes.status = 'Rechazado';
 
-        await deleteEnviarExamenes.save();
+        deleteEnviarExamenes.save();
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404));
     }
@@ -285,11 +239,11 @@ const activeEnviarExamenes = async (req,res,next) => {
         }
 
         // move this to a payment function (in a future)
-        activeEnviarExamenes.paymentStatus = false;
+        activeEnviarExamenes.paymentStatus = true;
         activeEnviarExamenes.messageCancelDoctor = messageCancelDoctor;
-        activeEnviarExamenes.status = 'Rechazado';
+        activeEnviarExamenes.status = 'Aprobado';
 
-        await activeEnviarExamenes.save();
+        activeEnviarExamenes.save();
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404));
     }
@@ -304,6 +258,5 @@ exports.getEnviarExamenesByDoctor = getEnviarExamenesByDoctor;
 exports.getEnviarExamenesByDate = getEnviarExamenesByDate;
 exports.postEnviarExamenes = postEnviarExamenes;
 exports.patchEnviarExamenesByPaciente = patchEnviarExamenesByPaciente;
-exports.patchEnviarExamenesByDoctor = patchEnviarExamenesByDoctor;
 exports.deleteEnviarExamenes = deleteEnviarExamenes;
 exports.activeEnviarExamenes = activeEnviarExamenes;
