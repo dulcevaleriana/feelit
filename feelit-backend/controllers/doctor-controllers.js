@@ -136,7 +136,11 @@ const patchDoctor = async (req,res,next) => {
         telefono,
         address,
         googleMapsLink,
-        horario
+        horario,
+        paymentMethod,
+        agendarCitaPrice,
+        consultaRapidaPrice,
+        enviarExamenesPrice
     } = req.body;
     let updateDoctor;
     let hashPassword;
@@ -163,6 +167,10 @@ const patchDoctor = async (req,res,next) => {
         updateDoctor.address = address;
         updateDoctor.googleMapsLink = googleMapsLink;
         updateDoctor.horario = horario;
+        updateDoctor.paymentMethod = paymentMethod;
+        updateDoctor.agendarCitaPrice = agendarCitaPrice;
+        updateDoctor.consultaRapidaPrice = consultaRapidaPrice;
+        updateDoctor.enviarExamenesPrice = enviarExamenesPrice;
 
         await updateDoctor.save();
     } catch (err) {

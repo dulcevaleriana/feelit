@@ -16,11 +16,15 @@ const doctorSchema = mongoose.Schema({
             salida:{type:String, require:false}
         }
     ],
-    specialty:{type:mongoose.Types.ObjectId, required:true, ref:'Specialty'},
+    specialty:{ type:mongoose.Types.ObjectId, required:true, ref:'Specialty' },
     rol:{ type:mongoose.Types.ObjectId, required:true, ref:'Rol' },
     agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}],
     consultaRapida:[{type:mongoose.Types.ObjectId, required:true, ref:'ConsultasRapidas'}],
-    enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}]
+    enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}],
+    paymentMethod:{ type:String, require:false },
+    agendarCitaPrice:{ type:Number, require:false },
+    consultaRapidaPrice:{ type:Number, require:false },
+    enviarExamenesPrice:{ type:Number, require:false }
 })
 
 module.exports = mongoose.model('Doctor',doctorSchema);
