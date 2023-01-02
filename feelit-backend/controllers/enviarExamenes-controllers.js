@@ -79,7 +79,7 @@ const getEnviarExamenesByDate = async (req,res,next) => {
         getEnviarExamenesDate = await EnviarExamenes.find({dateCreated:consultasRapidasDate})
         if(getEnviarExamenesDate < 1){
             throw new httpError(`Could not find any with this date`,404)
-        }    
+        }
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404))
     }
@@ -95,18 +95,20 @@ const postEnviarExamenes = async (req,res,next) => {
     const {
         idPaciente,
         idDoctor,
-        message,
+        messagePaciente,
         docUpload
     } = req.body;
     const createEnviarExamenes = new EnviarExamenes({
         idPaciente,
         idDoctor,
-        message,
+        messagePaciente,
         docUpload,
-        messageDoctor:' ',
+        messageCancelDoctor:'',
         dateCreated:todayFunction(),
-        status:true,
-        link:uuidv4()
+        status:'Pendiente',
+        paymentStatus:false,
+        link:uuidv4(),
+        chat:[]
     })
 
     try {
@@ -146,8 +148,9 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
         return next(new httpError('Invalid inputs passed, please check your data',422));
     }
     const {
-        message,
-        docUpload
+        messagePaciente,
+        docUpload,
+        chat
     } = req.body;
     const enviarExamenesId = req.params.eeId;
     const pacienteId = req.params.pId;
@@ -165,9 +168,15 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
         if(verifyPacienteId === false){
             throw new httpError('Could not find any exams sended by you',404)
         }
-        
-        verifyenviarExamenesId.message = message;
+
+        verifyenviarExamenesId.messagePaciente = messagePaciente;
         verifyenviarExamenesId.docUpload = verifyenviarExamenesId.docUpload.concat(docUpload);
+
+        if( verifyenviarExamenesId.status === 'Aprobado' && verifyenviarExamenesId.paymentStatus === true ){
+            verifyenviarExamenesId.chat = [... verifyenviarExamenesId.chat, chat]
+        } else {
+            throw new httpError(`you have to pay to start this chat`,404)
+        }
 
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -180,62 +189,18 @@ const patchEnviarExamenesByPaciente = async (req,res,next) => {
         await getDoctor.save({session:sess});
 
         sess.commitTransaction();
-        
+
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404));
     }
 
     res.status(201).json({message:'Your exam sended was edited succesfully',verifyenviarExamenesId})
 }
-//patch a: enviar examenes by doctor
-const patchEnviarExamenesByDoctor = async (req,res,next) => {
-    const error = validationResult(req);
-    if(!error.isEmpty()){
-        return next(new httpError('Invalid inputs passed, please check your data',422));
-    }
-    const {
-        messageDoctor
-    } = req.body;
-    const enviarExamenesId = req.params.eeId;
-    const doctorId = req.params.dId;
-    let verifyenviarExamenesId;
-
-    try {
-        verifyenviarExamenesId = await EnviarExamenes.findById(enviarExamenesId);
-        const verifyDoctorId = verifyenviarExamenesId.idDoctor.toString() === doctorId;
-        const getPaciente = await Paciente.findById(verifyenviarExamenesId.idPaciente.toString());
-        const getDoctor = await Doctor.findById(verifyenviarExamenesId.idDoctor.toString());
-
-        if(!verifyenviarExamenesId){
-            throw new httpError('Could not find any exams sended',404)
-        }
-    
-        if(verifyDoctorId === false){
-            throw new httpError('Could not find any exams sended for you, dr',404)
-        }
-
-        verifyenviarExamenesId.messageDoctor = messageDoctor;
-
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-
-        getPaciente.enviarExamenes.push(verifyenviarExamenesId);
-        getDoctor.enviarExamenes.push(verifyenviarExamenesId);
-
-        await verifyenviarExamenesId.save({session:sess});
-        await getPaciente.save({session:sess});
-        await getPaciente.save({session:sess});
-
-        sess.commitTransaction();
-
-    } catch(err){
-        return next(new httpError(`somenthing went wrong ${err}`,404));
-    }
-
-    res.status(201).json({message:'Dr. , Your exam response was sended succesfully',verifyenviarExamenesId})
-}
 //delete a: enviar examenes
 const deleteEnviarExamenes = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const enviarExamenesId = req.params.eeId;
     let deleteEnviarExamenes;
 
@@ -245,10 +210,13 @@ const deleteEnviarExamenes = async (req,res,next) => {
         if(!deleteEnviarExamenes){
             throw new httpError('We can`t find any exam sended',404)
         }
-    
-        deleteEnviarExamenes.status = false;
 
-        await deleteEnviarExamenes.save();
+        deleteEnviarExamenes.status = 'Rechazado';
+        // move this to a payment function (in a future)
+        deleteEnviarExamenes.paymentStatus = false;
+        deleteEnviarExamenes.messageCancelDoctor = messageCancelDoctor;
+
+        deleteEnviarExamenes.save();
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404));
     }
@@ -257,6 +225,9 @@ const deleteEnviarExamenes = async (req,res,next) => {
 }
 //active a: enviar examenes
 const activeEnviarExamenes = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const enviarExamenesId = req.params.eeId;
     let activeEnviarExamenes;
 
@@ -266,10 +237,13 @@ const activeEnviarExamenes = async (req,res,next) => {
         if(!activeEnviarExamenes){
             throw new httpError('We can`t find any exam sended',404)
         }
-    
-        activeEnviarExamenes.status = true;
 
-        await activeEnviarExamenes.save();
+        // move this to a payment function (in a future)
+        activeEnviarExamenes.paymentStatus = true;
+        activeEnviarExamenes.messageCancelDoctor = messageCancelDoctor;
+        activeEnviarExamenes.status = 'Aprobado';
+
+        activeEnviarExamenes.save();
     } catch(err){
         return next(new httpError(`somenthing went wrong ${err}`,404));
     }
@@ -284,6 +258,5 @@ exports.getEnviarExamenesByDoctor = getEnviarExamenesByDoctor;
 exports.getEnviarExamenesByDate = getEnviarExamenesByDate;
 exports.postEnviarExamenes = postEnviarExamenes;
 exports.patchEnviarExamenesByPaciente = patchEnviarExamenesByPaciente;
-exports.patchEnviarExamenesByDoctor = patchEnviarExamenesByDoctor;
 exports.deleteEnviarExamenes = deleteEnviarExamenes;
 exports.activeEnviarExamenes = activeEnviarExamenes;

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Input from '../../components/UIElements/InputComponent';
 import {
   VALIDATOR_EMAIL,
@@ -10,10 +10,15 @@ import { AuthContext } from '../../shared/context/auth-context';
 import ModalComponent from '../../components/UIElements/ModalComponent';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import ImageUpload from '../../components/UIElements/ImageUpload';
+import { useHistory } from 'react-router-dom';
+import NestedModal from '../../components/UIElements/NestedModal';
+import BasicButtons from '../../components/UIElements/BasicButtons-MUI';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
+  const History = useHistory();
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [modalDeleteAccount, setModalDeleteAccount] = useState(false);
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -63,8 +68,6 @@ const Auth = () => {
   const authSubmitHandler = async event => {
     event.preventDefault();
 
-    console.log(formState.inputs)
-
     if(isLoginMode){
         try{
           const responseData = await sendRequest(
@@ -80,9 +83,7 @@ const Auth = () => {
           );
 
           auth.login(responseData.userId, responseData.token);
-        } catch(err) {
-
-        }
+        } catch(err) {}
 
     } else {
       try {
@@ -99,14 +100,36 @@ const Auth = () => {
         )
 
         auth.login(responseData.userId, responseData.token);
-        console.log("formData",formData)
-
       } catch (err) {}
     }
   };
 
+  useEffect(()=>{
+      setModalDeleteAccount(localStorage.popUpAccountDeleted);
+  },[modalDeleteAccount])
+
+  const handleClose = () => {
+      localStorage.removeItem("popUpAccountDeleted")
+      setModalDeleteAccount(false);
+  }
+
   return (
     <>
+      <NestedModal
+          withButton={false}
+          open={modalDeleteAccount}
+          handleClose={handleClose}
+          title="Cuenta eliminada"
+          message="Dulce, su cuenta fue eliminada"
+          cancelButton={false}
+          buttonOptions={
+              <BasicButtons
+                  onClick={handleClose}
+                  variantName="contained"
+                  buttonName={"Entendido"}
+              />
+          }
+      />
       <ModalComponent
         headerTitle='You can not access for now'
         show={error}
@@ -161,6 +184,9 @@ const Auth = () => {
         </form>
         <button onClick={switchModeHandler}>
           SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+        </button>
+        <button onClick={()=>History.push('/CreateUserOrDoctor')}>
+         CREATE AN ORIGIAL ACCOUNT
         </button>
       </div>
     </>

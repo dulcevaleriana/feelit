@@ -12,6 +12,7 @@ const agendarCitaRoutes = require('./routes/agendarCita-routes');
 const consultasRapidasRoutes = require('./routes/consultasRapidas-routes');
 const enviarExamenesRoutes = require('./routes/enviarExamenes-routes');
 const specialtyRoutes = require('./routes/specialty-routes');
+const rolRoutes = require('./routes/rol-routes');
 const httpError = require('./models/http-error');
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -51,6 +52,8 @@ app.use('/api/consultas-rapidas',consultasRapidasRoutes);
 app.use('/api/enviar-examenes',enviarExamenesRoutes);
 //specialty module
 app.use('/api/specialty',specialtyRoutes)
+//rol module
+app.use('/api/rol',rolRoutes)
 //error 404
 app.use((req,res,next)=>{
     throw new httpError('Could not find this router',404);

@@ -1,68 +1,40 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import React, { Suspense, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import MainNavigation from './components/Navigation/MainNavigation';
 import "./scss/GlobalStyle.scss";
 
-// import Home from './pages/Home';
-// import Users  from './pages/users/Users';
-// import UserPlaces  from './pages/users/UserPlaces';
-// import NewPlace from './pages/places/NewPlace';
-// import UpdatePlace from './pages/places/UpdatePlace';
-// import Auth from './pages/users/Auth';
-
-import ConsultaRapida from './pages/consultasRapidas/ConsultaRapida';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 
-const Home = lazy(() => import('./pages/Home'));
-const Users = lazy(() => import('./pages/users/Users'));
-const UserPlaces = lazy(() => import('./pages/users/UserPlaces'));
-const NewPlace = lazy(() => import('./pages/places/NewPlace'));
-const UpdatePlace = lazy(() => import('./pages/places/UpdatePlace'));
-const Auth = lazy(() => import('./pages/users/Auth'));
+
+import Routers from './pages/Routers';
 
 const App = () => {
-  const { token, login, logout, userId } = useAuth();
+  const { token, login, logout, userId, rol } = useAuth();
 
-  let routes;
-
-  if (token) {
-    routes = (
-      <Switch>
-        <Route path="/" component={Home} exact/>
-        <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
-        <Route path="/users" component={Users} exact/>
-        <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
-        <Route path="/place/new" component={NewPlace} exact/>
-        <Route path="/place/:placeId" component={UpdatePlace} exact/>
-        <Redirect to="/"/>
-      </Switch>
-    );
-  } else {
-    routes = (
-      <Switch>
-        <Route path="/" component={Home} exact/>
-        <Route path="/users" component={Users} exact/>
-        <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
-        <Route path="/auth" component={Auth} exact/>
-        <Redirect to="/auth"/>
-      </Switch>
-    );
-  }
+  const [editConsultaRapida, setEditConsultaRapida] = useState(false);
+  const [seeDetailConsultaRapida, setSeeDetailConsultaRapida] = useState(false);
 
   return <AuthContext.Provider
     value={{
       isLoggedIn: !!token,
       token: token,
       userId: userId,
+      rol: rol,
       login: login,
-      logout: logout
+      logout: logout,
+      editConsultaRapida: editConsultaRapida,
+      seeDetailConsultaRapida: seeDetailConsultaRapida,
+      setEditConsultaRapida: setEditConsultaRapida,
+      setSeeDetailConsultaRapida: setSeeDetailConsultaRapida
     }}
   >
     <Router>
       <MainNavigation />
       <main>
-        <Suspense fallback={<div>Loading...</div>}>{routes}</Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routers token={token} rol={rol}/>
+        </Suspense>
       </main>
     </Router>
   </AuthContext.Provider>
