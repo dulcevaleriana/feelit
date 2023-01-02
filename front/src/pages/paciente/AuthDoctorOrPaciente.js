@@ -6,6 +6,7 @@ import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import ModalComponent from '../../components/UIElements/ModalComponent';
+import { Link } from "react-router-dom";
 
 export default function AuthDoctorOrPaciente(){
   const auth = useContext(AuthContext);
@@ -118,6 +119,9 @@ export default function AuthDoctorOrPaciente(){
                     variantName="outlined"
                     buttonName="Crear cuenta"
                 />
+                <Link to="/Home">
+                  Usar sin loguearse
+                </Link>
                 {isLoading && <h1>Loading...</h1>}
             </form>
             <div>
