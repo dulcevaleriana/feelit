@@ -96,7 +96,7 @@ export default function SeeAccount(){
                 </div>
                 <FormControl>
                     <BasicButtons
-                        onClick={()=>history.push(`/EditUserOrDoctor/${false}`)}
+                        onClick={()=>history.push(`/EditUserOrDoctor`)}
                         variantName="contained"
                         buttonName={"Editar"}
                         className={""}
@@ -138,7 +138,7 @@ export default function SeeAccount(){
                 </div>
                 <div>
                     <h5>Rol</h5>
-                    <label>{getUser && getUser.getPacienteById.rol ? getUser.getPacienteById.rol : "N/A"}</label>
+                    <label>{getUser && getUser.getPacienteById.rol ? getUser.getPacienteById.rol === "638f3dc51af87455b52cf7d4" ? "Doctor" : getUser.getPacienteById.rol === "638f3ddd1af87455b52cf7d7" ? "Paciente" : "No Idea" : "N/A"}</label>
                 </div>
                 <div>
                     <h5>Correo</h5>

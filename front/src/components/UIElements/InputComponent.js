@@ -86,7 +86,7 @@ const Input = props => {
         <OutlinedInput
           id={props.id}
           type={props.type}
-          value={inputState.value}
+          value={props.valueEdited ? props.valueEdited : inputState.value}
           onChange={changeHandler}
           label={props.label}
           onBlur={touchHandler}

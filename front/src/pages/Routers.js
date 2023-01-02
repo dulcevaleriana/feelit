@@ -36,7 +36,7 @@ export default function Routers(props){
                     <Route path="/" component={Home} exact/>
 
                     <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
-                    <Route path="/EditUserOrDoctor/:pacienteOrDoctor" component={EditUserOrDoctor} exact />
+                    <Route path="/EditUserOrDoctor" component={EditUserOrDoctor} exact />
                     <Redirect to="/"/>
                 </>
                 )
@@ -50,7 +50,7 @@ export default function Routers(props){
                     <Route path="/" component={Home} exact/>
 
                     <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
-                    <Route path="/EditUserOrDoctor/:pacienteOrDoctor" component={EditUserOrDoctor} exact />
+                    <Route path="/EditUserOrDoctor" component={EditUserOrDoctor} exact />
                     <Redirect to="/"/>
                 </>
                 ) : null}
