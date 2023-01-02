@@ -13,6 +13,8 @@ export default function SeeAccount(){
     const { sendRequest } = useHttpClient();
     const [getUser, setGetUser] = useState(null)
     const [getAgendarCita, setGetAgendarCita] = useState([])
+    const [consultaRapida, setConsultaRapida] = useState([])
+    const [enviarExamenes, setEnviarExamenes] = useState([])
 
     useEffect(()=>{
       const getUserFunction = async () => {
@@ -37,7 +39,25 @@ export default function SeeAccount(){
                 })
             }
         }
+        const getConsultaRapidaDetails = () => {
+            if(getUser !== null && getUser.getPacienteById.consultaRapida.length > 0){
+                getUser.getPacienteById.consultaRapida.map(async data => {
+                    const response = await sendRequest(process.env.REACT_APP_ + 'consultas-rapidas/'+ data);
+                    setConsultaRapida([...consultaRapida,response]);
+                })
+            }
+        }
+        const getEnviarExamenesDetails = () => {
+            if(getUser !== null && getUser.getPacienteById.enviarExamenes.length > 0){
+                getUser.getPacienteById.enviarExamenes.map(async data => {
+                    const response = await sendRequest(process.env.REACT_APP_ + 'enviar-examenes/'+ data);
+                    setEnviarExamenes([...enviarExamenes,response]);
+                })
+            }
+        }
         getAgendarCitaDetails()
+        getConsultaRapidaDetails()
+        getEnviarExamenesDetails()
         // eslint-disable-next-line
     },[getUser])
 
@@ -53,8 +73,6 @@ export default function SeeAccount(){
             fetchData()
         },[id])
 
-        console.log({getResponse})
-        console.log({idDoctor: idDoctor.idDoctor})
         return <div>
             <h5>{getResponse?.getDoctorById?.name}</h5>
             <h5>{getResponse?.getDoctorById?.telefono}</h5>
@@ -62,7 +80,7 @@ export default function SeeAccount(){
     }
 
     console.log({getUser})
-    console.log({getAgendarCita})
+    console.log({enviarExamenes})
 
     const deleteAccount = () => {
         localStorage.setItem("popUpAccountDeleted",true);
@@ -144,7 +162,7 @@ export default function SeeAccount(){
                 />
             </div>
             <div>
-                {getAgendarCita && getAgendarCita.length > 0 ? getAgendarCita.map((data,key) => (
+                { getAgendarCita && getAgendarCita.length > 0 ? getAgendarCita.map((data,key) => (
                     <div key={key}>
                         <div>
                             <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
@@ -155,7 +173,31 @@ export default function SeeAccount(){
                         <h5>{data.getAgendarCitaId.status}</h5>
                         <h5>{data.getAgendarCitaId.link}</h5>
                     </div>
-                )) : <></>}
+                )) : <></> }
+                { consultaRapida && consultaRapida.length > 0 ? consultaRapida.map((data,key) => (
+                    <div key={key}>
+                        <div>
+                            <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
+                        </div>
+                        <h4>{data.getConsultasRapidasId.dateCreated}</h4>
+                        <GetDoctorData idDoctor={data.getConsultasRapidasId.idDoctor}/>
+                        <h5>Consultas Rapidas</h5>
+                        <h5>{data.getConsultasRapidasId.status}</h5>
+                        <h5>{data.getConsultasRapidasId.link}</h5>
+                    </div>
+                )) : <></> }
+                { enviarExamenes && enviarExamenes.length > 0 ? enviarExamenes.map((data,key) => (
+                    <div key={key}>
+                        <div>
+                            <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
+                        </div>
+                        <h4>{data.getEnviarExamenesId.dateCreated}</h4>
+                        <GetDoctorData idDoctor={data.getEnviarExamenesId.idDoctor}/>
+                        <h5>Enviar Examenes</h5>
+                        <h5>{data.getEnviarExamenesId.status}</h5>
+                        <h5>{data.getEnviarExamenesId.link}</h5>
+                    </div>
+                )) : <></> }
             </div>
         </div>
     )
