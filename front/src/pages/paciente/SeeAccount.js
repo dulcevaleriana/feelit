@@ -6,128 +6,63 @@ import { faTrash, faPen, faEye } from '@fortawesome/free-solid-svg-icons';
 import NestedModal from "../../components/UIElements/NestedModal";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from '../../shared/hooks/http-hook';
-const DUMMY_DATA = [
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    },
-    {
-        image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
-        name:'Dr. Juan Ortega',
-        especialidad:'Pediatra',
-        proceso:'enviar archivos'
-    }
-]
 
 export default function SeeAccount(){
     const history = useHistory();
     const auth = useContext(AuthContext);
     const { sendRequest } = useHttpClient();
     const [getUser, setGetUser] = useState(null)
+    const [getAgendarCita, setGetAgendarCita] = useState([])
 
     useEffect(()=>{
       const getUserFunction = async () => {
         if(auth.rol === "638f3dc51af87455b52cf7d4"){
           const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-          console.log("response",response)
           setGetUser(response);
         }
         if(auth.rol === "638f3ddd1af87455b52cf7d7"){
           const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
-          console.log("response",response)
           setGetUser(response);
         }
       }
       getUserFunction()
     },[sendRequest,auth.rol,auth.userId])
 
+    useEffect(()=>{
+        const getAgendarCitaDetails = () => {
+            if(getUser !== null && getUser.getPacienteById.agendarCita.length > 0){
+                getUser.getPacienteById.agendarCita.map(async data => {
+                    const response = await sendRequest(process.env.REACT_APP_ + 'agendar-cita/'+ data);
+                    setGetAgendarCita([...getAgendarCita,response]);
+                })
+            }
+        }
+        getAgendarCitaDetails()
+        // eslint-disable-next-line
+    },[getUser])
+
+    const GetDoctorData = (idDoctor) => {
+        const [getResponse, setGetResponse] = useState(null)
+        let id = idDoctor.idDoctor;
+
+        useEffect(()=>{
+            const fetchData = async () => {
+                let response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ id);
+                setGetResponse(response)
+            }
+            fetchData()
+        },[id])
+
+        console.log({getResponse})
+        console.log({idDoctor: idDoctor.idDoctor})
+        return <div>
+            <h5>{getResponse?.getDoctorById?.name}</h5>
+            <h5>{getResponse?.getDoctorById?.telefono}</h5>
+        </div>
+    }
+
     console.log({getUser})
+    console.log({getAgendarCita})
 
     const deleteAccount = () => {
         localStorage.setItem("popUpAccountDeleted",true);
@@ -209,16 +144,18 @@ export default function SeeAccount(){
                 />
             </div>
             <div>
-                {DUMMY_DATA.map((index, key)=>(
+                {getAgendarCita && getAgendarCita.length > 0 ? getAgendarCita.map((data,key) => (
                     <div key={key}>
                         <div>
-                            <img src={index.image} alt="img"/>
+                            <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
                         </div>
-                        <h4>{index.name}</h4>
-                        <h5>{index.especialidad}</h5>
-                        <h5>{index.proceso}</h5>
+                        <h4>{data.getAgendarCitaId.date}</h4>
+                        <GetDoctorData idDoctor={data.getAgendarCitaId.idDoctor}/>
+                        <h5>Agendar Cita</h5>
+                        <h5>{data.getAgendarCitaId.status}</h5>
+                        <h5>{data.getAgendarCitaId.link}</h5>
                     </div>
-                ))}
+                )) : <></>}
             </div>
         </div>
     )
