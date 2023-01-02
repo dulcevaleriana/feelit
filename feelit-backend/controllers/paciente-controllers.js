@@ -107,7 +107,8 @@ const patchPaciente = async (req,res,next) => {
         email,
         password,
         telefono,
-        name
+        name,
+        paymentMethod
     } = req.body;
     const pacienteId = req.params.pId;
     let updatePaciente;
@@ -131,6 +132,7 @@ const patchPaciente = async (req,res,next) => {
         updatePaciente.password = hashPassword;
         updatePaciente.telefono = telefono;
         updatePaciente.name = name;
+        updatePaciente.paymentMethod = paymentMethod;
 
         await updatePaciente.save();
     } catch (err){
