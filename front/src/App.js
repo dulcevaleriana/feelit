@@ -33,7 +33,11 @@ const App = () => {
       <MainNavigation />
       <main>
         <Suspense fallback={<div>Loading...</div>}>
-          <Routers token={token} rol={rol}/>
+          <Routers
+            userId={userId}
+            token={token}
+            rol={rol}
+          />
         </Suspense>
       </main>
     </Router>

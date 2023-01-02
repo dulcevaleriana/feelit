@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import { useHistory } from 'react-router-dom';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faTrash, faPen, faEye } from '@fortawesome/free-solid-svg-icons';
 import NestedModal from "../../components/UIElements/NestedModal";
 import { AuthContext } from "../../shared/context/auth-context";
-
+import { useHttpClient } from '../../shared/hooks/http-hook';
 const DUMMY_DATA = [
     {
         image:'https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg',
@@ -108,6 +108,26 @@ const DUMMY_DATA = [
 export default function SeeAccount(){
     const history = useHistory();
     const auth = useContext(AuthContext);
+    const { sendRequest } = useHttpClient();
+    const [getUser, setGetUser] = useState(null)
+
+    useEffect(()=>{
+      const getUserFunction = async () => {
+        if(auth.rol === "638f3dc51af87455b52cf7d4"){
+          const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
+          console.log("response",response)
+          setGetUser(response);
+        }
+        if(auth.rol === "638f3ddd1af87455b52cf7d7"){
+          const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
+          console.log("response",response)
+          setGetUser(response);
+        }
+      }
+      getUserFunction()
+    },[sendRequest,auth.rol,auth.userId])
+
+    console.log({getUser})
 
     const deleteAccount = () => {
         localStorage.setItem("popUpAccountDeleted",true);
@@ -153,28 +173,30 @@ export default function SeeAccount(){
                 </div>
                 <div>
                     <h5>Nombre</h5>
-                    <label>Dulce Guzman</label>
+                    <label>{getUser && getUser.getPacienteById.name ? getUser.getPacienteById.name : "N/A"}</label>
                 </div>
                 <div>
                     <h5>Cédula</h5>
-                    <label>000-0000000-0</label>
+                    <label>{getUser && getUser.getPacienteById.cedula ? getUser.getPacienteById.cedula : "N/A"}</label>
                 </div>
                 <div>
                     <h5>Teléfono</h5>
-                    <label>849-000-0000</label>
+                    <label>{getUser && getUser.getPacienteById.telefono ? getUser.getPacienteById.telefono : "N/A"}</label>
                 </div>
                 <div>
                     <h5>Rol</h5>
-                    <label>Paciente</label>
+                    <label>{getUser && getUser.getPacienteById.rol ? getUser.getPacienteById.rol : "N/A"}</label>
                 </div>
                 <div>
                     <h5>Correo</h5>
-                    <label>Paciente@paciente.com</label>
+                    <label>{getUser && getUser.getPacienteById.email ? getUser.getPacienteById.email : "N/A"}</label>
                 </div>
-                <div>
-                    <h5>Horario laboral</h5>
-                    <label>M - T - T || 2:00 pm - 6:00 pm</label>
-                </div>
+                {auth.rol === "638f3dc51af87455b52cf7d4" ?? <>
+                    <div>
+                        <h5>Horario laboral</h5>
+                        <label>M - T - T || 2:00 pm - 6:00 pm</label>
+                    </div>
+                </>}
             </div>
             <div>
                 <h4>Gestionar mis citas Recientes</h4>

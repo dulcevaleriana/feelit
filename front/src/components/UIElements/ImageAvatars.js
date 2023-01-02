@@ -26,13 +26,11 @@ export default function ImageAvatars() {
     getUserFunction()
   },[sendRequest,auth.rol,auth.userId])
 
-  console.log("getUser",getUser)
-
   return (
     <Stack direction="row" spacing={2} className="class-ImageAvatars">
         {auth.isLoggedIn ? ( <>
           <span>
-            <Link to="/SeeAccount/:pacienteId">
+            <Link to={`/SeeAccount/${auth.userId}`}>
               <h4>Welcome</h4>
               <h5><span>{getUser?.getDoctorById ? getUser.getDoctorById.name : getUser?.getPacienteById ? getUser.getPacienteById.name : "User Name"}</span></h5>
             </Link>
