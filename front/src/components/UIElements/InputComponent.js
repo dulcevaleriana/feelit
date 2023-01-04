@@ -98,7 +98,7 @@ const Input = props => {
         <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
         <BasicSelect
           id={props.id}
-          value={inputState.value}
+          value={props.valueEdited ? props.valueEdited : inputState.value}
           onChange={changeHandler}
           name={props.placeholder}
           filterArray={props.filterArray}
@@ -109,7 +109,7 @@ const Input = props => {
         id={props.id}
         label={props.label}
         type={showPassword ? 'text' : 'password'}
-        value={inputState.value}
+        value={props.valueEdited ? props.valueEdited : inputState.value}
         onChange={changeHandler}
         endAdornment={
           <InputAdornment position="end">
@@ -130,7 +130,7 @@ const Input = props => {
         <OutlinedInput
           id={props.id}
           type={props.type}
-          value={data}
+          value={props.valueEdited ? props.valueEdited : data}
           onChange={(e)=>functionMask(e.target.value,props.mask)}
           label={props.label}
           onBlur={touchHandler}
@@ -145,7 +145,7 @@ const Input = props => {
           rows={props.rows || 3}
           onChange={changeHandler}
           onBlur={touchHandler}
-          value={inputState.value}
+          value={props.valueEdited ? props.valueEdited : inputState.value}
         />
         {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
       </div>

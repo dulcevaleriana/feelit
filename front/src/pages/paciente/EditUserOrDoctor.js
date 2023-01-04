@@ -50,93 +50,101 @@ export default function EditUserOrDoctor() {
 
     useEffect(()=>{
         const getUserFunction = async () => {
-          if(auth.rol === "638f3dc51af87455b52cf7d4"){
-            const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-            setFormData(
-                {
-                    name: {
-                        value: '',
-                        isValid: false
-                    },
-                    password: {
-                        value: '',
-                        isValid: false
-                    },
-                    cedula: {
-                        value: getCedula,
-                        isValid: true
-                    },
-                    email: {
-                        value: '',
-                        isValid: false
-                    },
-                    telefono: {
-                        value: getTelephone,
-                        isValid: true
-                    },
-                    address: {
-                        value: '',
-                        isValid: true
-                    },
-                    googleMapsLink: {
-                        value: '',
-                        isValid: true
-                    },
-                    specialty: {
-                        value: '',
-                        isValid: true
-                    },
-                    horario: {
-                        value: getHorario,
-                        isValid: true
-                    },
-                },
-                false
-            )
-            setGetUser(response)
-          }
-          if(auth.rol === "638f3ddd1af87455b52cf7d7"){
-            const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
-            setFormData(
-                {
-                    name: {
-                        value: response.getPacienteById.name,
-                        isValid: true
-                    },
-                    password: {
-                        value: response.getPacienteById.password,
-                        isValid: true
-                    },
-                    cedula: {
-                        value: response.getPacienteById.cedula,
-                        isValid: true
-                    },
-                    email: {
-                        value: response.getPacienteById.email,
-                        isValid: true
-                    },
-                    telefono: {
-                        value: response.getPacienteById.telefono,
-                        isValid: true
-                    }
-                },
-                true
-            )
-            setGetUser(response)
-          }
+            try{
+                if(auth.rol === "638f3dc51af87455b52cf7d4"){
+                    const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
+                    setGetUser(response)
+                    setFormData(
+                        {
+                            name: {
+                                value: '',
+                                isValid: false
+                            },
+                            password: {
+                                value: '',
+                                isValid: false
+                            },
+                            cedula: {
+                                value: getCedula,
+                                isValid: true
+                            },
+                            email: {
+                                value: '',
+                                isValid: false
+                            },
+                            telefono: {
+                                value: getTelephone,
+                                isValid: true
+                            },
+                            address: {
+                                value: '',
+                                isValid: true
+                            },
+                            googleMapsLink: {
+                                value: '',
+                                isValid: true
+                            },
+                            specialty: {
+                                value: '',
+                                isValid: true
+                            },
+                            horario: {
+                                value: getHorario,
+                                isValid: true
+                            },
+                        },
+                        false
+                    )
+                  } else {
+                    const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
+                    setGetUser(response)
+                    setGetCedula(response.getPacienteById.cedula)
+                    setGetTelephone(response.getPacienteById.telefono)
+                    setFormData(
+                        {
+                            name: {
+                                value: response.getPacienteById.name,
+                                isValid: true
+                            },
+                            password: {
+                                value: response.getPacienteById.password,
+                                isValid: true
+                            },
+                            cedula: {
+                                value: response.getPacienteById.cedula,
+                                isValid: true
+                            },
+                            email: {
+                                value: response.getPacienteById.email,
+                                isValid: true
+                            },
+                            telefono: {
+                                value: response.getPacienteById.telefono,
+                                isValid: true
+                            }
+                        },
+                        true
+                    )
+                  }
+            }catch(err){}
         }
         getUserFunction()
-      },[sendRequest,auth.rol,auth.userId])
+      },[
+        sendRequest,
+        setFormData,
+        auth.rol,
+        auth.userId
+    ])
 
       console.log({getUser})
 
     const EditDoctorOrPacienteFunction = async event => {
         event.preventDefault();
 
-        if(boolean){
-            try{
+        try{
+            if(boolean){
                 await sendRequest(
-                    process.env.REACT_APP_ + "paciente/" + auth.userId,
+                    process.env.REACT_APP_ + `paciente/${auth.userId}`,
                     'PATCH',
                     JSON.stringify({
                         cedula: getCedula,
@@ -149,14 +157,11 @@ export default function EditUserOrDoctor() {
                         'Content-Type': 'application/json'
                     },
                 )
-
-        } catch(err){}
-        } else{
-            try{
+            } else {
                 await sendRequest(
-                  process.env.REACT_APP_ + "doctor/" + auth.userId,
-                  'PATCH',
-                  JSON.stringify({
+                    process.env.REACT_APP_ + `doctor/${auth.userId}`,
+                    'PATCH',
+                    JSON.stringify({
                     name: formState.inputs.name.value,
                     password: formState.inputs.password.value,
                     cedula: getCedula,
@@ -166,14 +171,14 @@ export default function EditUserOrDoctor() {
                     address: formState.inputs.address.value,
                     googleMapsLink: formState.inputs.googleMapsLink.value,
                     horario: getHorario,
-                  }),
-                  {
+                    }),
+                    {
                     'Content-Type': 'application/json'
-                  },
+                    },
                 )
-            } catch(err){}
-        }
-
+            }
+            history.push(`/SeeAccount/${auth.userId}`)
+        } catch(err){}
     }
 
     console.log({formState, inputHandler, setFormData})
@@ -315,10 +320,11 @@ export default function EditUserOrDoctor() {
                 ]}/>
         {boolean !== true && <AddDayAndTimeWork/>}
         <BasicButtons
-            onClick={()=>history.push("/SeeAccount/:pacienteId")}
             variantName="contained"
-            buttonName="Listo"
+            buttonName="Guardar"
             iconName={faCheck}
+            type="submit"
         />
+        {/* <button>GUARDAR</button> */}
     </form>
 }
