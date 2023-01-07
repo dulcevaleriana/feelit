@@ -207,45 +207,6 @@ export default function EditUserOrDoctor() {
                 />
             </div>
         </span>
-        {/* {boolean ? <div>
-            <FormControl className="">
-                <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
-                <OutlinedInput
-                    id="name"
-                    type="text"
-                    value={getUser ? getUser?.name : ''}
-                    onChange={()=>{}}
-                    label="Nombre"
-                    onBlur={()=>{}}
-                    placeholder="Please enter a valid name."
-                />
-            </FormControl>
-            <FormControl className="">
-                <InputLabel htmlFor="component-outlined">Cédula</InputLabel>
-                <OutlinedInput
-                    id="cedula"
-                    type="text"
-                    value={getUser ? getUser?.cedula : ''}
-                    onChange={()=>{}}
-                    label="Cédula"
-                    onBlur={()=>{}}
-                    placeholder="Please enter a valid cedula."
-                />
-            </FormControl>
-        </div> : <div>
-            <FormControl className="">
-                <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
-                <OutlinedInput
-                    id="name"
-                    type="text"
-                    value={getUser ? getUser?.name : ''}
-                    onChange={()=>{}}
-                    label="Nombre"
-                    onBlur={()=>{}}
-                    placeholder="Please enter a valid name."
-                />
-            </FormControl>
-        </div> } */}
         <FormUserDataCreateUser arrayInputs={boolean ? [
                     {
                         element:"input",
@@ -255,7 +216,7 @@ export default function EditUserOrDoctor() {
                         validators:[],
                         errorText:"Please enter a valid Nombre.",
                         onInput:inputHandler,
-                        value:getUser?.name ? getUser?.name : "00"
+                        value:getUser?.name
                     },
                     {
                         element:"mask",
