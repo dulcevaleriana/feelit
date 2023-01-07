@@ -18,7 +18,7 @@ export default function FormUserDataCreateUser(props) {
                 filterArray={index.filterArray ?? index.filterArray}
                 passData={index.passData ?? index.passData}
                 mask={index.mask ?? index.mask}
-                valueEdited={props.valueEdited}
+                value={index.value}
             />
         ))}
         <h5>* Al llenar estos campos esta de acuerdo con crear una cuenta para tener su cita</h5>

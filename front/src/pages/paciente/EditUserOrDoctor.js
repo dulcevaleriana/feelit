@@ -8,6 +8,9 @@ import AddDayAndTimeWork from "../../components/paciente/AddDayAndTimeWork";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import Input from '../../components/UIElements/InputComponent';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 export default function EditUserOrDoctor() {
     const auth = useContext(AuthContext);
@@ -53,7 +56,7 @@ export default function EditUserOrDoctor() {
             try{
                 if(auth.rol === "638f3dc51af87455b52cf7d4"){
                     const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-                    setGetUser(response)
+                    setGetUser(response.getPacienteById)
                     setFormData(
                         {
                             name: {
@@ -97,7 +100,7 @@ export default function EditUserOrDoctor() {
                     )
                   } else {
                     const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
-                    setGetUser(response)
+                    setGetUser(response.getPacienteById)
                     setGetCedula(response.getPacienteById.cedula)
                     setGetTelephone(response.getPacienteById.telefono)
                     setFormData(
@@ -162,15 +165,15 @@ export default function EditUserOrDoctor() {
                     process.env.REACT_APP_ + `doctor/${auth.userId}`,
                     'PATCH',
                     JSON.stringify({
-                    name: formState.inputs.name.value,
-                    password: formState.inputs.password.value,
-                    cedula: getCedula,
-                    email: formState.inputs.email.value,
-                    specialty: formState.inputs.specialty.value,
-                    telefono: getTelephone,
-                    address: formState.inputs.address.value,
-                    googleMapsLink: formState.inputs.googleMapsLink.value,
-                    horario: getHorario,
+                        name: formState.inputs.name.value,
+                        password: formState.inputs.password.value,
+                        cedula: getCedula,
+                        email: formState.inputs.email.value,
+                        specialty: formState.inputs.specialty.value,
+                        telefono: getTelephone,
+                        address: formState.inputs.address.value,
+                        googleMapsLink: formState.inputs.googleMapsLink.value,
+                        horario: getHorario,
                     }),
                     {
                     'Content-Type': 'application/json'
@@ -204,6 +207,45 @@ export default function EditUserOrDoctor() {
                 />
             </div>
         </span>
+        {/* {boolean ? <div>
+            <FormControl className="">
+                <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
+                <OutlinedInput
+                    id="name"
+                    type="text"
+                    value={getUser ? getUser?.name : ''}
+                    onChange={()=>{}}
+                    label="Nombre"
+                    onBlur={()=>{}}
+                    placeholder="Please enter a valid name."
+                />
+            </FormControl>
+            <FormControl className="">
+                <InputLabel htmlFor="component-outlined">Cédula</InputLabel>
+                <OutlinedInput
+                    id="cedula"
+                    type="text"
+                    value={getUser ? getUser?.cedula : ''}
+                    onChange={()=>{}}
+                    label="Cédula"
+                    onBlur={()=>{}}
+                    placeholder="Please enter a valid cedula."
+                />
+            </FormControl>
+        </div> : <div>
+            <FormControl className="">
+                <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
+                <OutlinedInput
+                    id="name"
+                    type="text"
+                    value={getUser ? getUser?.name : ''}
+                    onChange={()=>{}}
+                    label="Nombre"
+                    onBlur={()=>{}}
+                    placeholder="Please enter a valid name."
+                />
+            </FormControl>
+        </div> } */}
         <FormUserDataCreateUser arrayInputs={boolean ? [
                     {
                         element:"input",
@@ -213,7 +255,7 @@ export default function EditUserOrDoctor() {
                         validators:[],
                         errorText:"Please enter a valid Nombre.",
                         onInput:inputHandler,
-                        valueEdited:getUser?.getPacienteById?.name
+                        value:getUser?.name ? getUser?.name : "00"
                     },
                     {
                         element:"mask",
@@ -224,7 +266,8 @@ export default function EditUserOrDoctor() {
                         errorText:"Please enter a valid Cédula.",
                         onInput:inputHandler,
                         passData: (data)=>setGetCedula(data),
-                        mask:"000-0000000-0"
+                        mask:"000-0000000-0",
+                        value:getUser?.cedula
                     },
                     {
                         element:"mask",
@@ -235,7 +278,8 @@ export default function EditUserOrDoctor() {
                         errorText:"Please enter a valid Teléfono.",
                         onInput:inputHandler,
                         passData: (data)=>setGetTelephone(data),
-                        mask:"000-000-0000"
+                        mask:"000-000-0000",
+                        value:getUser?.telefono
                     },
                     {
                         element:"input",
@@ -244,7 +288,8 @@ export default function EditUserOrDoctor() {
                         label:"Correo",
                         validators:[],
                         errorText:"Please enter a valid Correo.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        value:getUser?.email
                     },
                     {
                         element:'password',
@@ -253,7 +298,8 @@ export default function EditUserOrDoctor() {
                         label:"Contraseña",
                         validators:[],
                         errorText:"Please enter a valid Contraseña.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        value:getUser?.password
                     }
                 ]
                 :
@@ -325,6 +371,5 @@ export default function EditUserOrDoctor() {
             iconName={faCheck}
             type="submit"
         />
-        {/* <button>GUARDAR</button> */}
     </form>
 }
