@@ -152,7 +152,8 @@ export default function EditUserOrDoctor() {
                     JSON.stringify({
                         cedula: getCedula,
                         email: formState.inputs.email.value,
-                        password: formState.inputs.password.value,
+                        password: "123456789",
+                        // password: formState.inputs.password.value,
                         telefono: getTelephone,
                         name: formState.inputs.name.value,
                     }),
@@ -242,26 +243,26 @@ export default function EditUserOrDoctor() {
                         mask:"000-000-0000",
                         value:getUser?.telefono
                     },
-                    {
-                        element:"input",
-                        id:"email",
-                        type:"email",
-                        label:"Correo",
-                        validators:[],
-                        errorText:"Please enter a valid Correo.",
-                        onInput:inputHandler,
-                        value:getUser?.email
-                    },
-                    {
-                        element:'password',
-                        id:"password",
-                        type:"password",
-                        label:"Contraseña",
-                        validators:[],
-                        errorText:"Please enter a valid Contraseña.",
-                        onInput:inputHandler,
-                        value:getUser?.password
-                    }
+                    // {
+                    //     element:"input",
+                    //     id:"email",
+                    //     type:"email",
+                    //     label:"Correo",
+                    //     validators:[],
+                    //     errorText:"Please enter a valid Correo.",
+                    //     onInput:inputHandler,
+                    //     value:getUser?.email
+                    // },
+                    // {
+                    //     element:'password',
+                    //     id:"password",
+                    //     type:"password",
+                    //     label:"Contraseña",
+                    //     validators:[],
+                    //     errorText:"Please enter a valid Contraseña.",
+                    //     onInput:inputHandler,
+                    //     value:getUser?.password
+                    // }
                 ]
                 :
                 [
@@ -296,24 +297,24 @@ export default function EditUserOrDoctor() {
                         passData: (data)=>setGetTelephone(data),
                         mask:"000-000-0000"
                     },
-                    {
-                        element:"input",
-                        id:"email",
-                        type:"email",
-                        label:"Correo",
-                        validators:[],
-                        errorText:"Please enter a valid Correo.",
-                        onInput:inputHandler
-                    },
-                    {
-                        element:'password',
-                        id:'password',
-                        type:"password",
-                        label:"Contraseña",
-                        validators:[],
-                        errorText:"Please enter a valid Contraseña.",
-                        onInput:inputHandler
-                    },
+                    // {
+                    //     element:"input",
+                    //     id:"email",
+                    //     type:"email",
+                    //     label:"Correo",
+                    //     validators:[],
+                    //     errorText:"Please enter a valid Correo.",
+                    //     onInput:inputHandler
+                    // },
+                    // {
+                    //     element:'password',
+                    //     id:'password',
+                    //     type:"password",
+                    //     label:"Contraseña",
+                    //     validators:[],
+                    //     errorText:"Please enter a valid Contraseña.",
+                    //     onInput:inputHandler
+                    // },
                     {
                         element:"select",
                         id:"specialty",

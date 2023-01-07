@@ -85,7 +85,7 @@ export default function SeeAccount(){
     const deleteAccount = () => {
         localStorage.setItem("popUpAccountDeleted",true);
         auth.logout();
-        history.push("/auth");
+        history.push("/");
     }
 
     return(

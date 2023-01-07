@@ -47,5 +47,7 @@ export const useAuth = () => {
       }
     },[login])
 
+    console.log({useData:localStorage.useData})
+
     return { token, login, logout, userId, rol }
 }
