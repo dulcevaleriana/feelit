@@ -82,7 +82,11 @@ export default function SeeAccount(){
     console.log({getUser})
     console.log({enviarExamenes})
 
-    const deleteAccount = () => {
+    const deleteAccount = async () => {
+        await sendRequest(
+            process.env.REACT_APP_ + 'paciente/' + auth.userId,
+            'DELETE'
+        );
         localStorage.setItem("popUpAccountDeleted",true);
         auth.logout();
         history.push("/");
