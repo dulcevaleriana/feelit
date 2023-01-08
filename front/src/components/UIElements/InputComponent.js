@@ -87,8 +87,6 @@ const Input = props => {
     }
   }
 
-  console.log({getValue:getValue})
-
   const element =
     props.element === 'input' ? (
       <FormControl className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>

@@ -40,9 +40,6 @@ export default function PopUpEnviarResultados(props){
         setStep(0);
     }
 
-    console.log({step})
-    console.log({closeNow:props.closeNow})
-
     return <NestedModal
         className="class-PopUpEnviarResultados"
         withButton={true}

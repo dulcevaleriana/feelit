@@ -9,7 +9,6 @@ import ChatComponent from "../components/HomeComponent/ChatComponent";
 export default function Home() {
     const auth = useContext(AuthContext);
     const [activeChat, setActiveChat] = useState(false)
-    console.log("auth",auth)
 
     const proofFunction = () => {
         setActiveChat(true)

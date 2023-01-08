@@ -14,12 +14,10 @@ export default function ImageAvatars() {
     const getUserFunction = async () => {
       if(auth.rol === "638f3dc51af87455b52cf7d4"){
         const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-        console.log("response",response)
         setGetUser(response);
       }
       if(auth.rol === "638f3ddd1af87455b52cf7d7"){
         const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
-        console.log("response",response)
         setGetUser(response);
       }
     }

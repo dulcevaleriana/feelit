@@ -158,7 +158,6 @@ export default function ReadConsultaRapida(){
 
     useEffect(()=>{
         setModalDeleteCita(localStorage.modalDeleteCita);
-        console.log("modalDeleteCita",modalDeleteCita)
     },[modalDeleteCita])
 
     const handleClose = () => {

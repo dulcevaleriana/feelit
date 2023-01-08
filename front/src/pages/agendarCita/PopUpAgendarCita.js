@@ -42,9 +42,6 @@ export default function PopUpAgendarCita(props){
         setStep(0);
     }
 
-    console.log({step})
-    console.log({closeNow:props.closeNow})
-
     return <NestedModal
         className="class-PopUpAgendarCita"
         withButton={true}

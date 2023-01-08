@@ -79,9 +79,6 @@ export default function SeeAccount(){
         </div>
     }
 
-    console.log({getUser})
-    console.log({enviarExamenes})
-
     const deleteAccount = async () => {
         await sendRequest(
             process.env.REACT_APP_ + 'paciente/' + auth.userId,
@@ -124,7 +121,7 @@ export default function SeeAccount(){
                     />
                 </FormControl>
             </div>
-            <div>
+            { getUser.getPacienteById ? <div>
                 <div>
                     <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
                 </div>
@@ -154,7 +151,9 @@ export default function SeeAccount(){
                         <label>M - T - T || 2:00 pm - 6:00 pm</label>
                     </div>
                 </>}
-            </div>
+            </div> : <div>
+                Doctor
+            </div>}
             <div>
                 <h4>Gestionar mis citas Recientes</h4>
                 <BasicButtons

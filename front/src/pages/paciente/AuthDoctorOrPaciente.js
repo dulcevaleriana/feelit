@@ -68,8 +68,6 @@ export default function AuthDoctorOrPaciente(){
         }
       };
 
-      console.log({formState, inputHandler})
-
     return <>
       <ModalComponent
           headerTitle='You can not access for now'

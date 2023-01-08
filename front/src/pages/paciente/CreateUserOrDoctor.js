@@ -27,7 +27,6 @@ export default function CreateUserOrDoctor() {
                 const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/')
                 setSpecialty(specialty)
             } catch(err){
-                console.log(err)
             }
         }
         getSpecialtyFunction()
@@ -188,8 +187,6 @@ export default function CreateUserOrDoctor() {
         localStorage.removeItem("stepLS")
         // eslint-disable-next-line
     },[step])
-
-    console.log("getCedula",getCedula)
 
     return <>
         <ModalComponent

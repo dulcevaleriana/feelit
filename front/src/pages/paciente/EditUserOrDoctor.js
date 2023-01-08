@@ -23,6 +23,17 @@ export default function EditUserOrDoctor() {
     const [getSpecialty, setSpecialty] = useState([]);
     const [getHorario, setGetHorario] = useState([]);
 
+    useEffect(()=>{
+        const getSpecialtyFunction = async () => {
+            try{
+                const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/')
+                setSpecialty(specialty)
+            } catch(err){
+            }
+        }
+        getSpecialtyFunction()
+    },[sendRequest])
+
     const boolean = auth.rol === "638f3ddd1af87455b52cf7d7" ? true : false
 
     const [formState, inputHandler, setFormData] = useForm(
@@ -139,8 +150,6 @@ export default function EditUserOrDoctor() {
         auth.userId
     ])
 
-      console.log({getUser})
-
     const EditDoctorOrPacienteFunction = async event => {
         event.preventDefault();
 
@@ -184,8 +193,6 @@ export default function EditUserOrDoctor() {
             history.push(`/SeeAccount/${auth.userId}`)
         } catch(err){}
     }
-
-    console.log({formState, inputHandler, setFormData})
 
     return <form onSubmit={EditDoctorOrPacienteFunction} className={boolean ? "class-CreateUser class-editUser" : "class-CreateUser class-CreateDoctor class-editUser"}>
         <span>

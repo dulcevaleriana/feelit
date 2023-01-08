@@ -16,7 +16,6 @@ export default function UploadButtons(props) {
         ])
         setModifyStyleTop(modifyStyleTop === 10 ? 10 : modifyStyleTop - 10)
     }
-    console.log("arrayFileUpload",arrayFileUpload)
     return (
         <div direction="row" alignItems="center" spacing={2} className="class-UploadButtons">
             <input
