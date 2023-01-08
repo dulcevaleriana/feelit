@@ -150,11 +150,13 @@ export default function SeeAccount(){
                     </div>
                     {auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
                         <h5>Horario laboral</h5>
-                        {getUser?.horario.map(data => <div>
-                            <h6>{data.dia}</h6>
-                            <label>Entrada: {data.entrada}</label>
-                            <label>Salida: {data.salida}</label>
-                        </div>)}
+                        <div>
+                            {getUser?.horario.map(data => <div>
+                                <h6>{data.dia}</h6>
+                                <label>Entrada: {data.entrada}</label>
+                                <label>Salida: {data.salida}</label>
+                            </div>)}
+                        </div>
                     </div> : null}
                 </div>
             </div>
