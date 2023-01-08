@@ -20,11 +20,13 @@ export default function SeeAccount(){
       const getUserFunction = async () => {
         if(auth.rol === "638f3dc51af87455b52cf7d4"){
           const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-          setGetUser(response);
+          console.log({responseDOCTOR:response})
+          setGetUser(response.getDoctorById);
         }
         if(auth.rol === "638f3ddd1af87455b52cf7d7"){
           const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
-          setGetUser(response);
+          console.log({responsePACIENTE:response})
+          setGetUser(response.getPacienteById);
         }
       }
       getUserFunction()
@@ -32,24 +34,24 @@ export default function SeeAccount(){
 
     useEffect(()=>{
         const getAgendarCitaDetails = () => {
-            if(getUser !== null && getUser.getPacienteById.agendarCita.length > 0){
-                getUser.getPacienteById.agendarCita.map(async data => {
+            if(getUser !== null && getUser.agendarCita.length > 0){
+                getUser.agendarCita.map(async data => {
                     const response = await sendRequest(process.env.REACT_APP_ + 'agendar-cita/'+ data);
                     setGetAgendarCita([...getAgendarCita,response]);
                 })
             }
         }
         const getConsultaRapidaDetails = () => {
-            if(getUser !== null && getUser.getPacienteById.consultaRapida.length > 0){
-                getUser.getPacienteById.consultaRapida.map(async data => {
+            if(getUser !== null && getUser.consultaRapida.length > 0){
+                getUser.consultaRapida.map(async data => {
                     const response = await sendRequest(process.env.REACT_APP_ + 'consultas-rapidas/'+ data);
                     setConsultaRapida([...consultaRapida,response]);
                 })
             }
         }
         const getEnviarExamenesDetails = () => {
-            if(getUser !== null && getUser.getPacienteById.enviarExamenes.length > 0){
-                getUser.getPacienteById.enviarExamenes.map(async data => {
+            if(getUser !== null && getUser.enviarExamenes.length > 0){
+                getUser.enviarExamenes.map(async data => {
                     const response = await sendRequest(process.env.REACT_APP_ + 'enviar-examenes/'+ data);
                     setEnviarExamenes([...enviarExamenes,response]);
                 })
@@ -121,39 +123,41 @@ export default function SeeAccount(){
                     />
                 </FormControl>
             </div>
-            { getUser.getPacienteById ? <div>
+            <div>
                 <div>
                     <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
                 </div>
                 <div>
-                    <h5>Nombre</h5>
-                    <label>{getUser && getUser.getPacienteById.name ? getUser.getPacienteById.name : "N/A"}</label>
-                </div>
-                <div>
-                    <h5>Cédula</h5>
-                    <label>{getUser && getUser.getPacienteById.cedula ? getUser.getPacienteById.cedula : "N/A"}</label>
-                </div>
-                <div>
-                    <h5>Teléfono</h5>
-                    <label>{getUser && getUser.getPacienteById.telefono ? getUser.getPacienteById.telefono : "N/A"}</label>
-                </div>
-                <div>
-                    <h5>Rol</h5>
-                    <label>{getUser && getUser.getPacienteById.rol ? getUser.getPacienteById.rol === "638f3dc51af87455b52cf7d4" ? "Doctor" : getUser.getPacienteById.rol === "638f3ddd1af87455b52cf7d7" ? "Paciente" : "No Idea" : "N/A"}</label>
-                </div>
-                <div>
-                    <h5>Correo</h5>
-                    <label>{getUser && getUser.getPacienteById.email ? getUser.getPacienteById.email : "N/A"}</label>
-                </div>
-                {auth.rol === "638f3dc51af87455b52cf7d4" ?? <>
                     <div>
-                        <h5>Horario laboral</h5>
-                        <label>M - T - T || 2:00 pm - 6:00 pm</label>
+                        <h5>Nombre</h5>
+                        <label>{getUser && getUser.name ? getUser.name : "N/A"}</label>
                     </div>
-                </>}
-            </div> : <div>
-                Doctor
-            </div>}
+                    <div>
+                        <h5>Cédula</h5>
+                        <label>{getUser && getUser.cedula ? getUser.cedula : "N/A"}</label>
+                    </div>
+                    <div>
+                        <h5>Teléfono</h5>
+                        <label>{getUser && getUser.telefono ? getUser.telefono : "N/A"}</label>
+                    </div>
+                    <div>
+                        <h5>Rol</h5>
+                        <label>{getUser && getUser.rol ? auth.rol === "638f3dc51af87455b52cf7d4" ? "Doctor" : auth.rol === "638f3ddd1af87455b52cf7d7" ? "Paciente" : "No Idea" : "N/A"}</label>
+                    </div>
+                    <div>
+                        <h5>Correo</h5>
+                        <label>{getUser && getUser.email ? getUser.email : "N/A"}</label>
+                    </div>
+                    {auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
+                        <h5>Horario laboral</h5>
+                        {getUser?.horario.map(data => <div>
+                            <h6>{data.dia}</h6>
+                            <label>Entrada: {data.entrada}</label>
+                            <label>Salida: {data.salida}</label>
+                        </div>)}
+                    </div> : null}
+                </div>
+            </div>
             <div>
                 <h4>Gestionar mis citas Recientes</h4>
                 <BasicButtons
