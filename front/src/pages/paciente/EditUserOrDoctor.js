@@ -64,43 +64,46 @@ export default function EditUserOrDoctor() {
             try{
                 if(auth.rol === "638f3dc51af87455b52cf7d4"){
                     const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-                    setGetUser(response.getPacienteById)
+                    setGetUser(response.getDoctorById)
+                    setGetCedula(response.getDoctorById.cedula)
+                    setGetTelephone(response.getDoctorById.telefono)
                     setFormData(
                         {
                             name: {
-                                value: '',
+                                value: response.getDoctorById.name,
                                 isValid: false
                             },
                             password: {
-                                value: '',
+                                value: response.getDoctorById.password
+                                ,
                                 isValid: false
                             },
                             cedula: {
-                                value: getCedula,
+                                value: response.getDoctorById.cedula,
                                 isValid: true
                             },
                             email: {
-                                value: '',
+                                value: response.getDoctorById.email,
                                 isValid: false
                             },
                             telefono: {
-                                value: getTelephone,
+                                value: response.getDoctorById.telefono,
                                 isValid: true
                             },
                             address: {
-                                value: '',
+                                value: response.getDoctorById.address,
                                 isValid: true
                             },
                             googleMapsLink: {
-                                value: '',
+                                value: response.getDoctorById.googleMapsLink,
                                 isValid: true
                             },
                             specialty: {
-                                value: '',
+                                value: response.getDoctorById.specialty,
                                 isValid: true
                             },
                             horario: {
-                                value: getHorario,
+                                value: response.getDoctorById.horario,
                                 isValid: true
                             },
                         },
@@ -147,7 +150,8 @@ export default function EditUserOrDoctor() {
         auth.userId,
         getCedula,
         getHorario,
-        getTelephone
+        getTelephone,
+        getUser
     ])
 
     const EditDoctorOrPacienteFunction = async event => {
@@ -176,7 +180,8 @@ export default function EditUserOrDoctor() {
                     'PATCH',
                     JSON.stringify({
                         name: formState.inputs.name.value,
-                        password: formState.inputs.password.value,
+                        password: "123456789",
+                        // password: formState.inputs.password.value,
                         cedula: getCedula,
                         email: formState.inputs.email.value,
                         specialty: formState.inputs.specialty.value,
@@ -186,7 +191,7 @@ export default function EditUserOrDoctor() {
                         horario: getHorario,
                     }),
                     {
-                    'Content-Type': 'application/json'
+                        'Content-Type': 'application/json'
                     },
                 )
             }
@@ -280,7 +285,8 @@ export default function EditUserOrDoctor() {
                         label:"Nombre",
                         validators:[],
                         errorText:"Please enter a valid Nombre.",
-                        onInput:inputHandler
+                        onInput:inputHandler,
+                        value:getUser?.name
                     },
                     {
                         element:"mask",
@@ -291,7 +297,8 @@ export default function EditUserOrDoctor() {
                         errorText:"Please enter a valid Cédula.",
                         onInput:inputHandler,
                         passData: (data)=>setGetCedula(data),
-                        mask:"000-0000000-0"
+                        mask:"000-0000000-0",
+                        value:getUser?.cedula
                     },
                     {
                         element:"mask",
@@ -302,7 +309,8 @@ export default function EditUserOrDoctor() {
                         errorText:"Please enter a valid Teléfono.",
                         onInput:inputHandler,
                         passData: (data)=>setGetTelephone(data),
-                        mask:"000-000-0000"
+                        mask:"000-000-0000",
+                        value:getUser?.telefono
                     },
                     // {
                     //     element:"input",
