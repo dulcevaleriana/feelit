@@ -8,9 +8,6 @@ import AddDayAndTimeWork from "../../components/paciente/AddDayAndTimeWork";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import Input from '../../components/UIElements/InputComponent';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 export default function EditUserOrDoctor() {
     const auth = useContext(AuthContext);
@@ -147,7 +144,10 @@ export default function EditUserOrDoctor() {
         sendRequest,
         setFormData,
         auth.rol,
-        auth.userId
+        auth.userId,
+        getCedula,
+        getHorario,
+        getTelephone
     ])
 
     const EditDoctorOrPacienteFunction = async event => {
@@ -333,7 +333,7 @@ export default function EditUserOrDoctor() {
                         filterArray:getSpecialty
                     }
                 ]}/>
-        {boolean !== true && <AddDayAndTimeWork/>}
+        {boolean !== true && <AddDayAndTimeWork sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>}
         <BasicButtons
             variantName="contained"
             buttonName="Guardar"
