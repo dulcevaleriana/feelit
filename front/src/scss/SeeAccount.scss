@@ -45,14 +45,18 @@
             gap: 20px;
             align-items: center;
 
-            > div:last-child > div:nth-child(2) {
-                display: flex;
-                gap: 20px;
+            > div:last-child  {
+                grid-column: 1 / span 5;
 
-                > div {
-                    flex-direction: column;
+                > div:nth-child(2) {
                     display: flex;
-                    gap: 5px;
+                    gap: 20px;
+
+                    > div {
+                        flex-direction: column;
+                        display: flex;
+                        gap: 5px;
+                    }
                 }
             }
         }

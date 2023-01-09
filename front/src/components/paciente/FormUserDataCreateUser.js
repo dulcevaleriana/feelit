@@ -21,6 +21,6 @@ export default function FormUserDataCreateUser(props) {
                 value={index.value}
             />
         ))}
-        <h5>* Al llenar estos campos esta de acuerdo con crear una cuenta para tener su cita</h5>
+        {props.editVersion === false ? <h5>* Al llenar estos campos esta de acuerdo con crear una cuenta para tener su cita</h5> : null}
     </Box>
 }

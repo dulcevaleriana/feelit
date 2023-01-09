@@ -67,16 +67,17 @@ export default function EditUserOrDoctor() {
                     setGetUser(response.getDoctorById)
                     setGetCedula(response.getDoctorById.cedula)
                     setGetTelephone(response.getDoctorById.telefono)
+                    setGetHorario(response.getDoctorById.horario)
                     setFormData(
                         {
                             name: {
                                 value: response.getDoctorById.name,
-                                isValid: false
+                                isValid: true
                             },
                             password: {
                                 value: response.getDoctorById.password
                                 ,
-                                isValid: false
+                                isValid: true
                             },
                             cedula: {
                                 value: response.getDoctorById.cedula,
@@ -84,7 +85,7 @@ export default function EditUserOrDoctor() {
                             },
                             email: {
                                 value: response.getDoctorById.email,
-                                isValid: false
+                                isValid: true
                             },
                             telefono: {
                                 value: response.getDoctorById.telefono,
@@ -196,8 +197,18 @@ export default function EditUserOrDoctor() {
                 )
             }
             history.push(`/SeeAccount/${auth.userId}`)
-        } catch(err){}
+        } catch(err){
+            if (err instanceof DOMException && err.code === DOMException.ABORT_ERR) {
+                alert(err)
+            } else {
+                alert(err)
+                throw err;
+            }
+        }
     }
+
+    console.log({getUser})
+    console.log({formState})
 
     return <form onSubmit={EditDoctorOrPacienteFunction} className={boolean ? "class-CreateUser class-editUser" : "class-CreateUser class-CreateDoctor class-editUser"}>
         <span>
@@ -220,7 +231,9 @@ export default function EditUserOrDoctor() {
                 />
             </div>
         </span>
-        <FormUserDataCreateUser arrayInputs={boolean ? [
+        <FormUserDataCreateUser
+            editVersion={true}
+            arrayInputs={boolean ? [
                     {
                         element:"input",
                         id:"name",
@@ -341,7 +354,7 @@ export default function EditUserOrDoctor() {
                         filterArray:getSpecialty
                     }
                 ]}/>
-        {boolean !== true && <AddDayAndTimeWork sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>}
+        {boolean !== true && <AddDayAndTimeWork editVersion={true} sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>}
         <BasicButtons
             variantName="contained"
             buttonName="Guardar"

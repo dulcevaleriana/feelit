@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FormControl from '@mui/material/FormControl';
 import BasicSelect from '../UIElements/BasicSelect';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -46,6 +46,19 @@ const AddDayAndTimeWork = (props) => {
     const [day, setDay] = useState('');
     const [mapTimeCreated, setMapTimeCreated] = useState([]);
 
+    useEffect(()=>{
+        // const mapEditHorario = props.sendTimeCreated.map(data => {
+        //     console.log({entrada:data.entrada})
+        //     console.log({salida:data.salida})
+        //     return {
+        //         dia:data.day,
+        //         entrada:new Date(data.entrada),
+        //         salida:new Date(data.salida)
+        //     }
+        // })
+        setMapTimeCreated(props.sendTimeCreated)
+    },[])
+
     const AddDayAndTimeWorkFuntion = (value) => {
         let mapTimeConditional = mapTimeCreated.filter(e => e.dia === value)
         let sendTimeConditional = mapTimeCreated.filter(e => e.dia === value)
@@ -54,8 +67,8 @@ const AddDayAndTimeWork = (props) => {
                 ...mapTimeCreated,
                 {
                     dia:day,
-                    entrada:timeStart,
-                    salida:timeEnds
+                    entrada:JSON.stringify(timeStart),
+                    salida:JSON.stringify(timeEnds)
                 }
             ])
             props.passDataFunction([
@@ -70,6 +83,8 @@ const AddDayAndTimeWork = (props) => {
             return alert("Este día ya esta agregado")
         }
     }
+
+    console.log({sendTimeCreated:props.sendTimeCreated})
 
     return(
         <div className='class-AddDayAndTimeWork'>
@@ -119,8 +134,10 @@ const AddDayAndTimeWork = (props) => {
                 <div key={key}>
                     <span>
                         <h4>{index.dia}</h4>
-                        <h4>{`${index.entrada.$H}:${index.entrada.$m}`}</h4>
-                        <h4>{`${index.salida.$H}:${index.salida.$m}`}</h4>
+                        <h4>{index.entrada}</h4>
+                        <h4>{index.salida}</h4>
+                        {/* <h4>{`${index.entrada.$H}:${index.entrada.$m}`}</h4>
+                        <h4>{`${index.salida.$H}:${index.salida.$m}`}</h4> */}
                     </span>
                     <BasicButtons
                         onClick={() => setMapTimeCreated((item)=> item.filter((elem)=> elem.key === key))}
