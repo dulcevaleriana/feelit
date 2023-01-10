@@ -47,17 +47,12 @@ const AddDayAndTimeWork = (props) => {
     const [mapTimeCreated, setMapTimeCreated] = useState([]);
 
     useEffect(()=>{
-        // const mapEditHorario = props.sendTimeCreated.map(data => {
-        //     console.log({entrada:data.entrada})
-        //     console.log({salida:data.salida})
-        //     return {
-        //         dia:data.day,
-        //         entrada:new Date(data.entrada),
-        //         salida:new Date(data.salida)
-        //     }
-        // })
         setMapTimeCreated(props.sendTimeCreated)
-    },[])
+        props.passDataFunction(props.sendTimeCreated)
+        console.log({mapTimeCreated})
+        console.log({passDataFunction:props.passDataFunction})
+        // eslint-disable-next-line
+    },[mapTimeCreated])
 
     const AddDayAndTimeWorkFuntion = (value) => {
         let mapTimeConditional = mapTimeCreated.filter(e => e.dia === value)
@@ -130,14 +125,12 @@ const AddDayAndTimeWork = (props) => {
                 />
             </form>
             <div>
-            {mapTimeCreated.map((index,key)=>(
+            {mapTimeCreated && mapTimeCreated.map((index,key)=>(
                 <div key={key}>
                     <span>
                         <h4>{index.dia}</h4>
                         <h4>{index.entrada}</h4>
                         <h4>{index.salida}</h4>
-                        {/* <h4>{`${index.entrada.$H}:${index.entrada.$m}`}</h4>
-                        <h4>{`${index.salida.$H}:${index.salida.$m}`}</h4> */}
                     </span>
                     <BasicButtons
                         onClick={() => setMapTimeCreated((item)=> item.filter((elem)=> elem.key === key))}
