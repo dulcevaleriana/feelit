@@ -97,7 +97,7 @@ export default function SeeAccount(){
                 </div>
                 <FormControl>
                     <BasicButtons
-                        onClick={()=>history.push(`/EditUserOrDoctor`)}
+                        onClick={()=>history.push(auth.rol === "638f3ddd1af87455b52cf7d7" ? `/EditUser` : `/EditDoctor`)}
                         variantName="contained"
                         buttonName={"Editar"}
                         className={""}

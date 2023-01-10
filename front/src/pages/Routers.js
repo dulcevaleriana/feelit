@@ -8,10 +8,11 @@ import EditOrSeeAgendarCita from './agendarCita/EditOrSeeAgendarCita';
 import EditOrSeeEnviarResultados from '../components/EnviarResultados/EditOrSeeEnviarResultados';
 import CreateUserOrDoctor from './paciente/CreateUserOrDoctor';
 import SeeAccount from './paciente/SeeAccount';
-import EditUserOrDoctor from './paciente/EditUserOrDoctor';
 import AuthDoctorOrPaciente from './paciente/AuthDoctorOrPaciente';
 import ConsultaRapida from './consultasRapidas/ConsultaRapida';
 import ReadConsultaRapida from './consultasRapidas/ReadConsultaRapida';
+import EditUser from "./paciente/EditUser";
+import EditDoctor from "./doctor/EditDoctor";
 
 const Home = lazy(() => import('./Home'));
 const Users = lazy(() => import('./users/Users'));
@@ -36,7 +37,7 @@ export default function Routers(props){
                     <Route path="/" component={Home} exact/>
 
                     <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
-                    <Route path="/EditUserOrDoctor" component={EditUserOrDoctor} exact />
+                    <Route path="/EditDoctor" component={EditDoctor} exact />
                     <Redirect to="/"/>
                 </>
                 )
@@ -50,7 +51,7 @@ export default function Routers(props){
                     <Route path="/" component={Home} exact/>
 
                     <Route path="/SeeAccount/:pacienteId" component={SeeAccount} exact />
-                    <Route path="/EditUserOrDoctor" component={EditUserOrDoctor} exact />
+                    <Route path="/EditUser" component={EditUser} exact />
                     <Redirect to="/"/>
                 </>
                 ) : null}
