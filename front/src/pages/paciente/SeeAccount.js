@@ -55,9 +55,9 @@ export default function SeeAccount(){
                 })
             }
         }
-        getAgendarCitaDetails()
-        getConsultaRapidaDetails()
-        getEnviarExamenesDetails()
+        if(getUser !== null && getUser.agendarCita.length > 0) getAgendarCitaDetails()
+        if(getUser !== null && getUser.consultaRapida.length > 0) getConsultaRapidaDetails()
+        if(getUser !== null && getUser.enviarExamenes.length > 0) getEnviarExamenesDetails()
         // eslint-disable-next-line
     },[getUser])
 
