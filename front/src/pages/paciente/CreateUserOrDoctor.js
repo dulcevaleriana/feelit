@@ -152,8 +152,6 @@ export default function CreateUserOrDoctor() {
                     },
                 )
 
-                console.log({responseData})
-
                 auth.login(responseData.pacienteId, responseData.token, responseData.rol);
 
         } catch(err){}
@@ -177,8 +175,6 @@ export default function CreateUserOrDoctor() {
                     'Content-Type': 'application/json'
                   },
                 )
-
-                console.log({responseData})
 
                 auth.login(responseData.doctorId, responseData.token, responseData.rol);
             } catch(err){}

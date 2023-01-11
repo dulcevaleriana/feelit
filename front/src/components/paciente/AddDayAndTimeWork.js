@@ -49,8 +49,6 @@ const AddDayAndTimeWork = (props) => {
     useEffect(()=>{
         setMapTimeCreated(props.sendTimeCreated)
         props.passDataFunction(props.sendTimeCreated)
-        console.log({mapTimeCreated})
-        console.log({passDataFunction:props.passDataFunction})
         // eslint-disable-next-line
     },[mapTimeCreated])
 
@@ -78,8 +76,6 @@ const AddDayAndTimeWork = (props) => {
             return alert("Este día ya esta agregado")
         }
     }
-
-    console.log({sendTimeCreated:props.sendTimeCreated})
 
     return(
         <div className='class-AddDayAndTimeWork'>

@@ -110,9 +110,6 @@ export default function EditUser() {
         }
     }
 
-    console.log({getUser})
-    console.log({formState})
-
     return <form onSubmit={EditDoctorOrPacienteFunction} className={"class-CreateUser class-editUser"}>
         <span>
             <FormControl>
