@@ -152,7 +152,9 @@ export default function CreateUserOrDoctor() {
                     },
                 )
 
-                auth.login(responseData.userId, responseData.token, responseData.rol);
+                console.log({responseData})
+
+                auth.login(responseData.pacienteId, responseData.token, responseData.rol);
 
         } catch(err){}
         } else{
@@ -176,7 +178,9 @@ export default function CreateUserOrDoctor() {
                   },
                 )
 
-                auth.login(responseData.userId, responseData.token, responseData.rol);
+                console.log({responseData})
+
+                auth.login(responseData.doctorId, responseData.token, responseData.rol);
             } catch(err){}
         }
         History.push('/')

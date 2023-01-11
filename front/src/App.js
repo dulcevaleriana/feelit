@@ -15,6 +15,8 @@ const App = () => {
   const [editConsultaRapida, setEditConsultaRapida] = useState(false);
   const [seeDetailConsultaRapida, setSeeDetailConsultaRapida] = useState(false);
 
+  console.log({token,userId,rol})
+
   return <AuthContext.Provider
     value={{
       isLoggedIn: !!token,
