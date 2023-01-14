@@ -80,13 +80,26 @@ export default function SeeAccount(){
     }
 
     const deleteAccount = async () => {
-        await sendRequest(
-            process.env.REACT_APP_ + 'paciente/' + auth.userId,
-            'DELETE'
-        );
-        localStorage.setItem("popUpAccountDeleted",true);
-        auth.logout();
-        history.push("/");
+        try {
+            if(auth.rol === "638f3dc51af87455b52cf7d4"){
+                await sendRequest(
+                    process.env.REACT_APP_ + 'doctor/' + auth.userId,
+                    'DELETE'
+                );
+            }
+            if(auth.rol === "638f3ddd1af87455b52cf7d7"){
+                await sendRequest(
+                    process.env.REACT_APP_ + 'paciente/' + auth.userId,
+                    'DELETE'
+                );
+            }
+        } catch(err){
+            console.log({err})
+        } finally {
+            localStorage.setItem("popUpAccountDeleted",true);
+            auth.logout();
+            history.push("/");
+        }
     }
 
     return(

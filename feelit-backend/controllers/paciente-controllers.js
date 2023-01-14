@@ -186,6 +186,10 @@ const loginPaciente = async (req,res,next) => {
             return next(new httpError(`we can't find a paciente with this email`,404))
         }
 
+        if(loginPaciente.status === false){
+            return next(new httpError(`this paciente was delete, if you want to active again please contact us by email info@feelit.com`,404))
+        }
+
     } catch(err){
         return next(new httpError(`something went wrong ${err}`,500))
     }

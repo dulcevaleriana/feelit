@@ -227,6 +227,10 @@ const loginDoctor = async (req,res,next) => {
             return next(new httpError(`we can't find your account`,404))
         }
 
+        if(loginDoctor.status === false){
+            return next(new httpError(`this doctor was delete, if you want to active again please contact us by email info@feelit.com`,404))
+        }
+
     } catch (err){
         return next(new httpError(`something went wrong ${err}`,404))
     }
