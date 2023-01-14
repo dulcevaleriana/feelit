@@ -103,12 +103,12 @@ const Input = props => {
       </FormControl>
     ) : props.element === 'select' ? (
       <FormControl>
-        <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
+        {/* <InputLabel htmlFor="component-outlined">{props.label}</InputLabel> */}
         <BasicSelect
           id={props.id}
           value={props.value ? getValue : inputState.value}
           onChange={changeHandler}
-          name={props.placeholder}
+          name={props.label ? props.label : props.placeholder}
           filterArray={props.filterArray}
         />
       </FormControl>

@@ -126,7 +126,6 @@ export default function EditDoctor() {
                     },
                     false
                 )
-                console.log({getUser})
             } catch(err){
                 console.log({err})
                 setError(error);
@@ -171,6 +170,8 @@ export default function EditDoctor() {
             }
         }
     }
+
+    console.log({getUser})
 
     if (loading) {
         return <div>Loading...</div>;
@@ -263,7 +264,8 @@ export default function EditDoctor() {
                         validators:[],
                         errorText:"Please enter a valid Especialidad.",
                         onInput:inputHandler,
-                        filterArray:getSpecialty
+                        filterArray:getSpecialty,
+                        value:getUser?.specialty
                     }
                 ]}/>
         <AddDayAndTimeWork editVersion={true} sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>
