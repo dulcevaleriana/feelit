@@ -124,7 +124,7 @@ export default function EditDoctor() {
                             isValid: true
                         },
                     },
-                    false
+                    true
                 )
             } catch(err){
                 console.log({err})
@@ -172,6 +172,7 @@ export default function EditDoctor() {
     }
 
     console.log({getUser})
+    console.log({formState, inputHandler, setFormData})
 
     if (loading) {
         return <div>Loading...</div>;
