@@ -14,7 +14,9 @@ export default function EditDoctor() {
     const { sendRequest } = useHttpClient();
     const history = useHistory();
 
-    const [getUser, setGetUser] = useState(null)
+    const [getUser, setGetUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [getTelephone, setGetTelephone] = useState("");
     const [getCedula, setGetCedula] = useState("");
     const [getSpecialty, setSpecialty] = useState([]);
@@ -75,7 +77,8 @@ export default function EditDoctor() {
 
     useEffect(()=>{
         const getUserFunction = async () => {
-            try{
+            setLoading(true);
+            try {
                 const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
                 setGetUser(response.getDoctorById)
                 setGetCedula(response.getDoctorById.cedula)
@@ -123,10 +126,17 @@ export default function EditDoctor() {
                     },
                     false
                 )
-            }catch(err){}
+                console.log({getUser})
+            } catch(err){
+                console.log({err})
+                setError(error);
+                setLoading(false);
+            } finally {
+                setLoading(false);
+            }
         }
         getUserFunction()
-      },[sendRequest,auth.userId,setFormData])
+      },[ sendRequest, auth.userId, setFormData, error ])
 
     const EditDoctorOrPacienteFunction = async event => {
         event.preventDefault();
@@ -160,6 +170,13 @@ export default function EditDoctor() {
                 throw err;
             }
         }
+    }
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>{error.message}</div>;
     }
 
     return <form onSubmit={EditDoctorOrPacienteFunction} className={"class-CreateUser class-CreateDoctor class-editUser"}>

@@ -77,6 +77,8 @@ const AddDayAndTimeWork = (props) => {
         }
     }
 
+    console.log({sendTimeCreated:props.sendTimeCreated})
+
     return(
         <div className='class-AddDayAndTimeWork'>
             <form>
