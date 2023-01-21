@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faCamera, faCheck } from '@fortawesome/free-solid-svg-icons';
 import FormControl from '@mui/material/FormControl';
@@ -10,6 +11,7 @@ import AddDayAndTimeWork from "../../components/paciente/AddDayAndTimeWork";
 import { AuthContext } from "../../shared/context/auth-context";
 
 export default function CreateUserOrDoctor() {
+    const History = useHistory()
     const auth = useContext(AuthContext);
     const [step, setStep] = useState(true);
     const [getHorario, setGetHorario] = useState([]);
@@ -25,7 +27,6 @@ export default function CreateUserOrDoctor() {
                 const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/')
                 setSpecialty(specialty)
             } catch(err){
-                console.log(err)
             }
         }
         getSpecialtyFunction()
@@ -151,7 +152,7 @@ export default function CreateUserOrDoctor() {
                     },
                 )
 
-                auth.login(responseData.userId, responseData.token, responseData.rol);
+                auth.login(responseData.pacienteId, responseData.token, responseData.rol);
 
         } catch(err){}
         } else{
@@ -175,10 +176,10 @@ export default function CreateUserOrDoctor() {
                   },
                 )
 
-                auth.login(responseData.userId, responseData.token, responseData.rol);
+                auth.login(responseData.doctorId, responseData.token, responseData.rol);
             } catch(err){}
         }
-
+        History.push('/')
     }
 
     useEffect(()=>{
@@ -186,8 +187,6 @@ export default function CreateUserOrDoctor() {
         localStorage.removeItem("stepLS")
         // eslint-disable-next-line
     },[step])
-
-    console.log("getCedula",getCedula)
 
     return <>
         <ModalComponent

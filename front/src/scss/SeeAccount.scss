@@ -19,9 +19,9 @@
     }
 
     > div:nth-child(2) {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 200px auto;
+        gap: 20px;
 
         > div:first-child {
             display: inline-block;
@@ -30,12 +30,34 @@
             height: 200px;
             overflow: hidden;
             border-radius: 50%;
-            grid-row: 1 / spam 4;
+            grid-row: 1;
 
             img {
                 width: auto;
                 height: 100%;
                 margin-left: -50px;
+            }
+        }
+
+        > div:nth-child(2) {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto;
+            gap: 20px;
+            align-items: center;
+
+            > div:last-child  {
+                grid-column: 1 / span 5;
+
+                > div:nth-child(2) {
+                    display: flex;
+                    gap: 20px;
+
+                    > div {
+                        flex-direction: column;
+                        display: flex;
+                        gap: 5px;
+                    }
+                }
             }
         }
     }

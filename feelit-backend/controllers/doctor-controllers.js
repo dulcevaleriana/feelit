@@ -136,7 +136,11 @@ const patchDoctor = async (req,res,next) => {
         telefono,
         address,
         googleMapsLink,
-        horario
+        horario,
+        paymentMethod,
+        agendarCitaPrice,
+        consultaRapidaPrice,
+        enviarExamenesPrice
     } = req.body;
     let updateDoctor;
     let hashPassword;
@@ -163,6 +167,10 @@ const patchDoctor = async (req,res,next) => {
         updateDoctor.address = address;
         updateDoctor.googleMapsLink = googleMapsLink;
         updateDoctor.horario = horario;
+        updateDoctor.paymentMethod = paymentMethod;
+        updateDoctor.agendarCitaPrice = agendarCitaPrice;
+        updateDoctor.consultaRapidaPrice = consultaRapidaPrice;
+        updateDoctor.enviarExamenesPrice = enviarExamenesPrice;
 
         await updateDoctor.save();
     } catch (err) {
@@ -217,6 +225,10 @@ const loginDoctor = async (req,res,next) => {
 
         if(!loginDoctor){
             return next(new httpError(`we can't find your account`,404))
+        }
+
+        if(loginDoctor.status === false){
+            return next(new httpError(`this doctor was delete, if you want to active again please contact us by email info@feelit.com`,404))
         }
 
     } catch (err){

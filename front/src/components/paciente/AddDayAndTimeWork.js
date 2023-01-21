@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FormControl from '@mui/material/FormControl';
 import BasicSelect from '../UIElements/BasicSelect';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -46,6 +46,12 @@ const AddDayAndTimeWork = (props) => {
     const [day, setDay] = useState('');
     const [mapTimeCreated, setMapTimeCreated] = useState([]);
 
+    useEffect(()=>{
+        setMapTimeCreated(props.sendTimeCreated)
+        props.passDataFunction(props.sendTimeCreated)
+        // eslint-disable-next-line
+    },[mapTimeCreated])
+
     const AddDayAndTimeWorkFuntion = (value) => {
         let mapTimeConditional = mapTimeCreated.filter(e => e.dia === value)
         let sendTimeConditional = mapTimeCreated.filter(e => e.dia === value)
@@ -54,8 +60,8 @@ const AddDayAndTimeWork = (props) => {
                 ...mapTimeCreated,
                 {
                     dia:day,
-                    entrada:timeStart,
-                    salida:timeEnds
+                    entrada:JSON.stringify(timeStart),
+                    salida:JSON.stringify(timeEnds)
                 }
             ])
             props.passDataFunction([
@@ -70,6 +76,8 @@ const AddDayAndTimeWork = (props) => {
             return alert("Este día ya esta agregado")
         }
     }
+
+    console.log({sendTimeCreated:props.sendTimeCreated})
 
     return(
         <div className='class-AddDayAndTimeWork'>
@@ -115,12 +123,12 @@ const AddDayAndTimeWork = (props) => {
                 />
             </form>
             <div>
-            {mapTimeCreated.map((index,key)=>(
+            {mapTimeCreated && mapTimeCreated.map((index,key)=>(
                 <div key={key}>
                     <span>
                         <h4>{index.dia}</h4>
-                        <h4>{`${index.entrada.$H}:${index.entrada.$m}`}</h4>
-                        <h4>{`${index.salida.$H}:${index.salida.$m}`}</h4>
+                        <h4>{index.entrada}</h4>
+                        <h4>{index.salida}</h4>
                     </span>
                     <BasicButtons
                         onClick={() => setMapTimeCreated((item)=> item.filter((elem)=> elem.key === key))}

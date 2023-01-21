@@ -92,13 +92,9 @@ const UpdatePlace = props => {
                 { Authorization: 'Bearer ' + auth.token }
             )
 
-            console.log("formData place",formData)
-
             history.push('/users/' + auth.userId + '/UserPlaces');
         }catch(err){}
     }
-
-    console.log("formState",formState)
 
     return <React.Fragment>
         <ModalComponent

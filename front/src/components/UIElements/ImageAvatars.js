@@ -14,25 +14,21 @@ export default function ImageAvatars() {
     const getUserFunction = async () => {
       if(auth.rol === "638f3dc51af87455b52cf7d4"){
         const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ auth.userId);
-        console.log("response",response)
         setGetUser(response);
       }
       if(auth.rol === "638f3ddd1af87455b52cf7d7"){
         const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId);
-        console.log("response",response)
         setGetUser(response);
       }
     }
     getUserFunction()
   },[sendRequest,auth.rol,auth.userId])
 
-  console.log("getUser",getUser)
-
   return (
     <Stack direction="row" spacing={2} className="class-ImageAvatars">
         {auth.isLoggedIn ? ( <>
           <span>
-            <Link to="/SeeAccount/:pacienteId">
+            <Link to={`/SeeAccount/${auth.userId}`}>
               <h4>Welcome</h4>
               <h5><span>{getUser?.getDoctorById ? getUser.getDoctorById.name : getUser?.getPacienteById ? getUser.getPacienteById.name : "User Name"}</span></h5>
             </Link>

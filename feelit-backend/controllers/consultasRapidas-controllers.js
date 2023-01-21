@@ -60,7 +60,7 @@ const getconsultasRapidasByDoctor = async (req,res,next) => {
 
     try {
         getConsultasRapidasDoctor = await ConsultasRapidas.find({idDoctor:doctorId});
-        
+
         if(getConsultasRapidasDoctor.length < 1){
             throw new httpError(`could not find any flash consult with this doctor`,404)
         }
@@ -97,16 +97,18 @@ const postconsultasRapidas = async (req,res,next)=>{
         idPaciente,
         idDoctor,
         time,
-        message,
+        messagePaciente,
     } = req.body;
     const createConsultasRapidas = new ConsultasRapidas({
         idPaciente,
         idDoctor,
         time,
-        message,
+        messagePaciente,
         dateCreated:todayFunction(),
-        status:true,
-        link:uuidv4()
+        paymentStatus:false,
+        status:'Pendiente',
+        link:uuidv4(),
+        chat:[]
     })
 
     try {
@@ -155,7 +157,8 @@ const patchconsultasRapidas = async (req,res,next) => {
         idPaciente,
         idDoctor,
         time,
-        message,
+        messagePaciente,
+        chat
     } = req.body;
     const consultaFlashId = req.params.crId;
     let verifyconsultaFlashId;
@@ -172,7 +175,7 @@ const patchconsultasRapidas = async (req,res,next) => {
 
         if(!verifyconsultaFlashId){
             throw new httpError(`We can't find this flash date`,404)
-        }    
+        }
         if(!paciente){
             return next(new httpError(`we don't find any paciente`,404));
         }
@@ -184,7 +187,13 @@ const patchconsultasRapidas = async (req,res,next) => {
         }
 
         verifyconsultaFlashId.time = time;
-        verifyconsultaFlashId.message = message;
+        verifyconsultaFlashId.messagePaciente = messagePaciente;
+
+        if( verifyconsultaFlashId.status === 'Aprobado' && verifyconsultaFlashId.paymentStatus === true ){
+            verifyconsultaFlashId.chat = [ ... verifyconsultaFlashId.chat, chat]
+        } else {
+            throw new httpError(`you have to pay to start this chat`,404)
+        }
 
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -195,7 +204,7 @@ const patchconsultasRapidas = async (req,res,next) => {
         await verifyconsultaFlashId.save({session:sess});
         await paciente.save({session:sess});
         await doctor.save({session:sess});
-        
+
         sess.commitTransaction();
 
     } catch(err){
@@ -206,6 +215,9 @@ const patchconsultasRapidas = async (req,res,next) => {
 }
 //delete a: consultas rapidas
 const deleteconsultasRapidas = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const consultaFlashId = req.params.crId;
     let deleteconsultaRapidas;
 
@@ -215,10 +227,14 @@ const deleteconsultasRapidas = async (req,res,next) => {
         if(!deleteconsultaRapidas){
             throw new httpError('We can`t find this date',404)
         }
-    
-        deleteconsultaRapidas.status = false;
+
+        deleteconsultaRapidas.status = 'Rechazado';
+        // move this to a payment function (in a future)
+        deleteconsultaRapidas.paymentStatus = false;
+        deleteconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
+
         await deleteconsultaRapidas.save();
-        
+
     } catch(err){
         return next(new httpError(`somethign went wrong ${err}`,422));
     }
@@ -228,6 +244,9 @@ const deleteconsultasRapidas = async (req,res,next) => {
 
 //active a: consultas rapidas
 const activeConsultasRapidas = async (req,res,next) => {
+    const {
+        messageCancelDoctor
+    } = req.body;
     const consultaFlashId = req.params.crId;
     let activeconsultaRapidas;
 
@@ -237,10 +256,14 @@ const activeConsultasRapidas = async (req,res,next) => {
         if(!activeconsultaRapidas){
             throw new httpError('We can`t find this date',404)
         }
-    
-        activeconsultaRapidas.status = true;
+
+        activeconsultaRapidas.status = 'Aprobado';
+        // move this to a payment function (in a future)
+        activeconsultaRapidas.paymentStatus = true;
+        activeconsultaRapidas.messageCancelDoctor = messageCancelDoctor;
+
         await activeconsultaRapidas.save();
-        
+
     } catch(err){
         return next(new httpError(`somethign went wrong ${err}`,422));
     }

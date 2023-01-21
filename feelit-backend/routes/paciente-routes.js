@@ -21,13 +21,13 @@ router.post(
 //patch a paciente
 router.patch(
     '/:pId',
-    [
-        check('name').not().isEmpty(),
-        check('cedula').isLength({min:13}),
-        check('email').normalizeEmail().isEmail(),
-        check('password').isLength({min:6}),
-        check('telefono').isLength({min:12}),
-    ],
+    // [
+    //     check('name').not().isEmpty(),
+    //     check('cedula').isLength({min:13}),
+    //     check('email').normalizeEmail().isEmail(),
+    //     check('password').isLength({min:6}),
+    //     check('telefono').isLength({min:12}),
+    // ],
     pacienteControllers.patchPaciente)
 //delete a paciente
 router.delete('/:pId',pacienteControllers.deletePaciente)

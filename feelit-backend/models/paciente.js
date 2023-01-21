@@ -10,7 +10,8 @@ const pacienteSchema = mongoose.Schema({
     rol:{ type:mongoose.Types.ObjectId, required:true, ref:'Rol' },
     agendarCita:[{type:mongoose.Types.ObjectId, required:true, ref:'AgendarCita'}],
     consultaRapida:[{type:mongoose.Types.ObjectId, required:true, ref:'ConsultasRapidas'}],
-    enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}]
+    enviarExamenes:[{type:mongoose.Types.ObjectId, required:true, ref:'EnviarExamenes'}],
+    paymentMethod:{ type:String, require:false },
 })
 
 module.exports = mongoose.model('Paciente',pacienteSchema)

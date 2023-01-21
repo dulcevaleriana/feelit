@@ -19,12 +19,14 @@ export default function ChatDetails(props){
         <Typography gutterBottom variant="h6" component="div">
             Solicitar servicios
         </Typography>
-        <BasicButtons
-            onClick={()=>props.onClick()}
-            variantName="outlined"
-            buttonName={"Editar"}
-            iconName={faPen}
-        />
+        {auth.rol === "638f3dc51af87455b52cf7d4" ? <>
+            <BasicButtons
+                onClick={()=>props.onClick()}
+                variantName="outlined"
+                buttonName={"Editar"}
+                iconName={faPen}
+            />
+        </> : <div/>}
         {!(auth.isLoggedIn) ? <>
             <BasicButtons
                 onClick={()=>{history.push("/EnviarResultados/create")}}

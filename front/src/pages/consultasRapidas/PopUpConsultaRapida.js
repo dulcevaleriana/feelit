@@ -36,8 +36,6 @@ export default function PopUpConsultaRapida(props){
         setStep(0);
     }
 
-    console.log({step})
-
     return <NestedModal
         className="class-PopUpConsultaRapida"
         withButton={true}

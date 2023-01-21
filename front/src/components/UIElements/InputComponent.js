@@ -31,6 +31,7 @@ const inputReducer = (state, action) => {
 
 const Input = props => {
   const [data, setData] = useState("")
+  const [getValue, setGetValue] = useState()
   const [showPassword, setShowPassword] = useState(false);
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.value || '',
@@ -45,12 +46,17 @@ const Input = props => {
     onInput(id, value, isValid)
   }, [id, value, isValid, onInput]);
 
+  useEffect(() => {
+    setGetValue(props.value)
+  }, [props.value]);
+
   const changeHandler = event => {
     dispatch({
       type: 'CHANGE',
       val: event.target.value,
       validators: props.validators
     });
+    if(props.value) {setGetValue(event.target.value)}
   };
 
   const touchHandler = () => {
@@ -72,9 +78,11 @@ const Input = props => {
         arrEvent.splice((countMin), 0, arrayMask[countMin])
         setData(arrEvent.join(''))
         props.passData(arrEvent.join(''))
+        if(props.value) {setGetValue(arrEvent.join(''))}
       } else {
         setData(event)
         props.passData(event)
+        if(props.value) {setGetValue(event)}
       }
     }
   }
@@ -86,7 +94,7 @@ const Input = props => {
         <OutlinedInput
           id={props.id}
           type={props.type}
-          value={inputState.value}
+          value={props.value ? getValue : inputState.value}
           onChange={changeHandler}
           label={props.label}
           onBlur={touchHandler}
@@ -95,12 +103,12 @@ const Input = props => {
       </FormControl>
     ) : props.element === 'select' ? (
       <FormControl>
-        <InputLabel htmlFor="component-outlined">{props.label}</InputLabel>
+        {/* <InputLabel htmlFor="component-outlined">{props.label}</InputLabel> */}
         <BasicSelect
           id={props.id}
-          value={inputState.value}
+          value={props.value ? getValue : inputState.value}
           onChange={changeHandler}
-          name={props.placeholder}
+          name={props.label ? props.label : props.placeholder}
           filterArray={props.filterArray}
         />
       </FormControl>
@@ -109,7 +117,7 @@ const Input = props => {
         id={props.id}
         label={props.label}
         type={showPassword ? 'text' : 'password'}
-        value={inputState.value}
+        value={props.value ? getValue : inputState.value}
         onChange={changeHandler}
         endAdornment={
           <InputAdornment position="end">
@@ -130,7 +138,7 @@ const Input = props => {
         <OutlinedInput
           id={props.id}
           type={props.type}
-          value={data}
+          value={props.value ? getValue : data}
           onChange={(e)=>functionMask(e.target.value,props.mask)}
           label={props.label}
           onBlur={touchHandler}
@@ -145,7 +153,7 @@ const Input = props => {
           rows={props.rows || 3}
           onChange={changeHandler}
           onBlur={touchHandler}
-          value={inputState.value}
+          value={props.value ? getValue : inputState.value}
         />
         {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
       </div>

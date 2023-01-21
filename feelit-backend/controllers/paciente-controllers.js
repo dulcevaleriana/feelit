@@ -107,7 +107,8 @@ const patchPaciente = async (req,res,next) => {
         email,
         password,
         telefono,
-        name
+        name,
+        paymentMethod
     } = req.body;
     const pacienteId = req.params.pId;
     let updatePaciente;
@@ -131,6 +132,7 @@ const patchPaciente = async (req,res,next) => {
         updatePaciente.password = hashPassword;
         updatePaciente.telefono = telefono;
         updatePaciente.name = name;
+        updatePaciente.paymentMethod = paymentMethod;
 
         await updatePaciente.save();
     } catch (err){
@@ -182,6 +184,10 @@ const loginPaciente = async (req,res,next) => {
 
         if(!loginPaciente){
             return next(new httpError(`we can't find a paciente with this email`,404))
+        }
+
+        if(loginPaciente.status === false){
+            return next(new httpError(`this paciente was delete, if you want to active again please contact us by email info@feelit.com`,404))
         }
 
     } catch(err){
