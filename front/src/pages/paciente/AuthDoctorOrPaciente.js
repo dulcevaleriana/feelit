@@ -115,7 +115,7 @@ export default function AuthDoctorOrPaciente(){
                     type="submit"
                 />
                 <BasicButtons
-                    onClick={()=>History.push('/CreateUserOrDoctor')}
+                    onClick={()=>History.push(isPaciente ? '/CreatePaciente' : '/CreateDoctor')}
                     variantName="outlined"
                     buttonName="Crear cuenta"
                 />
