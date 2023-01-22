@@ -8,12 +8,22 @@
 
     > div:first-child{
         grid-row: 1 / span 2;
+        display: grid;
+        gap: 20px;
+        grid-template-rows: 20px auto 20px auto;
 
-        > div:nth-child(2){
+        > div:nth-child(2),
+        > div:nth-child(4){
+            max-height: calc(100% - 20px);
             overflow-y: auto;
             padding-right: 20px;
-            height: calc(100% - 27px);
         }
+
+        // > div:nth-child(2){
+        //     overflow-y: auto;
+        //     padding-right: 20px;
+        //     height: calc(100% - 27px);
+        // }
     }
 
     > div:nth-child(2){

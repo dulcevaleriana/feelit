@@ -19,7 +19,7 @@ export default function ActionAreaCard(props) {
         }
     }
     getSpecialtyFunction()
-  },[sendRequest])
+  },[sendRequest, props.specialty])
 
   console.log({getSpecialty})
 
