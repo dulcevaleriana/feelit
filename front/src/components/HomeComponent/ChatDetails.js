@@ -72,13 +72,13 @@ export default function ChatDetails(props){
         </>
         : auth.rol === "638f3dc51af87455b52cf7d4" ? <>
             <Typography variant="body2" color="text.secondary">
-                Revisar Resultados (RD$ 800)
+                Revisar Resultados (RD$ {props.getChatData.enviarExamenesPrice})
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Cita Consulta (RD$ 1,500)
+                Cita Consulta (RD$ {props.getChatData.agendarCitaPrice})
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Consulta rapida (RD$ 500)
+                Consulta rapida (RD$ {props.getChatData.consultaRapidaPrice})
             </Typography>
         </>
         : null}
