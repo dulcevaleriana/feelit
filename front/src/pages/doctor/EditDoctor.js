@@ -269,7 +269,11 @@ export default function EditDoctor() {
                         value:getUser?.specialty
                     }
                 ]}/>
-        <AddDayAndTimeWork editVersion={true} sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>
+        <AddDayAndTimeWork
+            editVersion={true}
+            sendTimeCreated={getHorario}
+            passDataFunction={(time)=>setGetHorario(time)}
+        />
         <BasicButtons
             variantName="contained"
             buttonName="Guardar"

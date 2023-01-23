@@ -6,8 +6,10 @@ import ChatComponent from "../components/HomeComponent/ChatComponent";
 
 export default function Home() {
     const [activeChat, setActiveChat] = useState(false)
+    const [getChatData, setChatData] = useState({})
 
-    const proofFunction = () => {
+    const proofFunction = (data) => {
+        setChatData(data)
         setActiveChat(true)
     }
 
@@ -16,8 +18,8 @@ export default function Home() {
     }
 
     return <div className="class-Home">
-        <ListChat onClick={proofFunction}/>
-        {activeChat ? <ChatComponent onClick={proofFunctionFalse}/> : <>
+        <ListChat onClick={(data)=>proofFunction(data)}/>
+        {activeChat ? <ChatComponent onClick={proofFunctionFalse} getChatData={getChatData}/> : <>
             <CitasPendientes/>
             <UltimasConsultas/>
         </>}

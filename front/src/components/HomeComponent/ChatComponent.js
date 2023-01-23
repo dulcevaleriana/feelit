@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import BasicButtons from "../UIElements/BasicButtons-MUI";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesLeft, faFaceSmile, faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -7,8 +7,12 @@ import ChatDetails from "./ChatDetails";
 import Input from '../../components/UIElements/InputComponent';
 import ChatMessageServices from "./ChatMessageServices";
 import ChatMessage from "./ChatMessage";
+import { AuthContext } from "../../shared/context/auth-context";
 
 export default function ChatComponent(props){
+    const auth = useContext(AuthContext)
+    console.log({getChatData:props.getChatData})
+
     return <div className="class-ChatComponent">
         <div>
             <BasicButtons
@@ -17,7 +21,13 @@ export default function ChatComponent(props){
                 buttonName={"Volver"}
                 iconName={faAnglesLeft}
             />
-            <ActionAreaCard img='https://d29fhpw069ctt2.cloudfront.net/photo/thumb/23181/photo-1467051989526-23a939d703d8.jpg' onClick={()=>props.onClick()}/>
+            <ActionAreaCard
+                img={props.getChatData.img}
+                name={props.getChatData.name}
+                specialty={props.getChatData.specialty}
+                isLoggedIn={auth.isLoggedIn}
+                onClick={()=>props.onClick()}
+            />
         </div>
         <ChatDetails onClick={()=>{}}/>
         <div>
