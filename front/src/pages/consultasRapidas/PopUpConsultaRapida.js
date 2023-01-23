@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NestedModal from "../../components/UIElements/NestedModal";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import StaticTimePickerDemo from "../../components/UIElements/StaticTimePickerDemo";
 import PacienteData from "../../components/ConsultaRapidaComponent/PacienteData";
 import FormPayment from "../../components/ConsultaRapidaComponent/FormPayment";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useForm } from "../../shared/hooks/form-hook";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const DATA_TEMPORAL = [
     {
@@ -29,12 +32,60 @@ const DATA_TEMPORAL = [
 ]
 
 export default function PopUpConsultaRapida(props){
+    const auth = useContext(AuthContext);
     let [step, setStep] = useState(0);
 
     const closeModal = () => {
         props.handleClose();
         setStep(0);
     }
+
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    const [formState, inputHandler] = useForm(
+        {
+            idPaciente: {
+                value: auth.userId,
+                isValid: true
+            },
+            idDoctor: {
+                value: props.idDoctor,
+                isValid: true
+            },
+            time: {
+                value: '',
+                isValid: false
+            },
+            messagePaciente: {
+                value: '',
+                isValid: false
+            },
+        },
+        false
+    );
+
+    const CreateConsultaRapidaFunction = async event => {
+        event.preventDefault();
+        try{
+            const responseData = await sendRequest(
+              process.env.REACT_APP_ + "consultas-rapidas/createConsultaRapida",
+              'POST',
+              JSON.stringify({
+                idPaciente: formState.inputs.idPaciente.value,
+                idDoctor: formState.inputs.idDoctor.value,
+                time: formState.inputs.name.value,
+                messagePaciente: formState.inputs.name.value,
+              }),
+              {
+                'Content-Type': 'application/json'
+              },
+            )
+            auth.login(responseData.doctorId, responseData.token, responseData.rol);
+        } catch(err){}
+        closeModal()
+    }
+
+    console.log({formState, inputHandler})
 
     return <NestedModal
         className="class-PopUpConsultaRapida"
@@ -46,10 +97,11 @@ export default function PopUpConsultaRapida(props){
         disabled={props.disabled}
         title="CONSULTA RAPIDA"
         cancelButton={false}
-        body={<form className={step === 1 ? "class-gridChange" : ""}>
+        body={<form onSubmit={CreateConsultaRapidaFunction} className={step === 1 ? "class-gridChange" : ""}>
             { step === 0 ? <>
-                <StaticTimePickerDemo/>
-                <textarea placeholder="jjjjjjjjj"></textarea>
+                <StaticTimePickerDemo id="time" onInput={inputHandler}/>
+                <textarea id="messagePaciente" placeholder="Escribe tu mensaje" onInput={inputHandler}></textarea>
+                <button type="submit">GUARDAR BOTON PRUEBA</button>
             </> :
             <>
                 <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
@@ -66,6 +118,7 @@ export default function PopUpConsultaRapida(props){
                 onClick={step === 1 ? closeModal : ()=>setStep(step + 1)}
                 variantName="contained"
                 buttonName={step === 1 ? "Solicitar" : "Siguiente"}
+                type={step === 1 ? "submit" : "button"}
             />
         </>}
     />

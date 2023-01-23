@@ -62,12 +62,14 @@ export default function ChatDetails(props){
                 closeNow={agendarCita}
                 disabled={props.getChatData.agendarCitaPrice === 0}
             />
+            {/* Working */}
             <PopUpConsultaRapida
                 handleClose={()=>setConsultaRapidaBoolean(!consultaRapidaBoolean)}
                 buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice})`}
                 variantName="contained"
                 closeNow={consultaRapidaBoolean}
                 disabled={props.getChatData.enviarExamenesPrice === 0}
+                idDoctor={props.getChatData.id}
             />
         </>
         : auth.rol === "638f3dc51af87455b52cf7d4" ? <>
