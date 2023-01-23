@@ -36,6 +36,7 @@ export default function NestedModal(props) {
             buttonName={props.name}
             iconName={props.icon}
             className={props.className}
+            disabled={props.disabled}
         />
       <Modal
         open={props.closeNow ? props.closeNow : open}

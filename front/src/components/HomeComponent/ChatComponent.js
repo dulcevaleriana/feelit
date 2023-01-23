@@ -29,7 +29,10 @@ export default function ChatComponent(props){
                 onClick={()=>props.onClick()}
             />
         </div>
-        <ChatDetails onClick={()=>{}}/>
+        <ChatDetails
+            getChatData={props.getChatData}
+            onClick={()=>{}}
+        />
         <div>
             <ChatMessageServices/>
             <ChatMessage/>

@@ -31,37 +31,43 @@ export default function ChatDetails(props){
             <BasicButtons
                 onClick={()=>{history.push("/EnviarResultados/create")}}
                 variantName="contained"
-                buttonName={"Revisar Resultados (RD$ 800)"}
+                buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice})`}
+                disabled={props.getChatData.enviarExamenesPrice === 0}
             />
             <BasicButtons
                 onClick={()=>{history.push("/AgendarCita/create")}}
                 variantName="contained"
-                buttonName={"Cita Consulta (RD$ 1,500)"}
+                buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice})`}
+                disabled={props.getChatData.agendarCitaPrice === 0}
             />
             <BasicButtons
                 onClick={()=>{history.push("/consultaRapida/Create")}}
                 variantName="contained"
-                buttonName={"Consulta rapida (RD$ 500)"}
+                buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice})`}
+                disabled={props.getChatData.consultaRapidaPrice === 0}
             />
         </>
         : auth.rol === "638f3ddd1af87455b52cf7d7" ? <>
             <PopUpEnviarResultados
                 handleClose={()=>setEnviarResultados(!enviarResultados)}
-                buttonName="Revisar Resultados (RD$ 800)"
+                buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice})`}
                 variantName="contained"
                 closeNow={enviarResultados}
+                disabled={props.getChatData.enviarExamenesPrice === 0}
             />
             <PopUpAgendarCita
                 handleClose={()=>setAgendarCita(!agendarCita)}
-                buttonName="Cita Consulta (RD$ 1,500)"
+                buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice})`}
                 variantName="contained"
                 closeNow={agendarCita}
+                disabled={props.getChatData.agendarCitaPrice === 0}
             />
             <PopUpConsultaRapida
                 handleClose={()=>setConsultaRapidaBoolean(!consultaRapidaBoolean)}
-                buttonName="Consulta rapida (RD$ 500)"
+                buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice})`}
                 variantName="contained"
                 closeNow={consultaRapidaBoolean}
+                disabled={props.getChatData.enviarExamenesPrice === 0}
             />
         </>
         : auth.rol === "638f3dc51af87455b52cf7d4" ? <>

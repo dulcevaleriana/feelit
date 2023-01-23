@@ -63,12 +63,7 @@ export default function ListChat(props){
                 name={index.name}
                 specialty={index.specialty}
                 isLoggedIn={auth.isLoggedIn}
-                onClick={()=>props.onClick({
-                    name:index.name,
-                    img:index.img,
-                    specialty:index.specialty,
-                    isLoggedIn:auth.isLoggedIn
-                })}/>)}
+                onClick={()=>props.onClick(index)}/>)}
         </div>
     </div>
 }
