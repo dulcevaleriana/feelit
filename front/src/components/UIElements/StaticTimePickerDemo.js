@@ -7,6 +7,10 @@ import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker';
 export default function StaticTimePickerDemo(props) {
   const [value, setValue] = React.useState(new Date());
 
+  const getTimeFunction = (newValue) => {
+    props.getTimeFunctionOut(JSON.stringify(newValue))
+  }
+
   return (
     <div className="class-StaticTimePickerDemo">
       <LocalizationProvider dateAdapter={AdapterDateFns} >
@@ -16,9 +20,9 @@ export default function StaticTimePickerDemo(props) {
           value={value}
           onChange={(newValue) => {
             setValue(newValue);
+            getTimeFunction(newValue);
           }}
           renderInput={(params) => <TextField {...params} />}
-          onInput={props.onInput}
         />
       </LocalizationProvider>
     </div>
