@@ -70,6 +70,7 @@ export default function ChatDetails(props){
                 closeNow={consultaRapidaBoolean}
                 disabled={props.getChatData.enviarExamenesPrice === 0}
                 idDoctor={props.getChatData.id}
+                doctorPrice={props.getChatData.consultaRapidaPrice}
             />
         </>
         : auth.rol === "638f3dc51af87455b52cf7d4" ? <>

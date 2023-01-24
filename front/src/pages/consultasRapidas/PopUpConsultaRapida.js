@@ -65,15 +65,18 @@ export default function PopUpConsultaRapida(props){
                 value: '',
                 isValid: false
             },
+            doctorPrice: {
+                value: props.doctorPrice,
+                isValid: true
+            }
         },
         false
     );
 
     const CreateConsultaRapidaFunction = async event => {
         event.preventDefault();
-        alert("00000")
+
         try{
-            alert("111111")
             await sendRequest(
               process.env.REACT_APP_ + "consultas-rapidas/createConsultaRapida",
               'POST',
@@ -82,13 +85,14 @@ export default function PopUpConsultaRapida(props){
                 idDoctor: formState.inputs.idDoctor.value,
                 time: time,
                 messagePaciente: formState.inputs.messagePaciente.value,
+                doctorPrice: formState.inputs.doctorPrice.value
               }),
               {
                 'Content-Type': 'application/json'
               },
             )
         } catch(err){alert(err)}
-        alert("33333333")
+
         closeModal()
     }
 
