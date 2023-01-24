@@ -20,7 +20,8 @@ router.post(
         check('idPaciente').not().isEmpty(),
         check('idDoctor').not().isEmpty(),
         check('time').not().isEmpty(),
-        check('messagePaciente').not().isEmpty()
+        check('messagePaciente').not().isEmpty(),
+        check('doctorPrice').not().isEmpty()
     ],
     consultasRapidasControllers.postconsultasRapidas)
 //patch a: consultas rapidas

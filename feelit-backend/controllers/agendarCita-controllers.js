@@ -101,6 +101,7 @@ const postAgendarCita = async (req,res,next) => {
         date,
         time,
         messagePaciente,
+        doctorPrice
     } = req.body;
     const createAgendarCita = new AgendarCita({
         idPaciente,
@@ -108,6 +109,7 @@ const postAgendarCita = async (req,res,next) => {
         date,
         time,
         messagePaciente,
+        doctorPrice,
         paymentStatus:false,
         status: 'Pendiente',
         link: uuidv4(),

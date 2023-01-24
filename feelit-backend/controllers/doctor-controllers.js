@@ -82,7 +82,10 @@ const postDoctor = async (req,res,next)=>{
         googleMapsLink,
         horario,
         status:true,
-        rol:'638f3dc51af87455b52cf7d4'
+        rol:'638f3dc51af87455b52cf7d4',
+        agendarCitaPrice:0,
+        consultaRapidaPrice:0,
+        enviarExamenesPrice:0
     })
 
     try {

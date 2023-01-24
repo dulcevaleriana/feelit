@@ -96,13 +96,15 @@ const postEnviarExamenes = async (req,res,next) => {
         idPaciente,
         idDoctor,
         messagePaciente,
-        docUpload
+        docUpload,
+        doctorPrice
     } = req.body;
     const createEnviarExamenes = new EnviarExamenes({
         idPaciente,
         idDoctor,
         messagePaciente,
         docUpload,
+        doctorPrice,
         messageCancelDoctor:'',
         dateCreated:todayFunction(),
         status:'Pendiente',

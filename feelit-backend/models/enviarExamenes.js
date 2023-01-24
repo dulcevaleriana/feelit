@@ -21,7 +21,8 @@ const enviarExamenesSchema = mongoose.Schema({
             dateChat:{type:String, require:false},
             timeChat:{type:String, require:false}
         }
-    ]
+    ],
+    doctorPrice:{type:Number,required:true}
 })
 
 module.exports = mongoose.model('EnviarExamenes',enviarExamenesSchema);

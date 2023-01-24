@@ -20,7 +20,8 @@ router.post(
         check('idPaciente').not().isEmpty(),
         check('idDoctor').not().isEmpty(),
         check('messagePaciente').not().isEmpty(),
-        check('docUpload').not().isEmpty()
+        check('docUpload').not().isEmpty(),
+        check('doctorPrice').not().isEmpty()
     ],
     enviarExamenesControllers.postEnviarExamenes)
 //patch a: enviar examenes by patience

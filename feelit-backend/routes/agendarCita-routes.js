@@ -21,7 +21,8 @@ router.post(
         check('idDoctor').not().isEmpty(),
         check('date').trim().isDate(),
         check('time').not().isEmpty(),
-        check('messagePaciente').not().isEmpty()
+        check('messagePaciente').not().isEmpty(),
+        check('doctorPrice').not().isEmpty()
     ],
     agendarCitaControllers.postAgendarCita)
 //patch a: agendar cita

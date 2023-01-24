@@ -98,12 +98,14 @@ const postconsultasRapidas = async (req,res,next)=>{
         idDoctor,
         time,
         messagePaciente,
+        doctorPrice
     } = req.body;
     const createConsultasRapidas = new ConsultasRapidas({
         idPaciente,
         idDoctor,
         time,
         messagePaciente,
+        doctorPrice,
         dateCreated:todayFunction(),
         paymentStatus:false,
         status:'Pendiente',
