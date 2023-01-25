@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { AuthContext } from '../../shared/context/auth-context';
 import ImageServices from '../../Image/undraw_vr_chat_re_s80u.png';
 import Typography from '@mui/material/Typography';
@@ -6,6 +6,21 @@ import BasicButtons from "../UIElements/BasicButtons-MUI";
 
 export default function ChatMessageServices(props){
     const auth = useContext(AuthContext);
+    const [getagendarCitaService, setGetagendarCitaService] = useState({})
+    const [getconsultaRapidaService, setGetconsultaRapidaService] = useState({})
+    const [getenviarExamenesService, setGetenviarExamenesService] = useState({})
+
+    useEffect(()=>{
+        if(props.data.agendarCita.length !== 0){
+            
+        }
+        if(props.data.consultaRapida.length !== 0){
+            
+        }
+        if(props.data.enviarExamenes.length !== 0){
+            
+        }
+    },[props.data])
 
     let element = props.serviceActive ? <div>
         <img src={ImageServices} alt={ImageServices}/>
@@ -86,7 +101,7 @@ export default function ChatMessageServices(props){
             </div>
             : null}
         </>}
-        {props.data.consultaRapida.length !== 0 && <>
+        {props.data.enviarExamenes.length !== 0 && <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:

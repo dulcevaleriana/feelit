@@ -90,7 +90,6 @@ export default function PopUpConsultaRapida(props){
               },
             )
             console.log({createConsultasRapidas:response.createConsultasRapidas})
-            localStorage.setItem("createConsultasRapidas",response.createConsultasRapidas)
         } catch(err){alert(err)}
 
         closeModal()

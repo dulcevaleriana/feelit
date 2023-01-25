@@ -12,9 +12,6 @@ import { AuthContext } from "../../shared/context/auth-context";
 export default function ChatComponent(props){
     const auth = useContext(AuthContext)
     console.log({getChatData:props.getChatData})
-    console.log({status1: props.getChatData.agendarCita.length === 0 })
-    console.log({status2: props.getChatData.consultaRapida.length === 0 })
-    console.log({status3: props.getChatData.consultaRapida.length  === 0 })
 
     return <div className="class-ChatComponent">
         <div>
@@ -39,7 +36,7 @@ export default function ChatComponent(props){
         <div>
             <ChatMessageServices
                 data={props.getChatData}
-                serviceActive={props.getChatData.agendarCita.length === 0 && props.getChatData.consultaRapida.length === 0 && props.getChatData.consultaRapida.length === 0}
+                serviceActive={props.getChatData.agendarCita.length === 0 && props.getChatData.consultaRapida.length === 0 && props.getChatData.enviarExamenes.length === 0}
             />
             <ChatMessage/>
         </div>
