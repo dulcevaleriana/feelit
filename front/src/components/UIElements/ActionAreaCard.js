@@ -21,8 +21,6 @@ export default function ActionAreaCard(props) {
     getSpecialtyFunction()
   },[sendRequest, props.specialty])
 
-  console.log({getSpecialty})
-
   return (
     <Card sx={{ maxWidth: 345 }} className="class-ActionAreaCard" onClick={()=>props.onClick()}>
       <CardActionArea>

@@ -38,8 +38,6 @@ export default function PopUpConsultaRapida(props){
     let [step, setStep] = useState(0);
     const [time, setTime] = useState("");
 
-    console.log({time})
-
     const closeModal = () => {
         props.handleClose();
         setStep(0);
@@ -77,7 +75,7 @@ export default function PopUpConsultaRapida(props){
         event.preventDefault();
 
         try{
-            await sendRequest(
+            const response = await sendRequest(
               process.env.REACT_APP_ + "consultas-rapidas/createConsultaRapida",
               'POST',
               JSON.stringify({
@@ -91,12 +89,12 @@ export default function PopUpConsultaRapida(props){
                 'Content-Type': 'application/json'
               },
             )
+            console.log({createConsultasRapidas:response.createConsultasRapidas})
+            localStorage.setItem("createConsultasRapidas",response.createConsultasRapidas)
         } catch(err){alert(err)}
 
         closeModal()
     }
-
-    console.log({formState, inputHandler})
 
     return <>
         <ModalComponent
