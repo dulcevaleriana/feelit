@@ -40,7 +40,7 @@ export default function ChatComponent(props){
             />
             <ChatMessage/>
         </div>
-        <div disabled={true}>
+        <div>
             <FontAwesomeIcon icon={faFaceSmile} size="lg"  />
             <FontAwesomeIcon icon={faShare} size="lg"  />
             <Input

@@ -12,8 +12,6 @@ export default function ChatMessageServices(props){
     const [getconsultaRapidaService, setGetconsultaRapidaService] = useState(null)
     // const [getenviarExamenesService, setGetenviarExamenesService] = useState(null)
 
-    console.log({data:props.data})
-
     useEffect(()=>{
         const getChatData = async () => {
             if(props.data.agendarCita.length !== 0){
@@ -22,7 +20,6 @@ export default function ChatMessageServices(props){
             if(props.data.consultaRapida.length !== 0){
                 const response = await sendRequest(process.env.REACT_APP_ + 'consultas-rapidas/doctorAndPaciente/' + props.data.id + '/' + auth.userId)
                 setGetconsultaRapidaService(response)
-                console.log({response})
             }
             if(props.data.enviarExamenes.length !== 0){
 
@@ -78,7 +75,7 @@ export default function ChatMessageServices(props){
             </div>
             : null}
         </>}
-        {props.data.consultaRapida.length !== 0 && getconsultaRapidaService.getConsultasRapidasPaciente.map(data => <>
+        {props.data.consultaRapida.length !== 0 && getconsultaRapidaService?.getConsultasRapidasPaciente?.map(data => <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:

@@ -15,6 +15,8 @@ export default function ChatDetails(props){
     const [agendarCita, setAgendarCita] = useState(false)
     const [enviarResultados, setEnviarResultados] = useState(false)
 
+    console.log({getChatData:props.getChatData})
+
     return <div>
         <Typography gutterBottom variant="h6" component="div">
             Solicitar servicios
