@@ -3,24 +3,35 @@ import { AuthContext } from '../../shared/context/auth-context';
 import ImageServices from '../../Image/undraw_vr_chat_re_s80u.png';
 import Typography from '@mui/material/Typography';
 import BasicButtons from "../UIElements/BasicButtons-MUI";
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 export default function ChatMessageServices(props){
+    const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
-    const [getagendarCitaService, setGetagendarCitaService] = useState({})
-    const [getconsultaRapidaService, setGetconsultaRapidaService] = useState({})
-    const [getenviarExamenesService, setGetenviarExamenesService] = useState({})
+    // const [getagendarCitaService, setGetagendarCitaService] = useState(null)
+    const [getconsultaRapidaService, setGetconsultaRapidaService] = useState(null)
+    // const [getenviarExamenesService, setGetenviarExamenesService] = useState(null)
+
+    console.log({data:props.data})
 
     useEffect(()=>{
-        if(props.data.agendarCita.length !== 0){
-            
+        const getChatData = async () => {
+            if(props.data.agendarCita.length !== 0){
+
+            }
+            if(props.data.consultaRapida.length !== 0){
+                const response = await sendRequest(process.env.REACT_APP_ + 'consultas-rapidas/doctorAndPaciente/' + props.data.id + '/' + auth.userId)
+                setGetconsultaRapidaService(response)
+                console.log({response})
+            }
+            if(props.data.enviarExamenes.length !== 0){
+
+            }
         }
-        if(props.data.consultaRapida.length !== 0){
-            
-        }
-        if(props.data.enviarExamenes.length !== 0){
-            
-        }
-    },[props.data])
+        getChatData()
+    },[props.data, sendRequest, auth.userId])
+
+    console.log({getconsultaRapidaService})
 
     let element = props.serviceActive ? <div>
         <img src={ImageServices} alt={ImageServices}/>
@@ -67,25 +78,27 @@ export default function ChatMessageServices(props){
             </div>
             : null}
         </>}
-        {props.data.consultaRapida.length !== 0 && <>
+        {props.data.consultaRapida.length !== 0 && getconsultaRapidaService.getConsultasRapidasPaciente.map(data => <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Consulta rapida <br/>
-                    0:00 PM <br/>
-                    RD$500 || Estado: Pagado
+                    {data.time} <br/>
+                    RD${data.doctorPrice} || Estado: {data.status}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Link: <br/>
+                    {data.link}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Mensaje: <br/>
-                    Hola Dr. atiendame porfa, Hola Dr. atiendame porfa,
-                    Hola Dr. atiendame porfa, Hola Dr. atiendame porfa,
-                    Hola Dr. atiendame porfa, Hola Dr. atiendame por...
+                    {data.messagePaciente}
                 </Typography>
             </div>
             {auth.rol === "638f3ddd1af87455b52cf7d7" ? <Typography variant="body2" color="text.secondary">
-                Pending
+                {data.status}
             </Typography>
             : auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
                 <BasicButtons
@@ -100,7 +113,7 @@ export default function ChatMessageServices(props){
                 />
             </div>
             : null}
-        </>}
+        </>)}
         {props.data.enviarExamenes.length !== 0 && <>
             <div>
                 <Typography variant="h6" color="text.secondary">
