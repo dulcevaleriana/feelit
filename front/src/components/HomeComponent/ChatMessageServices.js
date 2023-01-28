@@ -28,8 +28,6 @@ export default function ChatMessageServices(props){
         getChatData()
     },[props.data, sendRequest, auth.userId])
 
-    console.log({getconsultaRapidaService})
-
     let element = props.serviceActive ? <div>
         <img src={ImageServices} alt={ImageServices}/>
         <Typography variant="h6" color="text.secondary">
