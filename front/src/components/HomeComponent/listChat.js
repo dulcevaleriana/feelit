@@ -10,29 +10,27 @@ export default function ListChat(props){
     const [getList, setGetList] = useState(null)
     const [getSecondList, setGetSecondList] = useState(null)
 
-    const GetDoctorDataFunction = (idDoctor,data,key) => {
+    const GetDoctorDataFunction = (props) => {
         const [getResponse, setGetResponse] = useState(null)
 
         useEffect(()=>{
             const fetchData = async () => {
-                let response = await sendRequest(process.env.REACT_APP_ + 'doctor/' + idDoctor)
+                let response = await sendRequest(process.env.REACT_APP_ + 'doctor/' + props.idDoctor)
                 setGetResponse(response)
             }
             fetchData()
+        },[props.idDoctor])
 
-            
-        },[idDoctor])
-
-        console.log({idDoctor})
+        console.log({props})
         console.log({getResponse})
 
         return <ActionAreaCard
-            key={key}
-            img={getResponse?.img}
-            name={getResponse?.name}
-            specialty={getResponse?.specialty}
-            isLoggedIn={auth.isLoggedIn}
-            onClick={()=>props.onClick(data)}
+            key={props.key}
+            img={getResponse?.getDoctorById?.img}
+            name={getResponse?.getDoctorById?.name}
+            specialty={getResponse?.getDoctorById?.specialty}
+            isLoggedIn={auth.getDoctorById?.isLoggedIn}
+            onClick={()=>props.onClick(props.data)}
         />
     }
 
