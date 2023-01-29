@@ -10,27 +10,42 @@ export default function ListChat(props){
     const [getList, setGetList] = useState(null)
     const [getSecondList, setGetSecondList] = useState(null)
 
-    const GetDoctorDataFunction = (props) => {
+    const GetChatDataFunction = (props) => {
         const [getResponse, setGetResponse] = useState(null)
 
         useEffect(()=>{
             const fetchData = async () => {
-                let response = await sendRequest(process.env.REACT_APP_ + 'doctor/' + props.idDoctor)
+                let response;
+                if(auth.rol === "638f3ddd1af87455b52cf7d7"){
+                    response = await sendRequest(process.env.REACT_APP_ + 'doctor/' + props.id)
+                }
+                if(auth.rol === "638f3dc51af87455b52cf7d4"){
+                    response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + props.id)
+                }
                 setGetResponse(response)
             }
             fetchData()
-        },[props.idDoctor])
+        },[props.id])
 
         console.log({props})
         console.log({getResponse})
 
-        return <ActionAreaCard
+        return auth.rol === "638f3ddd1af87455b52cf7d7" ? <ActionAreaCard
             key={props.key}
             img={getResponse?.getDoctorById?.img}
             name={getResponse?.getDoctorById?.name}
             specialty={getResponse?.getDoctorById?.specialty}
-            isLoggedIn={auth.getDoctorById?.isLoggedIn}
-            onClick={()=>props.onClick(props.data)}
+            isLoggedIn={auth.isLoggedIn}
+            messagePaciente={props.data.messagePaciente}
+            onClick={()=>props.onClick()}
+        /> : <ActionAreaCard
+            key={props.key}
+            img={getResponse?.getPacienteById?.img}
+            name={getResponse?.getPacienteById?.name}
+            specialty={null}
+            isLoggedIn={auth.isLoggedIn}
+            messagePaciente={props.data.messagePaciente}
+            onClick={()=>props.onClick()}
         />
     }
 
@@ -41,6 +56,11 @@ export default function ListChat(props){
 
             if(auth.rol === "638f3ddd1af87455b52cf7d7"){
                 const response = await sendRequest(process.env.REACT_APP_ + 'paciente/getAllPacienteServices/' + auth.userId);
+                setGetSecondList(response)
+            }
+
+            if(auth.rol === "638f3dc51af87455b52cf7d4"){
+                const response = await sendRequest(process.env.REACT_APP_ + 'doctor/getAllDoctorServices/' + auth.userId);
                 setGetSecondList(response)
             }
         }
@@ -60,9 +80,14 @@ export default function ListChat(props){
                 getSecondList.length === 0 ?
                 "Ahora mismo no tienes ningun chat pendiente, inicia un chat con algun medico aqui"
                 :
-                getSecondList?.getAllServices?.map((index, key) => <GetDoctorDataFunction idDoctor={index.idDoctor} key={key} data={index}/>)}
+                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction idDoctor={index.idDoctor} key={key} data={index} onClick={props.onClick(index)}/>)}
         </div> : auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
             My pacient list
+            {getSecondList &&
+                getSecondList.length === 0 ?
+                "Ahora mismo no tienes ningun chat pendiente, espere a que un paciente lo solicite"
+                :
+                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={props.onClick(index)}/>)}
         </div> : null}
 
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

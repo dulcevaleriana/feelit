@@ -36,8 +36,8 @@ export default function ActionAreaCard(props) {
           {props.specialty && <Typography variant="body2" color="text.secondary">
             {props.specialty ? getSpecialty : "N/A"}
           </Typography>}
-          {props.isLoggedIn && <Typography variant="body2" color="text.secondary">
-            Mensaje mensaj...
+          {props.isLoggedIn && props.messagePaciente && <Typography variant="body2" color="text.secondary">
+            {props.messagePaciente && props.messagePaciente}
           </Typography>}
         </CardContent>
       </CardActionArea>
