@@ -39,7 +39,7 @@ export default function ChatMessageServices(props){
     </div>
     :
     <div className="class-ChatMessageServices">
-        {props.data.agendarCita.length !== 0 && <>
+        {props.data?.agendarCita?.length !== 0 && <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:
@@ -73,7 +73,7 @@ export default function ChatMessageServices(props){
             </div>
             : null}
         </>}
-        {props.data.consultaRapida.length !== 0 && getconsultaRapidaService?.getConsultasRapidasPaciente?.map(data => <>
+        {props.data?.consultaRapida?.length !== 0 && getconsultaRapidaService?.getConsultasRapidasPaciente?.map(data => <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:

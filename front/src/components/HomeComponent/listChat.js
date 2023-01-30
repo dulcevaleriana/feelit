@@ -37,7 +37,7 @@ export default function ListChat(props){
             specialty={getResponse?.getDoctorById?.specialty}
             isLoggedIn={auth.isLoggedIn}
             messagePaciente={props.data.messagePaciente}
-            onClick={()=>props.onClick()}
+            onClick={props.onClick}
         /> : <ActionAreaCard
             key={props.key}
             img={getResponse?.getPacienteById?.img}
@@ -45,7 +45,7 @@ export default function ListChat(props){
             specialty={null}
             isLoggedIn={auth.isLoggedIn}
             messagePaciente={props.data.messagePaciente}
-            onClick={()=>props.onClick()}
+            onClick={props.onClick}
         />
     }
 
@@ -80,14 +80,14 @@ export default function ListChat(props){
                 getSecondList.length === 0 ?
                 "Ahora mismo no tienes ningun chat pendiente, inicia un chat con algun medico aqui"
                 :
-                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction idDoctor={index.idDoctor} key={key} data={index} onClick={props.onClick(index)}/>)}
+                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction idDoctor={index.idDoctor} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
         </div> : auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
             My pacient list
             {getSecondList &&
                 getSecondList.length === 0 ?
                 "Ahora mismo no tienes ningun chat pendiente, espere a que un paciente lo solicite"
                 :
-                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={props.onClick(index)}/>)}
+                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
         </div> : null}
 
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

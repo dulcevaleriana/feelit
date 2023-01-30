@@ -36,7 +36,7 @@ export default function ChatComponent(props){
         <div>
             <ChatMessageServices
                 data={props.getChatData}
-                serviceActive={props.getChatData.agendarCita.length === 0 && props.getChatData.consultaRapida.length === 0 && props.getChatData.enviarExamenes.length === 0}
+                serviceActive={props.getChatData?.agendarCita?.length === 0 && props.getChatData?.consultaRapida?.length === 0 && props.getChatData?.enviarExamenes?.length === 0}
             />
             <ChatMessage/>
         </div>
