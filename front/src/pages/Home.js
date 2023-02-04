@@ -11,6 +11,7 @@ export default function Home() {
     const proofFunction = (data) => {
         setChatData(data)
         setActiveChat(true)
+        console.log({data})
     }
 
     const proofFunctionFalse = () => {

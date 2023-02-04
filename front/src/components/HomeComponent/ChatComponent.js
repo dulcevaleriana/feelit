@@ -11,7 +11,6 @@ import { AuthContext } from "../../shared/context/auth-context";
 
 export default function ChatComponent(props){
     const auth = useContext(AuthContext)
-    // console.log({getChatData:props.getChatData})
 
     return <div className="class-ChatComponent">
         <div>

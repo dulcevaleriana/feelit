@@ -75,7 +75,7 @@ export default function PopUpConsultaRapida(props){
         event.preventDefault();
 
         try{
-            const response = await sendRequest(
+            await sendRequest(
               process.env.REACT_APP_ + "consultas-rapidas/createConsultaRapida",
               'POST',
               JSON.stringify({
@@ -89,7 +89,6 @@ export default function PopUpConsultaRapida(props){
                 'Content-Type': 'application/json'
               },
             )
-            console.log({createConsultasRapidas:response.createConsultasRapidas})
         } catch(err){alert(err)}
 
         closeModal()

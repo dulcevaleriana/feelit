@@ -27,9 +27,6 @@ export default function ListChat(props){
             fetchData()
         },[props.id])
 
-        console.log({props})
-        console.log({getResponse})
-
         return auth.rol === "638f3ddd1af87455b52cf7d7" ? <ActionAreaCard
             key={props.key}
             img={getResponse?.getDoctorById?.img}
@@ -67,8 +64,6 @@ export default function ListChat(props){
         getUserFunction()
         // eslint-disable-next-line
     },[sendRequest, auth.rol, auth.userId, auth.isLoggedIn])
-
-    console.log({getSecondList})
 
     return <div>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

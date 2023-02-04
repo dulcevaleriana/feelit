@@ -39,7 +39,7 @@ export default function ChatMessageServices(props){
     </div>
     :
     <div className="class-ChatMessageServices">
-        {props.data?.agendarCita?.length !== 0 && <>
+        {props.data?.agendarCita && props.data?.agendarCita?.length !== 0 && <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:
@@ -73,7 +73,7 @@ export default function ChatMessageServices(props){
             </div>
             : null}
         </>}
-        {props.data?.consultaRapida?.length !== 0 && getconsultaRapidaService?.getConsultasRapidasPaciente?.map(data => <>
+        {props.data?.consultaRapida && props.data?.consultaRapida?.length !== 0 && getconsultaRapidaService?.getConsultasRapidasPaciente?.map(data => <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:
@@ -109,7 +109,7 @@ export default function ChatMessageServices(props){
             </div>
             : null}
         </>)}
-        {props.data.enviarExamenes.length !== 0 && <>
+        {props.data?.enviarExamenes && props.data?.enviarExamenes?.length !== 0 && <>
             <div>
                 <Typography variant="h6" color="text.secondary">
                     Detalle solicitud:
@@ -130,6 +130,40 @@ export default function ChatMessageServices(props){
                 Pending
             </Typography>
             : auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
+                <BasicButtons
+                    onClick={()=>{}}
+                    variantName="outlined"
+                    buttonName={"Declinar"}
+                />
+                <BasicButtons
+                    onClick={()=>{}}
+                    variantName="contained"
+                    buttonName={"Aceptar"}
+                />
+            </div>
+            : null}
+        </>}
+        {props.data && !(props.data.id) && <>
+            <div>
+                <Typography variant="h6" color="text.secondary">
+                    Detalle solicitud:00
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Consulta rapida <br/>
+                    0:00 PM <br/>
+                    RD$500 || Estado: Pagado
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Mensaje: <br/>
+                    Hola Dr. atiendame porfa, Hola Dr. atiendame porfa,
+                    Hola Dr. atiendame porfa, Hola Dr. atiendame porfa,
+                    Hola Dr. atiendame porfa, Hola Dr. atiendame por...
+                </Typography>
+            </div>
+            {auth.rol === "638f3ddd1af87455b52cf7d7" ? <Typography variant="body2" color="text.secondary">
+                status
+            </Typography>
+            : auth.rol === "638f3dc51af87455b52cf7d4" ? <div className="class-buttonOptions">
                 <BasicButtons
                     onClick={()=>{}}
                     variantName="outlined"
