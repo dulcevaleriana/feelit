@@ -85,18 +85,19 @@ export default function ListChat(props){
                 getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
         </div> : null}
 
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Chatea con mas doctores
-        </Typography>
-
-        <div>
-            {getList?.getAllDoctor?.map((index, key) => <ActionAreaCard
-                key={key}
-                img={index.img}
-                name={index.name}
-                specialty={index.specialty}
-                isLoggedIn={auth.isLoggedIn}
-                onClick={()=>props.onClick(index)}/>)}
-        </div>
+        {auth.rol === "638f3ddd1af87455b52cf7d7" && <>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Chatea con mas doctores
+            </Typography>
+            <div>
+                {getList?.getAllDoctor?.map((index, key) => <ActionAreaCard
+                    key={key}
+                    img={index.img}
+                    name={index.name}
+                    specialty={index.specialty}
+                    isLoggedIn={auth.isLoggedIn}
+                    onClick={()=>props.onClick(index)}/>)}
+            </div>
+        </>}
     </div>
 }

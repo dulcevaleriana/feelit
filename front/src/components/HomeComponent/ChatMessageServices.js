@@ -28,6 +28,8 @@ export default function ChatMessageServices(props){
         getChatData()
     },[props.data, sendRequest, auth.userId])
 
+    console.log({DATA:props.data})
+
     let element = props.serviceActive ? <div>
         <img src={ImageServices} alt={ImageServices}/>
         <Typography variant="h6" color="text.secondary">
@@ -149,15 +151,13 @@ export default function ChatMessageServices(props){
                     Detalle solicitud:00
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Consulta rapida <br/>
-                    0:00 PM <br/>
-                    RD$500 || Estado: Pagado
+                    {!(props.data.date) ? "Consulta rapida" : "agendar cita"}<br/>
+                    {props.data.time} <br/>
+                    RD${props.data.doctorPrice} || Estado: {props.data.status} / {props.data.paymentStatus === true ? "pagado" : "no pagado"}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Mensaje: <br/>
-                    Hola Dr. atiendame porfa, Hola Dr. atiendame porfa,
-                    Hola Dr. atiendame porfa, Hola Dr. atiendame porfa,
-                    Hola Dr. atiendame porfa, Hola Dr. atiendame por...
+                    {props.data.messagePaciente}
                 </Typography>
             </div>
             {auth.rol === "638f3ddd1af87455b52cf7d7" ? <Typography variant="body2" color="text.secondary">

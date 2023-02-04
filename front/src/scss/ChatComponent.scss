@@ -6,6 +6,12 @@
     grid-template-rows: 209px auto 100px;
     padding-right: 5%;
 
+    .class-buttonOptions {
+        border: 0px solid transparent !important;
+        display: flex;
+        flex-direction: row !important;
+    }
+
     > div:first-child {
         > div:first-child > button  {
             display: flex;

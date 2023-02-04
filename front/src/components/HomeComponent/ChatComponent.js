@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import BasicButtons from "../UIElements/BasicButtons-MUI";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesLeft, faFaceSmile, faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -8,9 +8,24 @@ import Input from '../../components/UIElements/InputComponent';
 import ChatMessageServices from "./ChatMessageServices";
 import ChatMessage from "./ChatMessage";
 import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 export default function ChatComponent(props){
     const auth = useContext(AuthContext)
+    const { sendRequest } = useHttpClient();
+    const [getPaciente, setGetPaciente] = useState(null)
+
+    useEffect(()=>{
+        const getPacienteFunction = async () => {
+            const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + props.getChatData.idPaciente);
+            setGetPaciente(response)
+        }
+        getPacienteFunction()
+        // eslint-disable-next-line
+    },[props.getChatData.idPaciente])
+
+    console.log({getChatData:props.getChatData})
+    console.log({getPaciente})
 
     return <div className="class-ChatComponent">
         <div>
@@ -21,17 +36,17 @@ export default function ChatComponent(props){
                 iconName={faAnglesLeft}
             />
             <ActionAreaCard
-                img={props.getChatData.img}
-                name={props.getChatData.name}
+                img={props.getChatData.img ? props.getChatData.img : getPaciente.getPacienteById.img}
+                name={props.getChatData.name ? props.getChatData.name : getPaciente.getPacienteById.name}
                 specialty={props.getChatData.specialty}
                 isLoggedIn={auth.isLoggedIn}
                 onClick={()=>props.onClick()}
             />
         </div>
-        <ChatDetails
+        {auth.rol === "638f3ddd1af87455b52cf7d7" ? <ChatDetails
             getChatData={props.getChatData}
             onClick={()=>{}}
-        />
+        /> : <div/>}
         <div>
             <ChatMessageServices
                 data={props.getChatData}
