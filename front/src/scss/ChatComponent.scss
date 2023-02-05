@@ -60,11 +60,13 @@
         overflow-y: auto;
     }
 
+    > form,
     > div:last-child,
     > div:nth-last-child(2) {
         grid-column: 1 / span 2;
     }
 
+    > form,
     > div:last-child {
         background: transparent;
         border: 1px solid #b7b7b7;

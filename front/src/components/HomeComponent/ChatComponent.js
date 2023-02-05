@@ -9,6 +9,7 @@ import ChatMessageServices from "./ChatMessageServices";
 import ChatMessage from "./ChatMessage";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import { useForm } from "../../shared/hooks/form-hook";
 
 export default function ChatComponent(props){
     const auth = useContext(AuthContext)
@@ -16,22 +17,75 @@ export default function ChatComponent(props){
     const [getUser, setGetUser] = useState(null)
     let chatCondition = typeof props.getChatData.status === "string" ? props.getChatData.paymentStatus === false || props.getChatData.status === "Completado" : true
 
+    const [formState, inputHandler] = useForm(
+        {
+            messageChat: {
+                value: '',
+                isValid: false
+            }
+        },
+        false
+    );
+
+    const pathChat = async () => {
+        let pathObject;
+        console.log("ONENTER WORKS")
+        if(auth.rol === "638f3ddd1af87455b52cf7d7"){
+            pathObject = {
+                idDoctor: props.getChatData.idDoctor,
+                idPaciente: auth.userId,
+                chat:{
+                    idOwner: auth.userId,
+                    model_type: 'Paciente',
+                    messageChat: formState.inputs.messageChat.value,
+                    dateChat:"00/00/0000",
+                    timeChat:'0:00'
+                }
+            }
+        }
+        if(auth.rol === "638f3dc51af87455b52cf7d4"){
+            pathObject = {
+                idDoctor: auth.userId,
+                idPaciente: props.getChatData.idPaciente,
+                chat:{
+                    idOwner: auth.userId,
+                    model_type: 'Paciente',
+                    messageChat: formState.inputs.messageChat.value,
+                    dateChat:"00/00/0000",
+                    timeChat:'0:00'
+                }
+            }
+        }
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + `consultas-rapidas/${props.getChatData._id}`,
+                'PATCH',
+                JSON.stringify(pathObject),
+                {
+                    'Content-Type': 'application/json'
+                },
+            )
+        } catch(err){
+            console.log({err})
+        }
+    }
+
     useEffect(()=>{
         const getUserFunction = async () => {
             if(auth.rol === "638f3ddd1af87455b52cf7d7"){
                 const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ props.getChatData.idDoctor);
                 setGetUser(response.getDoctorById);
-              }
-              if(auth.rol === "638f3dc51af87455b52cf7d4"){
+            }
+            if(auth.rol === "638f3dc51af87455b52cf7d4"){
                 const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + props.getChatData.idPaciente);
                 setGetUser(response.getPacienteById)
-              }
+            }
         }
         getUserFunction()
         // eslint-disable-next-line
     },[props.getChatData.idPaciente])
 
-    console.log({getChatData:props.getChatData})
+    console.log({getChatData0000:props.getChatData})
     console.log({getUser})
     console.log({chatCondition})
 
@@ -68,16 +122,16 @@ export default function ChatComponent(props){
             <FontAwesomeIcon icon={faShare} size="lg"  />
             <Input
                 element='input'
-                id='ADD_COLUMN_NAME_HERE'
+                id='messageChat'
                 type='text'
                 label='Enviar respuesta'
                 validators={[]}
                 errorText=''
-                onInput={()=>{}}
+                onInput={inputHandler}
                 placeholder='Enviar respuesta'
                 disabled={chatCondition}
             />
-            <FontAwesomeIcon icon={faPaperPlane} size="lg"  />
+            <FontAwesomeIcon icon={faPaperPlane} size="lg" onClick={pathChat}/>
         </div>
     </div>
 }
