@@ -13,19 +13,27 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 export default function ChatComponent(props){
     const auth = useContext(AuthContext)
     const { sendRequest } = useHttpClient();
-    const [getPaciente, setGetPaciente] = useState(null)
+    const [getUser, setGetUser] = useState(null)
+    let chatCondition = typeof props.getChatData.status === "string" ? props.getChatData.paymentStatus === false || props.getChatData.status === "Completado" : true
 
     useEffect(()=>{
-        const getPacienteFunction = async () => {
-            const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + props.getChatData.idPaciente);
-            setGetPaciente(response)
+        const getUserFunction = async () => {
+            if(auth.rol === "638f3ddd1af87455b52cf7d7"){
+                const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ props.getChatData.idDoctor);
+                setGetUser(response.getDoctorById);
+              }
+              if(auth.rol === "638f3dc51af87455b52cf7d4"){
+                const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + props.getChatData.idPaciente);
+                setGetUser(response.getPacienteById)
+              }
         }
-        getPacienteFunction()
+        getUserFunction()
         // eslint-disable-next-line
     },[props.getChatData.idPaciente])
 
     console.log({getChatData:props.getChatData})
-    console.log({getPaciente})
+    console.log({getUser})
+    console.log({chatCondition})
 
     return <div className="class-ChatComponent">
         <div>
@@ -36,8 +44,8 @@ export default function ChatComponent(props){
                 iconName={faAnglesLeft}
             />
             <ActionAreaCard
-                img={props.getChatData.img ? props.getChatData.img : getPaciente.getPacienteById.img}
-                name={props.getChatData.name ? props.getChatData.name : getPaciente.getPacienteById.name}
+                img={props.getChatData.img ? props.getChatData.img : getUser?.img}
+                name={props.getChatData.name ? props.getChatData.name : getUser?.name}
                 specialty={props.getChatData.specialty}
                 isLoggedIn={auth.isLoggedIn}
                 onClick={()=>props.onClick()}
@@ -54,7 +62,7 @@ export default function ChatComponent(props){
             />
             <ChatMessage/>
         </div>
-        <div>
+        <div className={ chatCondition ? "class-disabled" : ""}>
             <FontAwesomeIcon icon={faFaceSmile} size="lg"  />
             <FontAwesomeIcon icon={faShare} size="lg"  />
             <Input
@@ -66,6 +74,7 @@ export default function ChatComponent(props){
                 errorText=''
                 onInput={()=>{}}
                 placeholder='Enviar respuesta'
+                disabled={chatCondition}
             />
             <FontAwesomeIcon icon={faPaperPlane} size="lg"  />
         </div>

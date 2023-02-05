@@ -99,6 +99,7 @@ const Input = props => {
           label={props.label}
           onBlur={touchHandler}
           placeholder={props.placeholder}
+          disabled={props.disabled}
         />
       </FormControl>
     ) : props.element === 'select' ? (
