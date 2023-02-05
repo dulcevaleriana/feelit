@@ -12,6 +12,42 @@ export default function ChatMessageServices(props){
     const [getconsultaRapidaService, setGetconsultaRapidaService] = useState(null)
     // const [getenviarExamenesService, setGetenviarExamenesService] = useState(null)
 
+    const acceptConsultaRapidaServices = async (id) => {
+        console.log({id, idTypeof:typeof id})
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + `consultas-rapidas/active/${id}`,
+                'PATCH',
+                JSON.stringify({
+                    messageDoctor: "Consulta rapida aprobada, empecemos a chatear",
+                }),
+                {
+                    'Content-Type': 'application/json'
+                },
+            )
+        } catch(err){
+            console.log({err})
+        }
+    }
+
+    const declineConsultaRapidaServices = async (id) => {
+        console.log({id, idTypeof:typeof id})
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + `consultas-rapidas/desactive/${id}`,
+                'PATCH',
+                JSON.stringify({
+                    messageDoctor: "Consulta rapida rechazada, para mas informacion contactar a info@feelit.com",
+                }),
+                {
+                    'Content-Type': 'application/json'
+                },
+            )
+        } catch(err){
+            console.log({err})
+        }
+    }
+
     useEffect(()=>{
         const getChatData = async () => {
             if(props.data.agendarCita.length !== 0){
@@ -164,16 +200,18 @@ export default function ChatMessageServices(props){
                 status
             </Typography>
             : auth.rol === "638f3dc51af87455b52cf7d4" ? <div className="class-buttonOptions">
-                <BasicButtons
-                    onClick={()=>{}}
-                    variantName="outlined"
-                    buttonName={"Declinar"}
-                />
-                <BasicButtons
-                    onClick={()=>{}}
-                    variantName="contained"
-                    buttonName={"Aceptar"}
-                />
+                {props.data.status === "Pendiente" ? <>
+                    <BasicButtons
+                        onClick={()=>declineConsultaRapidaServices(props.data._id)}
+                        variantName="outlined"
+                        buttonName={"Declinar"}
+                    />
+                    <BasicButtons
+                        onClick={()=>acceptConsultaRapidaServices(props.data._id)}
+                        variantName="contained"
+                        buttonName={"Aceptar"}
+                    />
+                </> : props.data.messageDoctor }
             </div>
             : null}
         </>}

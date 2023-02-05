@@ -18,8 +18,8 @@ export default function ActionAreaCard(props) {
         } catch(err){
         }
     }
-    getSpecialtyFunction()
-  },[sendRequest, props.specialty])
+    props.isPacienteLogged && getSpecialtyFunction()
+  },[sendRequest, props.specialty, props.isPacienteLogged])
 
   return (
     <Card sx={{ maxWidth: 345 }} className="class-ActionAreaCard" onClick={()=>props.onClick()}>

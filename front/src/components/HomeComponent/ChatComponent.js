@@ -48,6 +48,7 @@ export default function ChatComponent(props){
                 name={props.getChatData.name ? props.getChatData.name : getUser?.name}
                 specialty={props.getChatData.specialty}
                 isLoggedIn={auth.isLoggedIn}
+                isPacienteLogged={auth.rol === "638f3ddd1af87455b52cf7d7"}
                 onClick={()=>props.onClick()}
             />
         </div>
