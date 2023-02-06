@@ -49,7 +49,7 @@ export default function ChatComponent(props){
                 idPaciente: props.getChatData.idPaciente,
                 chat:{
                     idOwner: auth.userId,
-                    model_type: 'Paciente',
+                    model_type: 'Doctor',
                     messageChat: formState.inputs.messageChat.value,
                     dateChat:"00/00/0000",
                     timeChat:'0:00'
@@ -110,14 +110,14 @@ export default function ChatComponent(props){
             getChatData={props.getChatData}
             onClick={()=>{}}
         /> : <div/>}
-        <div>
+        <div className={props.getChatData?.chat?.length > 0 && "class-chatActive"}>
             <ChatMessageServices
                 data={props.getChatData}
                 serviceActive={props.getChatData?.agendarCita?.length === 0 && props.getChatData?.consultaRapida?.length === 0 && props.getChatData?.enviarExamenes?.length === 0}
             />
-            <ChatMessage/>
+            <ChatMessage messagesArray={props.getChatData.chat}/>
         </div>
-        <div className={ chatCondition ? "class-disabled" : ""}>
+        <form className={ chatCondition ? "class-disabled" : ""} onSubmit={pathChat}>
             <FontAwesomeIcon icon={faFaceSmile} size="lg"  />
             <FontAwesomeIcon icon={faShare} size="lg"  />
             <Input
@@ -132,6 +132,6 @@ export default function ChatComponent(props){
                 disabled={chatCondition}
             />
             <FontAwesomeIcon icon={faPaperPlane} size="lg" onClick={pathChat}/>
-        </div>
+        </form>
     </div>
 }
