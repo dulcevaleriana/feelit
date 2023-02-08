@@ -1,4 +1,4 @@
-import React, { useContext, useState} from "react";
+import React, { useContext, useEffect, useState} from "react";
 import { AuthContext } from '../../shared/context/auth-context';
 import Typography from '@mui/material/Typography';
 import BasicButtons from "../UIElements/BasicButtons-MUI";
@@ -7,13 +7,28 @@ import { useHistory } from "react-router-dom";
 import PopUpConsultaRapida from "../../pages/consultasRapidas/PopUpConsultaRapida";
 import PopUpAgendarCita from "../../pages/agendarCita/PopUpAgendarCita";
 import PopUpEnviarResultados from "../../pages/EnviarResultados/PopUpEnviarResultados";
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 export default function ChatDetails(props){
+    const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
     const history = useHistory();
     const [consultaRapidaBoolean, setConsultaRapidaBoolean] = useState(false)
     const [agendarCita, setAgendarCita] = useState(false)
     const [enviarResultados, setEnviarResultados] = useState(false)
+    const [getDoctorPrices, setGetDoctorPrices] = useState({})
+
+    useEffect(()=>{
+        const getDoctorPriceFunction = async () => {
+            const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ props.getChatData.idDoctor);
+            setGetDoctorPrices(response)
+        }
+        getDoctorPriceFunction()
+        // eslint-disable-next-line
+    },[props.getChatData.idDoctor])
+
+    console.log({getChatData:props.getChatData})
+    console.log({getDoctorPrices})
 
     return <div>
         <Typography gutterBottom variant="h6" component="div">
@@ -31,33 +46,33 @@ export default function ChatDetails(props){
             <BasicButtons
                 onClick={()=>{history.push("/EnviarResultados/create")}}
                 variantName="contained"
-                buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice})`}
+                buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice ? props.getChatData.enviarExamenesPrice : getDoctorPrices?.getDoctorById?.enviarExamenesPrice})`}
                 disabled={props.getChatData.enviarExamenesPrice === 0}
             />
             <BasicButtons
                 onClick={()=>{history.push("/AgendarCita/create")}}
                 variantName="contained"
-                buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice})`}
+                buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice ? props.getChatData.agendarCitaPrice : getDoctorPrices?.getDoctorById?.agendarCitaPrice})`}
                 disabled={props.getChatData.agendarCitaPrice === 0}
             />
             <BasicButtons
                 onClick={()=>{history.push("/consultaRapida/Create")}}
                 variantName="contained"
-                buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice})`}
+                buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}
                 disabled={props.getChatData?.consultaRapidaPrice === 0 || props.getChatData?.consultaRapida?.length !== 0}
             />
         </>
         : auth.rol === "638f3ddd1af87455b52cf7d7" ? <>
             <PopUpEnviarResultados
                 handleClose={()=>setEnviarResultados(!enviarResultados)}
-                buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice})`}
+                buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice ? props.getChatData.enviarExamenesPrice : getDoctorPrices?.getDoctorById?.enviarExamenesPrice})`}
                 variantName="contained"
                 closeNow={enviarResultados}
                 disabled={props.getChatData.enviarExamenesPrice === 0}
             />
             <PopUpAgendarCita
                 handleClose={()=>setAgendarCita(!agendarCita)}
-                buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice})`}
+                buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice ? props.getChatData.agendarCitaPrice : getDoctorPrices?.getDoctorById?.agendarCitaPrice})`}
                 variantName="contained"
                 closeNow={agendarCita}
                 disabled={props.getChatData.agendarCitaPrice === 0}
@@ -65,7 +80,7 @@ export default function ChatDetails(props){
             {/* Working */}
             <PopUpConsultaRapida
                 handleClose={()=>setConsultaRapidaBoolean(!consultaRapidaBoolean)}
-                buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice})`}
+                buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}
                 variantName="contained"
                 closeNow={consultaRapidaBoolean}
                 disabled={props.getChatData?.enviarExamenesPrice === 0 || props.getChatData?.consultaRapida?.length !== 0}

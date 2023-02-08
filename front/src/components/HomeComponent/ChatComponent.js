@@ -29,7 +29,6 @@ export default function ChatComponent(props){
 
     const pathChat = async () => {
         let pathObject;
-        console.log("ONENTER WORKS")
         if(auth.rol === "638f3ddd1af87455b52cf7d7"){
             pathObject = {
                 idDoctor: props.getChatData.idDoctor,
@@ -84,10 +83,6 @@ export default function ChatComponent(props){
         getUserFunction()
         // eslint-disable-next-line
     },[props.getChatData.idPaciente])
-
-    console.log({getChatData0000:props.getChatData})
-    console.log({getUser})
-    console.log({chatCondition})
 
     return <div className="class-ChatComponent">
         <div>

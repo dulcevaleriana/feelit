@@ -13,7 +13,6 @@ export default function ChatMessageServices(props){
     // const [getenviarExamenesService, setGetenviarExamenesService] = useState(null)
 
     const acceptConsultaRapidaServices = async (id) => {
-        console.log({id, idTypeof:typeof id})
         try{
             await sendRequest(
                 process.env.REACT_APP_ + `consultas-rapidas/active/${id}`,
@@ -31,7 +30,6 @@ export default function ChatMessageServices(props){
     }
 
     const declineConsultaRapidaServices = async (id) => {
-        console.log({id, idTypeof:typeof id})
         try{
             await sendRequest(
                 process.env.REACT_APP_ + `consultas-rapidas/desactive/${id}`,
@@ -63,8 +61,6 @@ export default function ChatMessageServices(props){
         }
         getChatData()
     },[props.data, sendRequest, auth.userId])
-
-    console.log({DATA:props.data})
 
     let element = props.serviceActive ? <div>
         <img src={ImageServices} alt={ImageServices}/>

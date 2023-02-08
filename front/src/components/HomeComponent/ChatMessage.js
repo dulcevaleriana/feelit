@@ -3,7 +3,7 @@ import { AuthContext } from "../../shared/context/auth-context";
 
 export default function ChatMessage(props){
     const auth = useContext(AuthContext)
-    console.log({messagesArray:props.messagesArray})
+
     return props.messagesArray?.map(data => <div className={`${data.idOwner === auth.userId && "class-myMessage"}  class-message`}>
         {data.messageChat}
     </div>)
