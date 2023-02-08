@@ -47,19 +47,19 @@ export default function ChatDetails(props){
                 onClick={()=>{history.push("/EnviarResultados/create")}}
                 variantName="contained"
                 buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice ? props.getChatData.enviarExamenesPrice : getDoctorPrices?.getDoctorById?.enviarExamenesPrice})`}
-                disabled={props.getChatData.enviarExamenesPrice === 0}
+                disabled={props.getChatData.enviarExamenesPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
             <BasicButtons
                 onClick={()=>{history.push("/AgendarCita/create")}}
                 variantName="contained"
                 buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice ? props.getChatData.agendarCitaPrice : getDoctorPrices?.getDoctorById?.agendarCitaPrice})`}
-                disabled={props.getChatData.agendarCitaPrice === 0}
+                disabled={props.getChatData.agendarCitaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
             <BasicButtons
                 onClick={()=>{history.push("/consultaRapida/Create")}}
                 variantName="contained"
                 buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}
-                disabled={props.getChatData?.consultaRapidaPrice === 0 || props.getChatData?.consultaRapida?.length !== 0}
+                disabled={props.getChatData?.consultaRapidaPrice === 0 || props.getChatData?.consultaRapida?.length !== 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
         </>
         : auth.rol === "638f3ddd1af87455b52cf7d7" ? <>
@@ -68,14 +68,14 @@ export default function ChatDetails(props){
                 buttonName={`Revisar Resultados (RD$ ${props.getChatData.enviarExamenesPrice ? props.getChatData.enviarExamenesPrice : getDoctorPrices?.getDoctorById?.enviarExamenesPrice})`}
                 variantName="contained"
                 closeNow={enviarResultados}
-                disabled={props.getChatData.enviarExamenesPrice === 0}
+                disabled={props.getChatData.enviarExamenesPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
             <PopUpAgendarCita
                 handleClose={()=>setAgendarCita(!agendarCita)}
                 buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice ? props.getChatData.agendarCitaPrice : getDoctorPrices?.getDoctorById?.agendarCitaPrice})`}
                 variantName="contained"
                 closeNow={agendarCita}
-                disabled={props.getChatData.agendarCitaPrice === 0}
+                disabled={props.getChatData.agendarCitaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
             {/* Working */}
             <PopUpConsultaRapida
@@ -83,7 +83,7 @@ export default function ChatDetails(props){
                 buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}
                 variantName="contained"
                 closeNow={consultaRapidaBoolean}
-                disabled={props.getChatData?.enviarExamenesPrice === 0 || props.getChatData?.consultaRapida?.length !== 0}
+                disabled={props.getChatData?.enviarExamenesPrice === 0 || props.getChatData?.consultaRapida?.length !== 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
                 idDoctor={props.getChatData.id}
                 doctorPrice={props.getChatData.consultaRapidaPrice}
             />
