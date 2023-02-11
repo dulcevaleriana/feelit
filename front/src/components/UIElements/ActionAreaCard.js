@@ -12,11 +12,12 @@ export default function ActionAreaCard(props) {
 
   useEffect(()=>{
     const getSpecialtyFunction = async () => {
+      if(props.specialty){
         try{
             const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/' + props.specialty)
             setSpecialty(specialty.getSpecialtyId.specialtyName)
-        } catch(err){
-        }
+        } catch(err){}
+      }
     }
     props.isPacienteLogged && getSpecialtyFunction()
   },[sendRequest, props.specialty, props.isPacienteLogged])
