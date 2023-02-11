@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Typography from '@mui/material/Typography';
 import CardMeet from '../UIElements/cardMeet';
+import { AuthContext } from '../../shared/context/auth-context';
+import ActionAreaCard from '../UIElements/ActionAreaCard';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 const DUMMY_MEET_LIST = [
     {
@@ -41,13 +44,41 @@ const DUMMY_MEET_LIST = [
     }
 ]
 
-export default function CitasPendientes(){
-    return <div>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Tus citas pendientes
-        </Typography>
+export default function CitasPendientes(props){
+    const auth = useContext(AuthContext);
+    const { sendRequest } = useHttpClient();
+    const [getList, setGetList] = useState(null);
+
+    useEffect(()=>{
+        const getUserFunction = async () => {
+            const response = await sendRequest(process.env.REACT_APP_ + 'doctor/')
+            setGetList(response)
+        }
+        getUserFunction()
+    },[sendRequest])
+
+    console.log({getList})
+
+    return auth.rol === "638f3ddd1af87455b52cf7d7" ? <div>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Chatea con mas doctores
+            </Typography>
+            <div>
+                {getList?.getAllDoctor?.map((index, key) => <ActionAreaCard
+                    key={key}
+                    img={index.img}
+                    name={index.name}
+                    specialty={index.specialty}
+                    isLoggedIn={auth.isLoggedIn}
+                    onClick={()=>props.onClick(index)}/>)}
+            </div>
+        </div> :
         <div>
-            {DUMMY_MEET_LIST.map((index,key)=><CardMeet key={key} img={index.img}/>)}
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Tus citas pendientes
+            </Typography>
+            <div>
+                {DUMMY_MEET_LIST.map((index,key)=><CardMeet key={key} img={index.img}/>)}
+            </div>
         </div>
-    </div>
 }

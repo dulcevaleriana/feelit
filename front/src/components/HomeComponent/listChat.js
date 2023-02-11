@@ -7,7 +7,6 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 export default function ListChat(props){
     const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
-    const [getList, setGetList] = useState(null)
     const [getSecondList, setGetSecondList] = useState(null)
 
     const GetChatDataFunction = (props) => {
@@ -48,9 +47,6 @@ export default function ListChat(props){
 
     useEffect(()=>{
         const getUserFunction = async () => {
-            const response = await sendRequest(process.env.REACT_APP_ + 'doctor/')
-            setGetList(response)
-
             if(auth.rol === "638f3ddd1af87455b52cf7d7"){
                 const response = await sendRequest(process.env.REACT_APP_ + 'paciente/getAllPacienteServices/' + auth.userId);
                 setGetSecondList(response)
@@ -84,20 +80,5 @@ export default function ListChat(props){
                 :
                 getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
         </div> : null}
-
-        {auth.rol === "638f3ddd1af87455b52cf7d7" && <>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                Chatea con mas doctores
-            </Typography>
-            <div>
-                {getList?.getAllDoctor?.map((index, key) => <ActionAreaCard
-                    key={key}
-                    img={index.img}
-                    name={index.name}
-                    specialty={index.specialty}
-                    isLoggedIn={auth.isLoggedIn}
-                    onClick={()=>props.onClick(index)}/>)}
-            </div>
-        </>}
     </div>
 }

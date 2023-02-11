@@ -20,7 +20,7 @@ export default function Home() {
     return <div className="class-Home">
         <ListChat onClick={(data)=>proofFunction(data)}/>
         {activeChat ? <ChatComponent onClick={proofFunctionFalse} getChatData={getChatData}/> : <>
-            <CitasPendientes/>
+            <CitasPendientes onClick={(data)=>proofFunction(data)}/>
             <UltimasConsultas/>
         </>}
     </div>
