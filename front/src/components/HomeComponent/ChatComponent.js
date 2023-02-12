@@ -104,14 +104,14 @@ export default function ChatComponent(props){
                 onClick={()=>props.onClick()}
             />
         </div>
-        {auth.rol === "638f3ddd1af87455b52cf7d7" ? <ChatDetails
+        {(!(auth.isLoggedIn) || auth.rol === "638f3ddd1af87455b52cf7d7") ? <ChatDetails
             getChatData={props.getChatData}
             onClick={()=>{}}
         /> : <EndServices/>}
         <div className={props.getChatData?.chat?.length > 0 && "class-chatActive"}>
             <ChatMessageServices
                 data={props.getChatData}
-                serviceActive={props.getChatData?.agendarCita?.length === 0 && props.getChatData?.consultaRapida?.length === 0 && props.getChatData?.enviarExamenes?.length === 0}
+                serviceActive={(props.getChatData?.agendarCita?.length === 0 && props.getChatData?.consultaRapida?.length === 0 && props.getChatData?.enviarExamenes?.length === 0) || !(auth.isLoggedIn)}
             />
             <ChatMessage messagesArray={props.getChatData.chat}/>
         </div>

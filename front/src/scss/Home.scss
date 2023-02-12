@@ -161,6 +161,10 @@
     gap: 20px;
     grid-template-rows: 60vh calc(40vh - 65px - 57px - 20px);
 
+    .class-ChatComponent {
+        padding-right: 0;
+    }
+
     > div:first-child {
         > div:nth-child(2) {
             display: flex;
