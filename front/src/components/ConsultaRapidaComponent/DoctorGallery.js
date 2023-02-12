@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons';
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import GetTodayDate from "../../shared/util/getTodayDate";
 
 export default function DoctorGallery(props) {
     const [counterSelect, setCounterSelect] = useState(0);
@@ -82,6 +83,6 @@ export default function DoctorGallery(props) {
                 size="lg"
             />}
         </div>
-        <h6>Hoy es: Lunes 21 de Abril 2:00pm </h6>
+        <h6>Hoy es: <GetTodayDate/></h6>
     </div>
 }

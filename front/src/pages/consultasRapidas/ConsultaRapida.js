@@ -24,6 +24,7 @@ export default function ConsultaRapida(){
     const [time, setTime] = useState("");
     const [getTelephone, setGetTelephone] = useState("");
     const [getCedula, setGetCedula] = useState("");
+    const [goToAgendarCita, setGoToAgendarCita] = useState(false)
 
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -145,6 +146,13 @@ export default function ConsultaRapida(){
     >
         {error}
     </ModalComponent>
+    <ModalComponent
+        headerTitle='Para tener una cita con este doctor otro día debe agendar una cita tradicional'
+        show={goToAgendarCita}
+        onCancel={()=>setGoToAgendarCita(false)}
+    >
+        {goToAgendarCita}
+    </ModalComponent>
     {isLoading && <h1>Loading...</h1>}
     <div className={step === 0 ? "class-ConsultaRapida-step1" : step === 1 ? "class-ConsultaRapida-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
@@ -236,7 +244,7 @@ export default function ConsultaRapida(){
         </>}
         {step !== 2 && <>
             <BasicButtons
-                onClick={step === 1 ? ()=>setStep(step - 1) : ""}
+                onClick={step === 1 ? ()=>setStep(step - 1) : ()=>setGoToAgendarCita(true)}
                 variantName="outlined"
                 buttonName={step === 0 ? "Quiero otra fecha" : step === 1 ? "Volver" : ""}
                 iconName={step === 0 ? faClock : step === 1 ? faAnglesLeft : ""}
