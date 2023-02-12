@@ -10,6 +10,7 @@ import ChatMessage from "./ChatMessage";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { useForm } from "../../shared/hooks/form-hook";
+import EndServices from "./EndServices";
 
 export default function ChatComponent(props){
     const auth = useContext(AuthContext)
@@ -104,7 +105,7 @@ export default function ChatComponent(props){
         {auth.rol === "638f3ddd1af87455b52cf7d7" ? <ChatDetails
             getChatData={props.getChatData}
             onClick={()=>{}}
-        /> : <div/>}
+        /> : <EndServices/>}
         <div className={props.getChatData?.chat?.length > 0 && "class-chatActive"}>
             <ChatMessageServices
                 data={props.getChatData}
