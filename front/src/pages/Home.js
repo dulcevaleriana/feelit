@@ -46,8 +46,8 @@ export default function Home() {
 
     console.log({getSecondList})
 
-    return <div className="class-Home">
-        <ListChat onClick={(data)=>proofFunction(data)} getSecondList={getSecondList}/>
+    return <div className={auth.isLoggedIn ? "class-Home" : "class-Home-logOut"}>
+        {auth.isLoggedIn && <ListChat onClick={(data)=>proofFunction(data)} getSecondList={getSecondList}/>}
         {activeChat ? <ChatComponent onClick={proofFunctionFalse} getChatData={getChatData}/> : <>
             <CitasPendientes onClick={(data)=>proofFunction(data)} getSecondList={getSecondList}/>
             <UltimasConsultas/>
