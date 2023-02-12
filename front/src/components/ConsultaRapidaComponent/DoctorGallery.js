@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 export default function DoctorGallery() {
     const [counterSelect, setCounterSelect] = useState(0);
+    const { sendRequest } = useHttpClient();
+    const [getList, setGetList] = useState(null);
+
+    useEffect(()=>{
+        const getUserFunction = async () => {
+            const response = await sendRequest(process.env.REACT_APP_ + 'doctor/')
+            setGetList(response)
+        }
+        getUserFunction()
+    },[sendRequest])
+
     const imageGallery = [
         {
             doctorName:"Juan Ortega",
@@ -41,22 +53,56 @@ export default function DoctorGallery() {
         setCounterSelect(counterSelect + 1)
     }
 
+    const GetSpecialtyName = (specialty) => {
+        const [getSpecialty, setGetSpecialty] = useState(null);
+
+        useEffect(()=>{
+            const getSpecialtyFunction = async () => {
+                try{
+                    const specialtyResponse = await sendRequest(process.env.REACT_APP_ + 'specialty/' + specialty.specialty)
+                    setGetSpecialty(specialtyResponse)
+                } catch(err){}
+            }
+            getSpecialtyFunction()
+        },[sendRequest, specialty])
+
+        return <h5>{getSpecialty?.getSpecialtyId?.specialtyName ? getSpecialty?.getSpecialtyId?.specialtyName : "N/A"}</h5>
+    }
+
     return <div className="class-DoctorGallery">
         <h5>Elige tu medico de preferencia, fecha y hora de la cita</h5>
         <div>
-            <FontAwesomeIcon 
-                onClick={backFunction} 
-                icon={faAngleLeft} 
-                size="lg"  
+            <FontAwesomeIcon
+                onClick={backFunction}
+                icon={faAngleLeft}
+                size="lg"
             />
             <span>
-            {imageGallery.map((index, key) => (
-                <span 
-                    key={key} 
+            {getList?.getAllDoctor?.map((index, key) => (
+                <span
+                    key={key}
                     className={
-                        key === counterSelect ? "class-select" : 
-                        key === counterSelect - 1 ? "class-semi-view" : 
-                        key === counterSelect + 1 ? "class-semi-view" : 
+                        key === counterSelect ? "class-select" :
+                        key === counterSelect - 1 ? "class-semi-view" :
+                        key === counterSelect + 1 ? "class-semi-view" :
+                        " "
+                    }
+                >
+                    <div><img src={index.image ? index.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt={index.image ? index.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}/></div>
+                    {key === counterSelect && <>
+                        <h4>{index.name}</h4>
+                        {/* <h5>{index.specialty}</h5> */}
+                        <GetSpecialtyName specialty={index.specialty}/>
+                    </>}
+                </span>
+            ))}
+            {/* {imageGallery.map((index, key) => (
+                <span
+                    key={key}
+                    className={
+                        key === counterSelect ? "class-select" :
+                        key === counterSelect - 1 ? "class-semi-view" :
+                        key === counterSelect + 1 ? "class-semi-view" :
                         " "
                     }
                 >
@@ -66,12 +112,12 @@ export default function DoctorGallery() {
                         <h5>{index.doctorSpeciallity}</h5>
                     </>}
                 </span>
-            ))}
+            ))} */}
             </span>
-            <FontAwesomeIcon 
-                onClick={nextFunction} 
-                icon={faAngleRight} 
-                size="lg"  
+            <FontAwesomeIcon
+                onClick={nextFunction}
+                icon={faAngleRight}
+                size="lg"
             />
         </div>
         <h6>Hoy es: Lunes 21 de Abril 2:00pm </h6>

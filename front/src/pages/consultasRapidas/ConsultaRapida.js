@@ -5,7 +5,7 @@ import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelec
 import PacienteData from '../../components/ConsultaRapidaComponent/PacienteData';
 import FormPayment from '../../components/ConsultaRapidaComponent/FormPayment';
 import MessageComponent from "../../components/ConsultaRapidaComponent/MessageComponent";
-
+import { useForm } from "../../shared/hooks/form-hook";
 import FormUserData from '../../components/ConsultaRapidaComponent/FormUserData';
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 
@@ -37,8 +37,54 @@ const DATA_TEMPORAL = [
 
 export default function ConsultaRapida(){
     const [step, setStep] = useState(0);
+    const [formState, inputHandler] = useForm(
+        {
+            name: {
+                value: '',
+                isValid: false
+            },
+            password: {
+                value: '',
+                isValid: false
+            },
+            cedula: {
+                value: '',
+                isValid: false
+            },
+            email: {
+                value: '',
+                isValid: false
+            },
+            telefono: {
+                value: '',
+                isValid: false
+            },
+    
+            idPaciente: {
+                value: '',
+                isValid: true
+            },
+            idDoctor: {
+                value: '',
+                isValid: true
+            },
+            time: {
+                value: '',
+                isValid: true
+            },
+            messagePaciente: {
+                value: '',
+                isValid: false
+            },
+            doctorPrice: {
+                value: '',
+                isValid: true
+            }
+        },
+        false
+    );
 
-    return <div className={step === 0 ? "class-ConsultaRapida-step1" : step === 1 ? "class-ConsultaRapida-step2" : "class-ConsultaRapida-step3"}>
+    return <form className={step === 0 ? "class-ConsultaRapida-step1" : step === 1 ? "class-ConsultaRapida-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
             <DoctorGallery/>
             <StaticTimePickerDemo/>
@@ -64,7 +110,8 @@ export default function ConsultaRapida(){
                 variantName="contained"
                 buttonName={step === 0 ? "Siguiente" : step === 1 ? "Pagar ahora" : ""}
                 iconName={step === 0 ? faAnglesRight : step === 1 ? faMoneyBillTransfer : ""}
+                type={step === 0 ? "button" : step === 1 ? "submit" : ""}
             />
         </>}
-    </div>
+    </form>
 }

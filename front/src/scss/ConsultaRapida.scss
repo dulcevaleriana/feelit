@@ -138,13 +138,13 @@
                 opacity: 0.5;
                 display: block;
             }
-    
+
             > span {
                 margin: 0 -45px;
                 text-align: center;
                 opacity: 0;
                 display: none;
-    
+
                 > div:first-child{
                     display: inline-block;
                     position: relative;
@@ -153,14 +153,14 @@
                     overflow: hidden;
                     border-radius: 50%;
                     grid-row: 1 / spam 4;
-        
+
                     img {
                         width: auto;
                         height: 100%;
-                        margin-left: -50px;
+                        margin-left: 0px;
                     }
                 }
-            } 
+            }
         }
     }
 }
