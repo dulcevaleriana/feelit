@@ -6,8 +6,7 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 
 export default function ListChat(props){
     const { sendRequest } = useHttpClient();
-    const auth = useContext(AuthContext);
-    const [getSecondList, setGetSecondList] = useState(null)
+    const auth = useContext(AuthContext)
 
     const GetChatDataFunction = (props) => {
         const [getResponse, setGetResponse] = useState(null)
@@ -23,7 +22,7 @@ export default function ListChat(props){
                 }
                 setGetResponse(response)
             }
-            fetchData()
+            props.id && fetchData()
         },[props.id])
 
         return auth.rol === "638f3ddd1af87455b52cf7d7" ? <ActionAreaCard
@@ -45,40 +44,24 @@ export default function ListChat(props){
         />
     }
 
-    useEffect(()=>{
-        const getUserFunction = async () => {
-            if(auth.rol === "638f3ddd1af87455b52cf7d7"){
-                const response = await sendRequest(process.env.REACT_APP_ + 'paciente/getAllPacienteServices/' + auth.userId);
-                setGetSecondList(response)
-            }
-
-            if(auth.rol === "638f3dc51af87455b52cf7d4"){
-                const response = await sendRequest(process.env.REACT_APP_ + 'doctor/getAllDoctorServices/' + auth.userId);
-                setGetSecondList(response)
-            }
-        }
-        getUserFunction()
-        // eslint-disable-next-line
-    },[sendRequest, auth.rol, auth.userId, auth.isLoggedIn])
-
     return <div>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             { auth.rol === "638f3ddd1af87455b52cf7d7" ? "Mis Doctores" : auth.rol === "638f3dc51af87455b52cf7d4" ? "Mis Pacientes" : "Elige un Doctor" }
         </Typography>
 
         { auth.rol === "638f3ddd1af87455b52cf7d7" ? <div>
-            {getSecondList &&
-                getSecondList.length === 0 ?
+            {props.getSecondList &&
+                props.getSecondList.length === 0 ?
                 "Ahora mismo no tienes ningun chat pendiente, inicia un chat con algun medico aqui"
                 :
-                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction idDoctor={index.idDoctor} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
+                props.getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idDoctor} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
         </div> : auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
             My pacient list
-            {getSecondList &&
-                getSecondList.length === 0 ?
+            {props.getSecondList &&
+                props.getSecondList.length === 0 ?
                 "Ahora mismo no tienes ningun chat pendiente, espere a que un paciente lo solicite"
                 :
-                getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
+                props.getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
         </div> : null}
     </div>
 }

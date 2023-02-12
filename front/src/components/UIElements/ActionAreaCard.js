@@ -14,8 +14,8 @@ export default function ActionAreaCard(props) {
     const getSpecialtyFunction = async () => {
       if(props.specialty){
         try{
-            const specialty = await sendRequest(process.env.REACT_APP_ + 'specialty/' + props.specialty)
-            setSpecialty(specialty.getSpecialtyId.specialtyName)
+            const specialtyResponse = await sendRequest(process.env.REACT_APP_ + 'specialty/' + props.specialty)
+            setSpecialty(specialtyResponse.getSpecialtyId.specialtyName)
         } catch(err){}
       }
     }
