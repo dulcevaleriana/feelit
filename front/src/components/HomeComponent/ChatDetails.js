@@ -27,6 +27,9 @@ export default function ChatDetails(props){
         // eslint-disable-next-line
     },[props.getChatData.idDoctor])
 
+    console.log({getChatData:props.getChatData})
+    console.log({getDoctorPrices})
+
     return <div>
         <Typography gutterBottom variant="h6" component="div">
             Solicitar servicios
@@ -56,7 +59,7 @@ export default function ChatDetails(props){
                 onClick={()=>{history.push("/consultaRapida/Create")}}
                 variantName="contained"
                 buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}
-                disabled={props.getChatData?.consultaRapidaPrice === 0 || props.getChatData?.consultaRapida?.length !== 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
+                disabled={ props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
         </>
         : auth.rol === "638f3ddd1af87455b52cf7d7" ? <>
@@ -80,9 +83,9 @@ export default function ChatDetails(props){
                 buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}
                 variantName="contained"
                 closeNow={consultaRapidaBoolean}
-                disabled={props.getChatData?.enviarExamenesPrice === 0 || props.getChatData?.consultaRapida?.length !== 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
-                idDoctor={props.getChatData.id}
-                doctorPrice={props.getChatData.consultaRapidaPrice}
+                disabled={ props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
+                idDoctor={props.getChatData.idDoctor}
+                doctorPrice={getDoctorPrices.getDoctorById?.consultaRapidaPrice}
             />
         </>
         : auth.rol === "638f3dc51af87455b52cf7d4" ? <>

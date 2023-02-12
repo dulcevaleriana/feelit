@@ -30,11 +30,17 @@ export default function Home() {
     },[sendRequest, auth.rol, auth.userId, auth.isLoggedIn])
 
     const proofFunction = (data) => {
+        console.log({data})
+        localStorage.setItem('servicesData', JSON.stringify({
+            id:data._id,
+            type: data.docUpload ? "EnviarResultados" : data.date ? "AgendarCita" : "ConsultaRapida"
+        }))
         setChatData(data)
         setActiveChat(true)
     }
 
     const proofFunctionFalse = () => {
+        localStorage.removeItem('servicesData')
         setActiveChat(false)
     }
 

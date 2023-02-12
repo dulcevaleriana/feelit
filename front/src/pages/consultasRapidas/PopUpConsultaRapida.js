@@ -83,7 +83,7 @@ export default function PopUpConsultaRapida(props){
                 idDoctor: formState.inputs.idDoctor.value,
                 time: time,
                 messagePaciente: formState.inputs.messagePaciente.value,
-                doctorPrice: formState.inputs.doctorPrice.value
+                doctorPrice: props.doctorPrice
               }),
               {
                 'Content-Type': 'application/json'
