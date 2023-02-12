@@ -2,7 +2,7 @@ import React from "react";
 import ImageDefaultMessage from "../../Image/undraw_through_the_park_lxnl.png";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 
-export default function MessageComponent(){
+export default function MessageComponent(props){
     return (
         <div>
             <img src={ImageDefaultMessage} alt="default"/>
@@ -12,7 +12,7 @@ export default function MessageComponent(){
                 https://github.com/dulcevaleriana/blog-practice/43466436467767
             </a>
             <BasicButtons
-                onClick={()=>{}}
+                onClick={()=>props.onClick()}
                 variantName="contained"
                 buttonName={"Iniciar cita"}
                 iconName={""}

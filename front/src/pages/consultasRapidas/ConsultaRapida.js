@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import DoctorGallery from '../../components/ConsultaRapidaComponent/DoctorGallery';
 import StaticTimePickerDemo from '../../components/UIElements/StaticTimePickerDemo';
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
@@ -12,31 +13,12 @@ import FormUserDataCreateUser from "../../components/paciente/FormUserDataCreate
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 import ModalComponent from '../../components/UIElements/ModalComponent';
-
-const DATA_TEMPORAL = [
-    {
-        title:'Nombre',
-        data:'Juana Perez'
-    },
-    {
-        title:'Teléfono',
-        data:'000-000-0000'
-    },
-    {
-        title:'Correo',
-        data:'juana.perez@gmail.com'
-    },
-    {
-        title:'Tipo de cita',
-        data:'Terapia inicial'
-    },
-    {
-        title:'Este es mi mensaje',
-        data:'Hola solo quiero decir que...'
-    }
-]
+import { AuthContext } from "../../shared/context/auth-context";
 
 export default function ConsultaRapida(){
+    const auth = useContext(AuthContext);
+    const History = useHistory()
+
     const [step, setStep] = useState(0);
     const [getDoctor, setGetDoctor] = useState(null);
     const [time, setTime] = useState("");
@@ -73,7 +55,7 @@ export default function ConsultaRapida(){
                 isValid: true
             },
             idDoctor: {
-                value: getDoctor.id,
+                value: getDoctor?.id,
                 isValid: true
             },
             time: {
@@ -85,7 +67,7 @@ export default function ConsultaRapida(){
                 isValid: false
             },
             doctorPrice: {
-                value: getDoctor.consultaRapidaPrice,
+                value: getDoctor?.consultaRapidaPrice,
                 isValid: true
             }
         },
@@ -109,15 +91,46 @@ export default function ConsultaRapida(){
                     'Content-Type': 'application/json'
                 },
             )
-            localStorage.setItem("savePacienteCreated",{
+            localStorage.setItem("savePacienteCreated",JSON.stringify({
                 pacienteId:responseData.pacienteId,
                 token:responseData.token,
                 rol:responseData.rol
-            })
+            }))
+            setStep(step + 1)
             // auth.login(responseData.pacienteId, responseData.token, responseData.rol);
         } catch(err){}
+    }
 
-        setStep(step + 1)
+    const createConsultaRapidaWithoutLoging = async event => {
+        event.preventDefault();
+
+        const getPaciente = JSON.parse(localStorage.getItem("savePacienteCreated"))
+        console.log({getPaciente:getPaciente.pacienteId})
+
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + "consultas-rapidas/createConsultaRapida",
+                'POST',
+                JSON.stringify({
+                  idPaciente: getPaciente.pacienteId,
+                  idDoctor: getDoctor?.id,
+                  time: time,
+                  messagePaciente: formState.inputs.messagePaciente.value,
+                  doctorPrice: getDoctor?.consultaRapidaPrice
+                }),
+                {
+                  'Content-Type': 'application/json'
+                },
+            )
+            setStep(step + 1)
+            // auth.login(responseData.pacienteId, responseData.token, responseData.rol);
+        } catch(err){}
+    }
+
+    const loginAndSawServices = () => {
+        const getPaciente = JSON.parse(localStorage.getItem("savePacienteCreated"))
+        auth.login(getPaciente.pacienteId, getPaciente.token, getPaciente.rol);
+        History.push('/')
     }
 
     console.log({getDoctor})
@@ -135,8 +148,14 @@ export default function ConsultaRapida(){
     {isLoading && <h1>Loading...</h1>}
     <div className={step === 0 ? "class-ConsultaRapida-step1" : step === 1 ? "class-ConsultaRapida-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
-            <DoctorGallery onClick={(doctor)=>setGetDoctor(doctor)}/>
-            <StaticTimePickerDemo id="time" getTimeFunctionOut={(time)=>setTime(time)}/>
+            <DoctorGallery
+                onClick={(doctor)=>setGetDoctor(doctor)}
+                time={time}
+            />
+            <StaticTimePickerDemo
+                id="time"
+                getTimeFunctionOut={(time)=>setTime(time)}
+            />
             <FormUserDataCreateUser
                 arrayInputs={[
                     {
@@ -199,12 +218,21 @@ export default function ConsultaRapida(){
             />
         </>}
         {step === 1 && <>
-            <DoctorSelected/>
-            <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
+            <DoctorSelected getDoctor={getDoctor}/>
+            <PacienteData
+                message={formState.inputs.messagePaciente.value}
+                pacienteData={{
+                    cedula: getCedula,
+                    email: formState.inputs.email.value,
+                    password: formState.inputs.password.value,
+                    telefono: getTelephone,
+                    name: formState.inputs.name.value,
+                }}
+            />
             <FormPayment/>
         </>}
         {step === 2 && <>
-            <MessageComponent />
+            <MessageComponent onClick={loginAndSawServices}/>
         </>}
         {step !== 2 && <>
             <BasicButtons
@@ -214,11 +242,10 @@ export default function ConsultaRapida(){
                 iconName={step === 0 ? faClock : step === 1 ? faAnglesLeft : ""}
             />
             <BasicButtons
-                onClick={step === 0 ? createPacienteWithoutLoging : ()=>setStep(step + 1)}
+                onClick={step === 0 ? createPacienteWithoutLoging : createConsultaRapidaWithoutLoging}
                 variantName="contained"
                 buttonName={step === 0 ? "Siguiente" : step === 1 ? "Pagar ahora" : ""}
                 iconName={step === 0 ? faAnglesRight : step === 1 ? faMoneyBillTransfer : ""}
-                type={step === 0 ? "button" : step === 1 ? "submit" : ""}
             />
         </>}
     </div>
