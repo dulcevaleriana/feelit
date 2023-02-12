@@ -149,6 +149,7 @@ export default function ConsultaRapida(){
     <div className={step === 0 ? "class-ConsultaRapida-step1" : step === 1 ? "class-ConsultaRapida-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
             <DoctorGallery
+                functionFilter={data => data?.consultaRapidaPrice !== 0}
                 onClick={(doctor)=>setGetDoctor(doctor)}
                 time={time}
             />

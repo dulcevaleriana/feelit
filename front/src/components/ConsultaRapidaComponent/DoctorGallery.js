@@ -43,23 +43,28 @@ export default function DoctorGallery(props) {
         return <h5>{getSpecialty?.getSpecialtyId?.specialtyName ? getSpecialty?.getSpecialtyId?.specialtyName : "N/A"}</h5>
     }
 
+    const filterDoctor = props.functionFilter ? getList?.getAllDoctor?.filter((data)=>props.functionFilter(data)) : getList?.getAllDoctor;
+
+    console.log({filterDoctor})
+
     return <div className="class-DoctorGallery">
         <h5>Elige tu medico de preferencia, fecha y hora de la cita</h5>
         <div>
-            <FontAwesomeIcon
+            {filterDoctor?.length > 1 && <FontAwesomeIcon
                 onClick={backFunction}
                 icon={faAngleLeft}
                 size="lg"
-            />
-            <span>
-            {getList?.getAllDoctor?.map((index, key) => (
+            />}
+            <span className={filterDoctor?.length === 1 && "class-column-2 class-select"}>
+            {filterDoctor?.map((index, key) => (
                 <span
                     key={key}
                     className={
-                        key === counterSelect ? "class-select" :
-                        key === counterSelect - 1 ? "class-semi-view" :
-                        key === counterSelect + 1 ? "class-semi-view" :
-                        " "
+                        key === counterSelect
+                        ? "class-select"
+                        : key === counterSelect - 1 || key === counterSelect + 1
+                        ? "class-semi-view"
+                        : " "
                     }
                     onClick={()=>props.onClick(index)}
                 >
@@ -71,11 +76,11 @@ export default function DoctorGallery(props) {
                 </span>
             ))}
             </span>
-            <FontAwesomeIcon
+            {filterDoctor?.length > 1 && <FontAwesomeIcon
                 onClick={nextFunction}
                 icon={faAngleRight}
                 size="lg"
-            />
+            />}
         </div>
         <h6>Hoy es: Lunes 21 de Abril 2:00pm </h6>
     </div>
