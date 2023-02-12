@@ -61,8 +61,6 @@ export default function CitasPendientes(props){
         return props.getSecondList?.getAllServices?.some(info => info.idDoctor !== data.id)
     })
 
-    console.log({filterDoctor})
-
     return auth.rol === "638f3ddd1af87455b52cf7d7" ? <div>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 Chatea con mas doctores

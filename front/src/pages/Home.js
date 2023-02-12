@@ -44,6 +44,8 @@ export default function Home() {
         setActiveChat(false)
     }
 
+    console.log({getSecondList})
+
     return <div className="class-Home">
         <ListChat onClick={(data)=>proofFunction(data)} getSecondList={getSecondList}/>
         {activeChat ? <ChatComponent onClick={proofFunctionFalse} getChatData={getChatData}/> : <>
