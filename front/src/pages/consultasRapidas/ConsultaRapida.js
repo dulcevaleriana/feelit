@@ -224,7 +224,6 @@ export default function ConsultaRapida(){
                 pacienteData={{
                     cedula: getCedula,
                     email: formState.inputs.email.value,
-                    password: formState.inputs.password.value,
                     telefono: getTelephone,
                     name: formState.inputs.name.value,
                 }}
@@ -246,6 +245,16 @@ export default function ConsultaRapida(){
                 variantName="contained"
                 buttonName={step === 0 ? "Siguiente" : step === 1 ? "Pagar ahora" : ""}
                 iconName={step === 0 ? faAnglesRight : step === 1 ? faMoneyBillTransfer : ""}
+                disabled={step === 0 ? (
+                    getDoctor === null ||
+                    time === "" ||
+                    getTelephone === "" ||
+                    getCedula === "" ||
+                    formState.inputs.messagePaciente.value === "" ||
+                    formState.inputs.name.value === "" ||
+                    formState.inputs.email.value === "" ||
+                    formState.inputs.password.value === ""
+                    ) : step === 1 && false}
             />
         </>}
     </div>

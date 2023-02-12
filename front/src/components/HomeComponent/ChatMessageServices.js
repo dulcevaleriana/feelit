@@ -180,7 +180,7 @@ export default function ChatMessageServices(props){
         {props.data && !(props.data.id) && <>
             <div>
                 <Typography variant="h6" color="text.secondary">
-                    Detalle solicitud:00
+                    Detalle solicitud:
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {!(props.data.date) ? "Consulta rapida" : "agendar cita"}<br/>
