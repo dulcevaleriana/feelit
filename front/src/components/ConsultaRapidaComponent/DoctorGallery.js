@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 
-export default function DoctorGallery() {
+export default function DoctorGallery(props) {
     const [counterSelect, setCounterSelect] = useState(0);
     const { sendRequest } = useHttpClient();
     const [getList, setGetList] = useState(null);
@@ -16,29 +16,6 @@ export default function DoctorGallery() {
         getUserFunction()
     },[sendRequest])
 
-    const imageGallery = [
-        {
-            doctorName:"Juan Ortega",
-            doctorSpeciallity:"pediatry",
-            doctorImage:"https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg"
-        },
-        {
-            doctorName:"Juan Ortega 2",
-            doctorSpeciallity:"pediatry",
-            doctorImage:"https://cdn.pixabay.com/photo/2017/01/29/21/16/nurse-2019420__340.jpg"
-        },
-        {
-            doctorName:"Juan Ortega 3",
-            doctorSpeciallity:"pediatry",
-            doctorImage:"https://cdn.pixabay.com/photo/2020/11/02/19/52/doctor-5707722_960_720.jpg"
-        },
-        {
-            doctorName:"Juan Ortega 4",
-            doctorSpeciallity:"pediatry",
-            doctorImage:"https://cdn.pixabay.com/photo/2017/09/06/20/36/doctor-2722941_960_720.jpg"
-        }
-    ]
-
     const backFunction = () => {
         if(counterSelect <= 0){
             return setCounterSelect(0)
@@ -47,9 +24,6 @@ export default function DoctorGallery() {
     }
 
     const nextFunction = () => {
-        if(counterSelect >= imageGallery.length - 1){
-            return setCounterSelect(imageGallery.length - 1)
-        }
         setCounterSelect(counterSelect + 1)
     }
 
@@ -64,7 +38,7 @@ export default function DoctorGallery() {
                 } catch(err){}
             }
             getSpecialtyFunction()
-        },[sendRequest, specialty])
+        },[specialty])
 
         return <h5>{getSpecialty?.getSpecialtyId?.specialtyName ? getSpecialty?.getSpecialtyId?.specialtyName : "N/A"}</h5>
     }
@@ -87,32 +61,15 @@ export default function DoctorGallery() {
                         key === counterSelect + 1 ? "class-semi-view" :
                         " "
                     }
+                    onClick={()=>props.onClick(index)}
                 >
                     <div><img src={index.image ? index.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt={index.image ? index.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}/></div>
                     {key === counterSelect && <>
                         <h4>{index.name}</h4>
-                        {/* <h5>{index.specialty}</h5> */}
                         <GetSpecialtyName specialty={index.specialty}/>
                     </>}
                 </span>
             ))}
-            {/* {imageGallery.map((index, key) => (
-                <span
-                    key={key}
-                    className={
-                        key === counterSelect ? "class-select" :
-                        key === counterSelect - 1 ? "class-semi-view" :
-                        key === counterSelect + 1 ? "class-semi-view" :
-                        " "
-                    }
-                >
-                    <div><img src={index.doctorImage} alt={index.doctorImage}/></div>
-                    {key === counterSelect && <>
-                        <h4>{index.doctorName}</h4>
-                        <h5>{index.doctorSpeciallity}</h5>
-                    </>}
-                </span>
-            ))} */}
             </span>
             <FontAwesomeIcon
                 onClick={nextFunction}

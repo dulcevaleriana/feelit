@@ -148,13 +148,14 @@ const Input = props => {
       </FormControl>
     ):(
       <div className={`form-control ${!inputState.isValid && inputState.isTouched && 'form-control--invalid'}`}>
-        <label htmlFor={props.id}>{props.label}</label>
+        {/* <label htmlFor={props.id}>{props.label}</label> */}
         <textarea
           id={props.id}
           rows={props.rows || 3}
           onChange={changeHandler}
           onBlur={touchHandler}
           value={props.value ? getValue : inputState.value}
+          placeholder={props.label}
         />
         {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
       </div>

@@ -30,28 +30,28 @@ export default function FormUserData() {
         <FormControl>
             <InputLabel htmlFor="component-outlined">Nombre</InputLabel>
             <OutlinedInput
-            id="component-outlined"
-            value={name}
-            onChange={handleChangeName}
-            label="Nombre"
+                id="component-outlined"
+                value={name}
+                onChange={handleChangeName}
+                label="Nombre"
             />
         </FormControl>
         <FormControl>
             <InputLabel htmlFor="component-outlined">Teléfono</InputLabel>
             <OutlinedInput
-            id="component-outlined"
-            value={telefono}
-            onChange={handleChangeTelefono}
-            label="Telefono"
+                id="component-outlined"
+                value={telefono}
+                onChange={handleChangeTelefono}
+                label="Telefono"
             />
         </FormControl>
         <FormControl>
             <InputLabel htmlFor="component-outlined">Correo</InputLabel>
             <OutlinedInput
-            id="component-outlined"
-            value={correo}
-            onChange={handleChangeCorreo}
-            label="Correo"
+                id="component-outlined"
+                value={correo}
+                onChange={handleChangeCorreo}
+                label="Correo"
             />
         </FormControl>
         <FormControl>
