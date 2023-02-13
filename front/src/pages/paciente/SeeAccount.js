@@ -94,7 +94,7 @@ export default function SeeAccount(){
                 );
             }
         } catch(err){
-            console.log({err})
+
         } finally {
             localStorage.setItem("popUpAccountDeleted",true);
             auth.logout();

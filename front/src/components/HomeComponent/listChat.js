@@ -1,53 +1,67 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import ActionAreaCard from '../UIElements/ActionAreaCard';
-
-const DUMMY_CHAT_LIST = [
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/23181/photo-1467051989526-23a939d703d8.jpg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/17542/photo-1475332432029-9fe0c4461530.jpg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/77939/adult.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/75283/art.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/45737/face.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/75005/beautiful.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/47010/face.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/78291/adult.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/82788/adult.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/40639/adult.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/77262/beautiful.jpeg'
-    },
-    {
-        img:'https://d29fhpw069ctt2.cloudfront.net/photo/thumb/75244/attractive.jpeg'
-    }
-]
+import { AuthContext } from '../../shared/context/auth-context';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 export default function ListChat(props){
+    const { sendRequest } = useHttpClient();
+    const auth = useContext(AuthContext)
+
+    const GetChatDataFunction = (props) => {
+        const [getResponse, setGetResponse] = useState(null)
+
+        useEffect(()=>{
+            const fetchData = async () => {
+                let response;
+                if(auth.rol === "638f3ddd1af87455b52cf7d7"){
+                    response = await sendRequest(process.env.REACT_APP_ + 'doctor/' + props.id)
+                }
+                if(auth.rol === "638f3dc51af87455b52cf7d4"){
+                    response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + props.id)
+                }
+                setGetResponse(response)
+            }
+            props.id && fetchData()
+        },[props.id])
+
+        return auth.rol === "638f3ddd1af87455b52cf7d7" ? <ActionAreaCard
+            key={props.key}
+            img={getResponse?.getDoctorById?.img}
+            name={getResponse?.getDoctorById?.name}
+            specialty={getResponse?.getDoctorById?.specialty}
+            isLoggedIn={auth.isLoggedIn}
+            messagePaciente={props.data.messagePaciente}
+            onClick={props.onClick}
+        /> : <ActionAreaCard
+            key={props.key}
+            img={getResponse?.getPacienteById?.img}
+            name={getResponse?.getPacienteById?.name}
+            specialty={null}
+            isLoggedIn={auth.isLoggedIn}
+            messagePaciente={props.data.messagePaciente}
+            onClick={props.onClick}
+        />
+    }
+
     return <div>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Consultas recientes
+            { auth.rol === "638f3ddd1af87455b52cf7d7" ? "Mis Doctores" : auth.rol === "638f3dc51af87455b52cf7d4" ? "Mis Pacientes" : "Elige un Doctor" }
         </Typography>
-        <div>
-            {DUMMY_CHAT_LIST.map((index, key) => <ActionAreaCard key={key} img={index.img} onClick={()=>props.onClick()}/>)}
-        </div>
+
+        { auth.rol === "638f3ddd1af87455b52cf7d7" ? <div>
+            {props.getSecondList &&
+                props.getSecondList.length === 0 ?
+                "Ahora mismo no tienes ningun chat pendiente, inicia un chat con algun medico aqui"
+                :
+                props.getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idDoctor} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
+        </div> : auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
+            My pacient list
+            {props.getSecondList &&
+                props.getSecondList.length === 0 ?
+                "Ahora mismo no tienes ningun chat pendiente, espere a que un paciente lo solicite"
+                :
+                props.getSecondList?.getAllServices?.map((index, key) => <GetChatDataFunction id={index.idPaciente} key={key} data={index} onClick={()=>props.onClick(index)}/>)}
+        </div> : null}
     </div>
 }

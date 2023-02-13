@@ -6,6 +6,39 @@
     grid-template-rows: 209px auto 100px;
     padding-right: 5%;
 
+    .class-chatActive{
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+
+        .class-ChatMessageServices {
+            position: relative !important;
+        }
+        .class-message {
+            border: 1px solid #c1c1c1;
+            padding: 20px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-radius: 0 20px 20px;
+        }
+        .class-myMessage.class-message {
+            display: flex;
+            align-self: end;
+            border-radius: 20px 20px 0;
+        }
+    }
+
+    .class-disabled {
+        opacity: 0.5;
+    }
+
+    .class-buttonOptions {
+        border: 0px solid transparent !important;
+        display: flex;
+        flex-direction: row !important;
+    }
+
     > div:first-child {
         > div:first-child > button  {
             display: flex;
@@ -50,11 +83,13 @@
         overflow-y: auto;
     }
 
+    > form,
     > div:last-child,
     > div:nth-last-child(2) {
         grid-column: 1 / span 2;
     }
 
+    > form,
     > div:last-child {
         background: transparent;
         border: 1px solid #b7b7b7;
@@ -78,7 +113,7 @@
     left: 0;
     width: 50%;
 
-    > div:first-child {
+    > div {
         border: 1px solid #c1c1c1;
         padding: 20px;
         margin-bottom: 20px;
@@ -89,7 +124,7 @@
         border-radius: 0 20px 20px;
     }
 
-    > p:last-child {
+    > p {
         text-align: right;
     }
 

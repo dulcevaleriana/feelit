@@ -24,18 +24,10 @@ const MainNavigation = (props) => {
         }
     ]
     const arrayLinks_isLoggedIn_Paciente_true = [
-        {
-            to:"/consultaRapida/Create",
-            name:"Consulta Flash",
-        },
-        {
-            to:"/AgendarCita/create",
-            name:"Agendar Cita",
-        },
-        {
-            to:"/EnviarResultados/create",
-            name:"Enviar Resultados",
-        }
+        // {
+        //     to:"",
+        //     name:"",
+        // }
     ]
 
     const arrayLinks_isLoggedIn_flase = [

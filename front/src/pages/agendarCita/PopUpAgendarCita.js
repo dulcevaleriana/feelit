@@ -49,6 +49,7 @@ export default function PopUpAgendarCita(props){
         name={props.buttonName}
         variantName={props.variantName}
         handleClose={props.handleClose}
+        disabled={props.disabled}
         title="CONSULTA RAPIDA"
         cancelButton={false}
         body={<form className={step === 1 ? "class-gridChange" : ""}>

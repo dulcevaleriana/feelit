@@ -6,7 +6,8 @@ import AgendarCita from './agendarCita/AgendarCita';
 import EnviarResultados from './EnviarResultados/EnviarResultados';
 import EditOrSeeAgendarCita from './agendarCita/EditOrSeeAgendarCita';
 import EditOrSeeEnviarResultados from '../components/EnviarResultados/EditOrSeeEnviarResultados';
-import CreateUserOrDoctor from './paciente/CreateUserOrDoctor';
+import CreatePaciente from "./paciente/CreatePaciente";
+import CreateDoctor from "./doctor/CreateDoctor";
 import SeeAccount from './paciente/SeeAccount';
 import AuthDoctorOrPaciente from './paciente/AuthDoctorOrPaciente';
 import ConsultaRapida from './consultasRapidas/ConsultaRapida';
@@ -62,21 +63,22 @@ export default function Routers(props){
     (
         <>
             <Switch>
-              <Route path="/CreateUserOrDoctor" component={CreateUserOrDoctor} exact />
-              <Route path="/Home" component={Home} exact/>
-              <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
-              <Route path="/AgendarCita/create" component={AgendarCita} exact />
-              <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
+                <Route path="/CreatePaciente" component={CreatePaciente} exact />
+                <Route path="/CreateDoctor" component={CreateDoctor} exact />
+                <Route path="/Home" component={Home} exact/>
+                <Route path="/consultaRapida/Create" component={ConsultaRapida} exact/>
+                <Route path="/AgendarCita/create" component={AgendarCita} exact />
+                <Route path="/EnviarResultados/create" component={EnviarResultados} exact />
 
-              <Route path="/users" component={Users} exact/>
-              <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
-              <Route path="/users" component={Users} exact/>
-              <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
-              <Route path="/place/new" component={NewPlace} exact/>
-              <Route path="/place/:placeId" component={UpdatePlace} exact/>
-              <Route path="/authOLD" component={Auth} exact/>
-              <Route path="/" component={AuthDoctorOrPaciente} exact/>
-              <Redirect to="/"/>
+                <Route path="/users" component={Users} exact/>
+                <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
+                <Route path="/users" component={Users} exact/>
+                <Route path="/users/:usersId/UserPlaces" component={UserPlaces} exact/>
+                <Route path="/place/new" component={NewPlace} exact/>
+                <Route path="/place/:placeId" component={UpdatePlace} exact/>
+                <Route path="/authOLD" component={Auth} exact/>
+                <Route path="/" component={AuthDoctorOrPaciente} exact/>
+                <Redirect to="/"/>
             </Switch>
         </>
     )

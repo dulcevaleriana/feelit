@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NestedModal from "../../components/UIElements/NestedModal";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import StaticTimePickerDemo from "../../components/UIElements/StaticTimePickerDemo";
 import PacienteData from "../../components/ConsultaRapidaComponent/PacienteData";
 import FormPayment from "../../components/ConsultaRapidaComponent/FormPayment";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useForm } from "../../shared/hooks/form-hook";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import Input from "../../components/UIElements/InputComponent";
+import ModalComponent from "../../components/UIElements/ModalComponent";
 
 const DATA_TEMPORAL = [
     {
@@ -29,43 +34,111 @@ const DATA_TEMPORAL = [
 ]
 
 export default function PopUpConsultaRapida(props){
+    const auth = useContext(AuthContext);
     let [step, setStep] = useState(0);
+    const [time, setTime] = useState("");
 
     const closeModal = () => {
         props.handleClose();
         setStep(0);
     }
 
-    return <NestedModal
-        className="class-PopUpConsultaRapida"
-        withButton={true}
-        closeNow={props.closeNow}
-        name={props.buttonName}
-        variantName={props.variantName}
-        handleClose={props.handleClose}
-        title="CONSULTA RAPIDA"
-        cancelButton={false}
-        body={<form className={step === 1 ? "class-gridChange" : ""}>
-            { step === 0 ? <>
-                <StaticTimePickerDemo/>
-                <textarea placeholder="jjjjjjjjj"></textarea>
-            </> :
-            <>
-                <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
-                <FormPayment/>
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+    const [formState, inputHandler] = useForm(
+        {
+            idPaciente: {
+                value: auth.userId,
+                isValid: true
+            },
+            idDoctor: {
+                value: props.idDoctor,
+                isValid: true
+            },
+            time: {
+                value: time,
+                isValid: true
+            },
+            messagePaciente: {
+                value: '',
+                isValid: false
+            },
+            doctorPrice: {
+                value: props.doctorPrice,
+                isValid: true
+            }
+        },
+        false
+    );
+
+    const CreateConsultaRapidaFunction = async event => {
+        event.preventDefault();
+
+        try{
+            await sendRequest(
+              process.env.REACT_APP_ + "consultas-rapidas/createConsultaRapida",
+              'POST',
+              JSON.stringify({
+                idPaciente: formState.inputs.idPaciente.value,
+                idDoctor: formState.inputs.idDoctor.value,
+                time: time,
+                messagePaciente: formState.inputs.messagePaciente.value,
+                doctorPrice: props.doctorPrice
+              }),
+              {
+                'Content-Type': 'application/json'
+              },
+            )
+        } catch(err){alert(err)}
+
+        closeModal()
+    }
+
+    return <>
+        <ModalComponent
+            headerTitle='You can not access for now'
+            show={error}
+            onCancel={clearError}
+        >
+            {error}
+        </ModalComponent>
+        <NestedModal
+            className="class-PopUpConsultaRapida"
+            withButton={true}
+            closeNow={props.closeNow}
+            name={props.buttonName}
+            variantName={props.variantName}
+            handleClose={props.handleClose}
+            disabled={props.disabled}
+            title="CONSULTA RAPIDA"
+            cancelButton={false}
+            body={<form className={step === 1 ? "class-gridChange" : ""}>
+                { step === 0 ? <>
+                    <StaticTimePickerDemo id="time" getTimeFunctionOut={(time)=>setTime(time)}/>
+                    <Input
+                        id="messagePaciente"
+                        validators={[]}
+                        onInput={inputHandler}
+                    />
+                </> :
+                <>
+                    <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
+                    <FormPayment/>
+                    {isLoading && <h1>Loading...</h1>}
+                </>}
+            </form>}
+            buttonOptions={<>
+                <BasicButtons
+                    onClick={step === 0 ? closeModal : ()=>setStep(step - 1)}
+                    variantName="outlined"
+                    buttonName={step === 0 ? "Cancelar" : "Volver"}
+                />
+                <BasicButtons
+                    onClick={step === 1 ? CreateConsultaRapidaFunction : ()=>setStep(step + 1)}
+                    variantName="contained"
+                    buttonName={step === 1 ? "Solicitar" : "Siguiente"}
+                />
             </>}
-        </form>}
-        buttonOptions={<>
-            <BasicButtons
-                onClick={step === 0 ? closeModal : ()=>setStep(step - 1)}
-                variantName="outlined"
-                buttonName={step === 0 ? "Cancelar" : "Volver"}
-            />
-            <BasicButtons
-                onClick={step === 1 ? closeModal : ()=>setStep(step + 1)}
-                variantName="contained"
-                buttonName={step === 1 ? "Solicitar" : "Siguiente"}
-            />
-        </>}
-    />
+        />
+    </>
 }

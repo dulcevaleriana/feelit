@@ -1,15 +1,15 @@
 import React from 'react';
 
-export default function DoctorSelected(){
+export default function DoctorSelected(props){
 
     return <div className='class-DoctorSelected'>
         <h5>Has elegido para tu cita:</h5>
         <span className="class-select">
             <div>
-                <img src="https://cdn.pixabay.com/photo/2017/03/14/03/20/woman-2141808__480.jpg" alt="img"/>
+                <img src={props.getDoctor?.image ? props.getDoctor?.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt={props.getDoctor?.image ? props.getDoctor?.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}/>
             </div>
-            <h4>Juan Ortega</h4>
-            <h5>"fecha actual" <br/> 2:00pm</h5>
+            <h4>{props.getDoctor?.name}</h4>
+            <h5>"fecha actual" <br/> {props.time ? props.time : "Download..."}</h5>
         </span>
     </div>
 }

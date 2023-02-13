@@ -71,6 +71,18 @@ export default function EditDoctor() {
                 value: '',
                 isValid: false
             },
+            enviarExamenesPrice: {
+                value: '',
+                isValid: false
+            },
+            agendarCitaPrice: {
+                value: '',
+                isValid: false
+            },
+            consultaRapidaPrice: {
+                value: '',
+                isValid: false
+            },
         },
         false
     );
@@ -123,11 +135,22 @@ export default function EditDoctor() {
                             value: response.getDoctorById.horario,
                             isValid: true
                         },
+                        enviarExamenesPrice: {
+                            value: response.getDoctorById.enviarExamenesPrice,
+                            isValid: true
+                        },
+                        agendarCitaPrice: {
+                            value: response.getDoctorById.agendarCitaPrice,
+                            isValid: true
+                        },
+                        consultaRapidaPrice: {
+                            value: response.getDoctorById.consultaRapidaPrice,
+                            isValid: true
+                        },
                     },
                     true
                 )
             } catch(err){
-                console.log({err})
                 setError(error);
                 setLoading(false);
             } finally {
@@ -155,6 +178,9 @@ export default function EditDoctor() {
                     address: formState.inputs.address.value,
                     googleMapsLink: formState.inputs.googleMapsLink.value,
                     horario: getHorario,
+                    enviarExamenesPrice:formState.inputs.enviarExamenesPrice.value,
+                    agendarCitaPrice:formState.inputs.agendarCitaPrice.value,
+                    consultaRapidaPrice:formState.inputs.consultaRapidaPrice.value
                 }),
                 {
                     'Content-Type': 'application/json'
@@ -170,9 +196,6 @@ export default function EditDoctor() {
             }
         }
     }
-
-    console.log({getUser})
-    console.log({formState, inputHandler, setFormData})
 
     if (loading) {
         return <div>Loading...</div>;
@@ -267,9 +290,43 @@ export default function EditDoctor() {
                         onInput:inputHandler,
                         filterArray:getSpecialty,
                         value:getUser?.specialty
+                    },
+                    {
+                        element:"input",
+                        id:"enviarExamenesPrice",
+                        type:"number",
+                        label:"Precio Revisar Resultados",
+                        validators:[],
+                        errorText:"Please enter a valid Precio Revisar Resultados.",
+                        onInput:inputHandler,
+                        value:getUser?.enviarExamenesPrice
+                    },
+                    {
+                        element:"input",
+                        id:"agendarCitaPrice",
+                        type:"number",
+                        label:"Precio Cita Consulta",
+                        validators:[],
+                        errorText:"Please enter a valid Precio Cita Consulta.",
+                        onInput:inputHandler,
+                        value:getUser?.agendarCitaPrice
+                    },
+                    {
+                        element:"input",
+                        id:"consultaRapidaPrice",
+                        type:"number",
+                        label:"Precio Consulta rapida",
+                        validators:[],
+                        errorText:"Please enter a valid Precio Consulta rapida.",
+                        onInput:inputHandler,
+                        value:getUser?.consultaRapidaPrice
                     }
                 ]}/>
-        <AddDayAndTimeWork editVersion={true} sendTimeCreated={getHorario} passDataFunction={(time)=>setGetHorario(time)}/>
+        <AddDayAndTimeWork
+            editVersion={true}
+            sendTimeCreated={getHorario}
+            passDataFunction={(time)=>setGetHorario(time)}
+        />
         <BasicButtons
             variantName="contained"
             buttonName="Guardar"
