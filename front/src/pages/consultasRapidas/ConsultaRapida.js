@@ -147,11 +147,24 @@ export default function ConsultaRapida(){
         {error}
     </ModalComponent>
     <ModalComponent
-        headerTitle='Para tener una cita con este doctor otro día debe agendar una cita tradicional'
+        headerTitle='Quieres otra fecha?'
         show={goToAgendarCita}
         onCancel={()=>setGoToAgendarCita(false)}
+        className="class-modal-agendarCita"
     >
-        {goToAgendarCita}
+        <p>Para tener una cita con este doctor otro día debe agendar una cita tradicional</p>
+        <div>
+            <BasicButtons
+                onClick={()=>setGoToAgendarCita(false)}
+                variantName="outlined"
+                buttonName="Cancelar"
+            />
+            <BasicButtons
+                onClick={()=>History.push('/AgendarCita/create')}
+                variantName="outlined"
+                buttonName="Agendar cita"
+            />
+        </div>
     </ModalComponent>
     {isLoading && <h1>Loading...</h1>}
     <div className={step === 0 ? "class-ConsultaRapida-step1" : step === 1 ? "class-ConsultaRapida-step2" : "class-ConsultaRapida-step3"}>

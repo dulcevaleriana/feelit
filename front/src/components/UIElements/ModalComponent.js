@@ -49,7 +49,7 @@ const ModalOverlay = (props) => {
 const ModalComponent = (props) => {
     return <React.Fragment>
         <CSSTransition
-            classNames="modal"
+            classNames={props.className ? `modal ${props.className}`: "modal"}
             in={props.show}
             timeout={200}
             mountOnEnter
