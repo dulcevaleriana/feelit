@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DoctorGallery from '../../components/ConsultaRapidaComponent/DoctorGallery';
-import StaticTimePickerDemo from '../../components/UIElements/StaticTimePickerDemo';
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
 import PacienteData from '../../components/ConsultaRapidaComponent/PacienteData';
 import FormPayment from '../../components/ConsultaRapidaComponent/FormPayment';
 import MessageComponent from "../../components/ConsultaRapidaComponent/MessageComponent";
+import TimeAvaiable from "../../components/AgendarCita/TimeAvaiable";
 
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 
@@ -92,7 +92,7 @@ export default function AgendarCita(){
                 <DoctorGallery/>
             </span>
             <CustomDay/>
-            <StaticTimePickerDemo/>
+            <TimeAvaiable/>
         </>}
         {step === 1 && <>
             <DoctorSelected/>

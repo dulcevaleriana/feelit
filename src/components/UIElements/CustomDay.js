@@ -10,9 +10,12 @@ export default function CustomDay() {
   const [date, setDate] = React.useState(dayjs(actualDay));
 
   return <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <CalendarPicker
-      date={date}
-      onChange={(newDate) => setDate(newDate)}
-    />
+    <div>
+      <h5>Selecciona una fecha</h5>
+      <CalendarPicker
+        date={date}
+        onChange={(newDate) => setDate(newDate)}
+      />
+    </div>
   </LocalizationProvider>
 }

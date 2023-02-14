@@ -4,7 +4,6 @@ import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import PacienteData from "../../components/ConsultaRapidaComponent/PacienteData";
 import FormPayment from "../../components/ConsultaRapidaComponent/FormPayment";
 import CustomDay from "../../components/UIElements/CustomDay";
-import FormUserDataAgendarCita from "../../components/AgendarCita/FormUserDataAgendarCita";
 import TimeAvaiable from "../../components/AgendarCita/TimeAvaiable";
 
 const DATA_TEMPORAL = [
@@ -56,7 +55,6 @@ export default function PopUpAgendarCita(props){
             { step === 0 ? <>
                 <CustomDay/>
                 <TimeAvaiable/>
-                <FormUserDataAgendarCita/>
             </> :
             <>
                 <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
