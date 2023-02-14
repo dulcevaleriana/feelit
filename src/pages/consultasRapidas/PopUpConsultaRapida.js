@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import NestedModal from "../../components/UIElements/NestedModal";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import StaticTimePickerDemo from "../../components/UIElements/StaticTimePickerDemo";
@@ -10,40 +10,29 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import Input from "../../components/UIElements/InputComponent";
 import ModalComponent from "../../components/UIElements/ModalComponent";
 
-const DATA_TEMPORAL = [
-    {
-        title:'Nombre',
-        data:'Juana Perez'
-    },
-    {
-        title:'Teléfono',
-        data:'000-000-0000'
-    },
-    {
-        title:'Correo',
-        data:'juana.perez@gmail.com'
-    },
-    {
-        title:'Tipo de cita',
-        data:'Terapia inicial'
-    },
-    {
-        title:'Este es mi mensaje',
-        data:'Hola solo quiero decir que...'
-    }
-]
-
 export default function PopUpConsultaRapida(props){
     const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     let [step, setStep] = useState(0);
     const [time, setTime] = useState("");
+    const [pacienteData, setPacienteData] = useState(null);
+
+    useEffect(()=>{
+        const getPacienteDataFunction = async () => {
+            try{
+                const response = await sendRequest(process.env.REACT_APP_ + 'paciente/' + auth.userId)
+                setPacienteData(response)
+            } catch(err){}
+        }
+        getPacienteDataFunction()
+    },[auth.userId,sendRequest])
+
+    console.log({pacienteData})
 
     const closeModal = () => {
         props.handleClose();
         setStep(0);
     }
-
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     const [formState, inputHandler] = useForm(
         {
@@ -122,7 +111,15 @@ export default function PopUpConsultaRapida(props){
                     />
                 </> :
                 <>
-                    <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
+                    <PacienteData
+                        message={formState.inputs.messagePaciente.value}
+                        pacienteData={{
+                            cedula: pacienteData?.getPacienteById?.cedula,
+                            email: pacienteData?.getPacienteById?.email,
+                            telefono: pacienteData?.getPacienteById?.telefono,
+                            name: pacienteData?.getPacienteById?.name
+                        }}
+                    />
                     <FormPayment/>
                     {isLoading && <h1>Loading...</h1>}
                 </>}
