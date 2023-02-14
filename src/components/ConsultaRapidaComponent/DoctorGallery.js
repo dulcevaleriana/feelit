@@ -8,6 +8,7 @@ export default function DoctorGallery(props) {
     const [counterSelect, setCounterSelect] = useState(0);
     const { sendRequest } = useHttpClient();
     const [getList, setGetList] = useState(null);
+    const {actualDay} = GetTodayDate();
 
     useEffect(()=>{
         const getUserFunction = async () => {
@@ -83,6 +84,6 @@ export default function DoctorGallery(props) {
                 size="lg"
             />}
         </div>
-        <h6>Hoy es: <GetTodayDate/></h6>
+        <h6>Hoy es: {actualDay}</h6>
     </div>
 }

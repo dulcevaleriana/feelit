@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import NestedModal from "../../components/UIElements/NestedModal";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
-import StaticTimePickerDemo from "../../components/UIElements/StaticTimePickerDemo";
 import PacienteData from "../../components/ConsultaRapidaComponent/PacienteData";
 import FormPayment from "../../components/ConsultaRapidaComponent/FormPayment";
 import CustomDay from "../../components/UIElements/CustomDay";
 import FormUserDataAgendarCita from "../../components/AgendarCita/FormUserDataAgendarCita";
+import TimeAvaiable from "../../components/AgendarCita/TimeAvaiable";
 
 const DATA_TEMPORAL = [
     {
@@ -55,7 +55,7 @@ export default function PopUpAgendarCita(props){
         body={<form className={step === 1 ? "class-gridChange" : ""}>
             { step === 0 ? <>
                 <CustomDay/>
-                <StaticTimePickerDemo/>
+                <TimeAvaiable/>
                 <FormUserDataAgendarCita/>
             </> :
             <>
