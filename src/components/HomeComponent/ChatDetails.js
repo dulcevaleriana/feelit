@@ -68,14 +68,16 @@ export default function ChatDetails(props){
                 closeNow={enviarResultados}
                 disabled={props.getChatData.enviarExamenesPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
+            {/* Working */}
             <PopUpAgendarCita
                 handleClose={()=>setAgendarCita(!agendarCita)}
                 buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice ? props.getChatData.agendarCitaPrice : getDoctorPrices?.getDoctorById?.agendarCitaPrice})`}
                 variantName="contained"
                 closeNow={agendarCita}
+                idDoctor={props.getChatData.idDoctor}
+                doctorPrice={getDoctorPrices.getDoctorById?.consultaRapidaPrice}
                 disabled={props.getChatData.agendarCitaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
-            {/* Working */}
             <PopUpConsultaRapida
                 handleClose={()=>setConsultaRapidaBoolean(!consultaRapidaBoolean)}
                 buttonName={`Consulta rapida (RD$ ${props.getChatData.consultaRapidaPrice ? props.getChatData.consultaRapidaPrice : getDoctorPrices?.getDoctorById?.consultaRapidaPrice})`}

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NestedModal from "../../components/UIElements/NestedModal";
 import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import PacienteData from "../../components/ConsultaRapidaComponent/PacienteData";
 import FormPayment from "../../components/ConsultaRapidaComponent/FormPayment";
 import CustomDay from "../../components/UIElements/CustomDay";
 import TimeAvaiable from "../../components/AgendarCita/TimeAvaiable";
+import { useForm } from "../../shared/hooks/form-hook";
+import { AuthContext } from "../../shared/context/auth-context";
+import Input from "../../components/UIElements/InputComponent";
 
 const DATA_TEMPORAL = [
     {
@@ -34,12 +37,43 @@ const DATA_TEMPORAL = [
 ]
 
 export default function PopUpAgendarCita(props){
+    const auth = useContext(AuthContext);
     let [step, setStep] = useState(0);
 
     const closeModal = () => {
         props.handleClose();
         setStep(0);
     }
+
+    const [formState, inputHandler] = useForm(
+        {
+            idPaciente: {
+                value: auth.userId,
+                isValid: true
+            },
+            idDoctor: {
+                value: props.idDoctor,
+                isValid: true
+            },
+            date: {
+                value: '',
+                isValid: true
+            },
+            time: {
+                value: '',
+                isValid: true
+            },
+            messagePaciente: {
+                value: '',
+                isValid: false
+            },
+            doctorPrice: {
+                value: props.doctorPrice,
+                isValid: true
+            }
+        },
+        false
+    );
 
     return <NestedModal
         className="class-PopUpAgendarCita"
@@ -55,6 +89,11 @@ export default function PopUpAgendarCita(props){
             { step === 0 ? <>
                 <CustomDay/>
                 <TimeAvaiable/>
+                <Input
+                    id="messagePaciente"
+                    validators={[]}
+                    onInput={inputHandler}
+                />
             </> :
             <>
                 <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
