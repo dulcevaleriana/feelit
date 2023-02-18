@@ -33,6 +33,8 @@ export default function ChatDetails(props){
         // eslint-disable-next-line
     },[props.getChatData.idDoctor])
 
+    console.log({getChatData:props.getChatData})
+
     return <div>
         <Typography gutterBottom variant="h6" component="div">
             Solicitar servicios
@@ -80,6 +82,7 @@ export default function ChatDetails(props){
                 variantName="contained"
                 closeNow={agendarCita}
                 idDoctor={props.getChatData.idDoctor || props.getChatData.id}
+                horarioDoctor={props.getChatData.horario}
                 doctorPrice={getDoctorPrices.getDoctorById?.agendarCitaPrice}
                 disabled={props.getChatData.agendarCitaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />

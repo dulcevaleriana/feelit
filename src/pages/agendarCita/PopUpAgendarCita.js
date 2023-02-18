@@ -75,7 +75,7 @@ export default function PopUpAgendarCita(props){
         false
     );
 
-    console.log({idDoctor:props.idDoctor})
+    console.log({horarioDoctor:props.horarioDoctor})
 
     return <NestedModal
         className="class-PopUpAgendarCita"
@@ -89,7 +89,7 @@ export default function PopUpAgendarCita(props){
         cancelButton={false}
         body={<form className={step === 1 ? "class-gridChange" : ""}>
             { step === 0 ? <>
-                <CustomDay/>
+                <CustomDay horarioDoctor={props.horarioDoctor}/>
                 <TimeAvaiable/>
                 <Input
                     id="messagePaciente"
