@@ -7,7 +7,6 @@ import ModalComponent from "../../components/UIElements/ModalComponent";
 export default function EndServices(props){
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const getDataServices = JSON.parse(localStorage.getItem('servicesData'));
-    console.log({getDataServices})
 
     const deleteServices = async () => {
         if(getDataServices.type === "ConsultaRapida"){

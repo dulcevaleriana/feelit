@@ -32,7 +32,6 @@ export default function ChatDetails(props){
         getDoctorPriceFunction()
         // eslint-disable-next-line
     },[props.getChatData.idDoctor])
-    console.log({getChatData:props.getChatData})
 
     return <div>
         <Typography gutterBottom variant="h6" component="div">

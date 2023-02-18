@@ -106,7 +106,6 @@ export default function ConsultaRapida(){
         event.preventDefault();
 
         const getPaciente = JSON.parse(localStorage.getItem("savePacienteCreated"))
-        console.log({getPaciente:getPaciente.pacienteId})
 
         try{
             await sendRequest(
@@ -133,10 +132,6 @@ export default function ConsultaRapida(){
         auth.login(getPaciente.pacienteId, getPaciente.token, getPaciente.rol);
         History.push('/')
     }
-
-    console.log({getDoctor})
-    console.log({time})
-    console.log({formState})
 
     return <>
     <ModalComponent

@@ -47,8 +47,6 @@ export default function DoctorGallery(props) {
 
     const filterDoctor = props.functionFilter ? getList?.getAllDoctor?.filter((data)=>props.functionFilter(data)) : getList?.getAllDoctor;
 
-    console.log({filterDoctor})
-
     return <div className="class-DoctorGallery">
         <h5>Elige tu medico de preferencia, fecha y hora de la cita</h5>
         <div>

@@ -86,8 +86,6 @@ export default function ChatComponent(props){
         // eslint-disable-next-line
     },[props.getChatData.idPaciente])
 
-    console.log({getChatData:props.getChatData})
-
     return <div className="class-ChatComponent">
         <div>
             <BasicButtons

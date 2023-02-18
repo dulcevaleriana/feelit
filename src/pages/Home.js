@@ -30,7 +30,6 @@ export default function Home() {
     },[sendRequest, auth.rol, auth.userId, auth.isLoggedIn])
 
     const proofFunction = (data) => {
-        console.log({data})
         localStorage.setItem('servicesData', JSON.stringify({
             id:data._id,
             type: data.docUpload ? "EnviarResultados" : data.date ? "AgendarCita" : "ConsultaRapida"
@@ -43,8 +42,6 @@ export default function Home() {
         localStorage.removeItem('servicesData')
         setActiveChat(false)
     }
-
-    console.log({getSecondList})
 
     return <div className={auth.isLoggedIn ? "class-Home" : "class-Home-logOut"}>
         {auth.isLoggedIn && <ListChat onClick={(data)=>proofFunction(data)} getSecondList={getSecondList}/>}

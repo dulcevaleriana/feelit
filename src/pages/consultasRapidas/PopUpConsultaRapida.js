@@ -27,8 +27,6 @@ export default function PopUpConsultaRapida(props){
         getPacienteDataFunction()
     },[auth.userId,sendRequest])
 
-    console.log({pacienteData})
-
     const closeModal = () => {
         props.handleClose();
         setStep(0);
@@ -59,8 +57,6 @@ export default function PopUpConsultaRapida(props){
         },
         false
     );
-
-    console.log({idDoctor:props.idDoctor})
 
     const CreateConsultaRapidaFunction = async event => {
         event.preventDefault();
