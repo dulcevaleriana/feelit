@@ -58,10 +58,11 @@ export default function CitasPendientes(props){
     },[sendRequest])
 
     const filterDoctor = getList?.getAllDoctor?.filter(data => {
-        return props.getSecondList?.getAllServices?.some(info => info.idDoctor !== data.id)
+        return !props.getSecondList?.getAllServices?.some(info => info.idDoctor === data._id)
     })
 
     console.log({getSecondList:props.getSecondList})
+    console.log({getList})
     console.log({filterDoctor})
 
     return !(auth.isLoggedIn) ? <div>
