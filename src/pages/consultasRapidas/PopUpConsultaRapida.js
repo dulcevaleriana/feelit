@@ -60,6 +60,8 @@ export default function PopUpConsultaRapida(props){
         false
     );
 
+    console.log({idDoctor:props.idDoctor})
+
     const CreateConsultaRapidaFunction = async event => {
         event.preventDefault();
 

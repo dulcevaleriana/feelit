@@ -20,7 +20,13 @@ export default function ChatDetails(props){
 
     useEffect(()=>{
         const getDoctorPriceFunction = async () => {
-            const response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ props.getChatData.idDoctor);
+            let response;
+            if(props.getChatData.idDoctor){
+                response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ props.getChatData.idDoctor);
+            }
+            if(props.getChatData.id){
+                response = await sendRequest(process.env.REACT_APP_ + 'doctor/'+ props.getChatData.id);
+            }
             setGetDoctorPrices(response)
         }
         getDoctorPriceFunction()
@@ -74,8 +80,8 @@ export default function ChatDetails(props){
                 buttonName={`Cita Consulta (RD$ ${props.getChatData.agendarCitaPrice ? props.getChatData.agendarCitaPrice : getDoctorPrices?.getDoctorById?.agendarCitaPrice})`}
                 variantName="contained"
                 closeNow={agendarCita}
-                idDoctor={props.getChatData.idDoctor}
-                doctorPrice={getDoctorPrices.getDoctorById?.consultaRapidaPrice}
+                idDoctor={props.getChatData.idDoctor || props.getChatData.id}
+                doctorPrice={getDoctorPrices.getDoctorById?.agendarCitaPrice}
                 disabled={props.getChatData.agendarCitaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
             <PopUpConsultaRapida
@@ -84,7 +90,7 @@ export default function ChatDetails(props){
                 variantName="contained"
                 closeNow={consultaRapidaBoolean}
                 disabled={ props.getChatData.consultaRapidaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
-                idDoctor={props.getChatData.idDoctor}
+                idDoctor={props.getChatData.idDoctor || props.getChatData.id}
                 doctorPrice={getDoctorPrices.getDoctorById?.consultaRapidaPrice}
             />
         </>

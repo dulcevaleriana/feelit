@@ -31,7 +31,7 @@ export default function ListChat(props){
             name={getResponse?.getDoctorById?.name}
             specialty={getResponse?.getDoctorById?.specialty}
             isLoggedIn={auth.isLoggedIn}
-            messagePaciente={props.data.messagePaciente}
+            messagePaciente={"000" + props.data.messagePaciente}
             onClick={props.onClick}
         /> : <ActionAreaCard
             key={props.key}

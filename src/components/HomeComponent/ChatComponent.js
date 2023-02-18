@@ -16,6 +16,7 @@ export default function ChatComponent(props){
     const auth = useContext(AuthContext)
     const { sendRequest } = useHttpClient();
     const [getUser, setGetUser] = useState(null)
+
     let chatCondition = typeof props.getChatData.status === "string" ? props.getChatData.paymentStatus === false || props.getChatData.status === "Completado" : true
 
     const [formState, inputHandler] = useForm(

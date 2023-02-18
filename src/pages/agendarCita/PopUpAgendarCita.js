@@ -75,6 +75,8 @@ export default function PopUpAgendarCita(props){
         false
     );
 
+    console.log({idDoctor:props.idDoctor})
+
     return <NestedModal
         className="class-PopUpAgendarCita"
         withButton={true}
