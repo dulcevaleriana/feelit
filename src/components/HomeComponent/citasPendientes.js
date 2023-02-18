@@ -61,10 +61,6 @@ export default function CitasPendientes(props){
         return !props.getSecondList?.getAllServices?.some(info => info.idDoctor === data._id)
     })
 
-    console.log({getSecondList:props.getSecondList})
-    console.log({getList})
-    console.log({filterDoctor})
-
     return !(auth.isLoggedIn) ? <div>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Chatea con nuevos doctores

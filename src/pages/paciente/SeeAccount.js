@@ -102,6 +102,8 @@ export default function SeeAccount(){
         }
     }
 
+    console.log({getUser})
+
     return(
         <div className='class-SeeAccount'>
             <div>
@@ -159,16 +161,35 @@ export default function SeeAccount(){
                         <h5>Correo</h5>
                         <label>{getUser && getUser.email ? getUser.email : "N/A"}</label>
                     </div>
-                    {auth.rol === "638f3dc51af87455b52cf7d4" ? <div>
-                        <h5>Horario laboral</h5>
+                    {auth.rol === "638f3dc51af87455b52cf7d4" ? <>
                         <div>
-                            {getUser?.horario.map(data => <div>
-                                <h6>{data.dia}</h6>
-                                <label>Entrada: {data.entrada}</label>
-                                <label>Salida: {data.salida}</label>
-                            </div>)}
+                            <h5>Mis Precios</h5>
+                            <div>
+                                <div>
+                                    <h6>Consulta Rapida:</h6>
+                                    <label>{getUser && getUser.consultaRapidaPrice ? getUser.consultaRapidaPrice : "N/A"}</label>
+                                </div>
+                                <div>
+                                    <h6>Agendar Cita:</h6>
+                                    <label>{getUser && getUser.agendarCitaPrice ? getUser.agendarCitaPrice : "N/A"}</label>
+                                </div>
+                                <div>
+                                    <h6>Enviar Resultados:</h6>
+                                    <label>{getUser && getUser.enviarExamenesPrice ? getUser.enviarExamenesPrice : "N/A"}</label>
+                                </div>
+                            </div>
                         </div>
-                    </div> : null}
+                        <div>
+                            <h5>Horario laboral</h5>
+                            <div>
+                                {getUser?.horario.map(data => <div>
+                                    <h6>{data.dia}</h6>
+                                    <label>Entrada: {data.entrada}</label>
+                                    <label>Salida: {data.salida}</label>
+                                </div>)}
+                            </div>
+                        </div>
+                    </> : null}
                 </div>
             </div>
             <div>
