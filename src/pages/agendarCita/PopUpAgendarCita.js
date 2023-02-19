@@ -8,6 +8,9 @@ import TimeAvaiable from "../../components/AgendarCita/TimeAvaiable";
 import { useForm } from "../../shared/hooks/form-hook";
 import { AuthContext } from "../../shared/context/auth-context";
 import Input from "../../components/UIElements/InputComponent";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import ModalComponent from "../../components/UIElements/ModalComponent";
+import "../../scss/PopUpAgendarCita.scss";
 
 const DATA_TEMPORAL = [
     {
@@ -38,8 +41,11 @@ const DATA_TEMPORAL = [
 
 export default function PopUpAgendarCita(props){
     const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
     let [step, setStep] = useState(0);
-    let [getDateDay, setGetDateDay] = useState(0);
+    let [getDateDay, setGetDateDay] = useState('');
+    let [getDateTime, setGetDateTime] = useState('');
 
     const closeModal = () => {
         props.handleClose();
@@ -61,7 +67,7 @@ export default function PopUpAgendarCita(props){
                 isValid: true
             },
             time: {
-                value: '',
+                value: getDateTime,
                 isValid: true
             },
             messagePaciente: {
@@ -76,7 +82,41 @@ export default function PopUpAgendarCita(props){
         false
     );
 
-    return <NestedModal
+    const createAgendarCita = async event => {
+        event.preventDefault();
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + "agendar-cita/createDate",
+                'POST',
+                JSON.stringify({
+                  idPaciente: formState.inputs.idPaciente.value,
+                  idDoctor: formState.inputs.idDoctor.value,
+                  time: getDateTime,
+                  date: getDateDay,
+                  messagePaciente: formState.inputs.messagePaciente.value,
+                  doctorPrice: formState.inputs.doctorPrice.value
+                }),
+                {
+                  'Content-Type': 'application/json'
+                },
+            )
+            closeModal()
+        }catch(err){
+            alert(err)
+        }
+    }
+
+    console.log({formState,getDateDay,getDateTime})
+
+    return <>
+    <ModalComponent
+        headerTitle='You can not access for now'
+        show={error}
+        onCancel={clearError}
+    >
+        {error}
+    </ModalComponent>
+    <NestedModal
         className="class-PopUpAgendarCita"
         withButton={true}
         closeNow={props.closeNow}
@@ -94,6 +134,7 @@ export default function PopUpAgendarCita(props){
                 />
                 <TimeAvaiable
                     horarioDoctor={props.horarioDoctor}
+                    getTime={(time)=>setGetDateTime(time)}
                 />
                 <Input
                     id="messagePaciente"
@@ -104,6 +145,7 @@ export default function PopUpAgendarCita(props){
             <>
                 <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
                 <FormPayment/>
+                {isLoading && <h1>Loading...</h1>}
             </>}
         </form>}
         buttonOptions={<>
@@ -113,10 +155,10 @@ export default function PopUpAgendarCita(props){
                 buttonName={step === 0 ? "Cancelar" : "Volver"}
             />
             <BasicButtons
-                onClick={step === 1 ? closeModal : ()=>setStep(step + 1)}
+                onClick={step === 1 ? createAgendarCita : ()=>setStep(step + 1)}
                 variantName="contained"
                 buttonName={step === 1 ? "Solicitar" : "Siguiente"}
             />
         </>}
-    />
+    /> </>
 }

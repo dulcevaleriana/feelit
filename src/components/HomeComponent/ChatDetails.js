@@ -83,7 +83,7 @@ export default function ChatDetails(props){
                 closeNow={agendarCita}
                 idDoctor={props.getChatData.idDoctor || props.getChatData.id}
                 horarioDoctor={props.getChatData.horario}
-                doctorPrice={getDoctorPrices.getDoctorById?.agendarCitaPrice}
+                doctorPrice={getDoctorPrices.getDoctorById?.agendarCitaPrice || props.getChatData.agendarCitaPrice}
                 disabled={props.getChatData.agendarCitaPrice === 0 || props.getChatData?.status === "Pendiente" || props.getChatData?.status === "Aprobado"}
             />
             <PopUpConsultaRapida

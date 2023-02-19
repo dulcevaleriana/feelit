@@ -3,6 +3,7 @@ import BasicButtons from "../UIElements/BasicButtons-MUI";
 
 export default function TimeAvaiable(props){
     const [formatTime, setFormatTime] = useState([])
+    const [selectedTime, setSelectedTime] = useState()
 
     useEffect(()=>{
         const formatTime = () => {
@@ -37,14 +38,12 @@ export default function TimeAvaiable(props){
         formatTime()
     },[])
 
-    console.log({formatTime})
-
     return <div className="class-TimeAvaiable">
         <h5>Selecciona un Tiempos Disponibles</h5>
         <div>
-            {formatTime.filter(day => day.dia === "Lun").map(data => data.timesBetween.map(index => <BasicButtons
-                onClick={()=>{}}
-                variantName="outlined"
+            {formatTime.filter(day => day.dia === "Lun").map(data => data.timesBetween.map((index,key) => <BasicButtons
+                onClick={()=>{props.getTime(index.time);setSelectedTime(key)}}
+                variantName={selectedTime === key ? "contained" : "outlined"}
                 buttonName={index.time}
             />))}
         </div>

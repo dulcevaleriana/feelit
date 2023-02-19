@@ -76,9 +76,8 @@ export default function PopUpConsultaRapida(props){
                 'Content-Type': 'application/json'
               },
             )
+            closeModal()
         } catch(err){alert(err)}
-
-        closeModal()
     }
 
     return <>
@@ -132,6 +131,7 @@ export default function PopUpConsultaRapida(props){
                     onClick={step === 1 ? CreateConsultaRapidaFunction : ()=>setStep(step + 1)}
                     variantName="contained"
                     buttonName={step === 1 ? "Solicitar" : "Siguiente"}
+                    disabled={time === "" || formState.inputs.messagePaciente.value === ""}
                 />
             </>}
         />
