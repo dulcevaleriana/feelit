@@ -36,7 +36,7 @@ export default function TimeAvaiable(props){
             setFormatTime(newTimeFormatArray)
         }
         formatTime()
-    },[])
+    },[props.horarioDoctor])
 
     return <div className="class-TimeAvaiable">
         <h5>Selecciona un Tiempos Disponibles</h5>
