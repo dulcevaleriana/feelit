@@ -1,0 +1,12 @@
+.class-TimeAvaiable {
+    display: grid;
+    gap: 20px;
+
+    > div:last-child {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 20px;
+        height: fit-content;
+        width: fit-content;
+    }
+}
