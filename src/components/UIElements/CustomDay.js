@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,30 +8,35 @@ import GetTodayDate from "../../shared/util/getTodayDate";
 
 export default function CustomDay(props) {
   const {actualDay} = GetTodayDate();
-  const [date, setDate] = React.useState(dayjs(actualDay));
+  const [date, setDate] = useState(dayjs(actualDay));
+  const [formatDoctorDate, setFormatDoctorDate] = useState([]);
 
   useEffect(()=>{
-    const filterDayNotAvaiable = (day) => {
-      console.log({horarioDoctor:props.horarioDoctor})
-
+    const filterDayNotAvaiable = () => {
       let newArrayHorario = props.horarioDoctor.map(data => {
+        let getNumberDay =
+          data.dia === "Lun" ? 1 :
+          data.dia === "Mar" ? 2 :
+          data.dia === "Mir" ? 3 :
+          data.dia === "Jue" ? 4 :
+          data.dia === "Vie" ? 5 :
+          data.dia === "Sab" ? 6 :
+          data.dia === "Dom" ? 7 : null;
+
         return {
-          // entrada: new Date(Date.parse(JSON.parse(data.entrada))),
-          // salida: new Date(Date.parse(JSON.parse(data.salida)))
-          entrada: Date.parse(JSON.parse(data.entrada)),
-          salida: Date.parse(JSON.parse(data.salida))
+          dia: data.dia,
+          number: getNumberDay
         }
       })
-      console.log({newArrayHorario})
-      console.log({day})
-      return true
+      setFormatDoctorDate(newArrayHorario)
     }
     filterDayNotAvaiable()
   },[])
 
-  const isWeekend = (date) => {
+  const filteredDates = (date) => {
     const day = date.day();
-    return day === 0 || day === 6;
+    const isDisabled = !formatDoctorDate.some((data) => data.number === day);
+    return isDisabled;
   };
 
   return (
@@ -40,7 +45,7 @@ export default function CustomDay(props) {
         displayStaticWrapperAs="desktop"
         openTo="day"
         value={date}
-        shouldDisableDate={isWeekend}
+        shouldDisableDate={filteredDates}
         onChange={(newValue) => setDate(newValue)}
         renderInput={(params) => <TextField {...params} />}
         disablePast={true}
