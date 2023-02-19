@@ -13,16 +13,29 @@ export default function ChatMessageServices(props){
 
     const acceptConsultaRapidaServices = async (id) => {
         try{
-            await sendRequest(
-                process.env.REACT_APP_ + `consultas-rapidas/active/${id}`,
-                'PATCH',
-                JSON.stringify({
-                    messageDoctor: "Consulta rapida aprobada, empecemos a chatear",
-                }),
-                {
-                    'Content-Type': 'application/json'
-                },
-            )
+            if(props.data.date){
+                await sendRequest(
+                    process.env.REACT_APP_ + `agendar-cita/active/${id}`,
+                    'PATCH',
+                    JSON.stringify({
+                        messageDoctor: "Cita aprobada, empecemos a chatear",
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                )
+            } else {
+                await sendRequest(
+                    process.env.REACT_APP_ + `consultas-rapidas/active/${id}`,
+                    'PATCH',
+                    JSON.stringify({
+                        messageDoctor: "Consulta rapida aprobada, empecemos a chatear",
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                )
+            }
         } catch(err){
             alert({err})
         }
@@ -30,16 +43,29 @@ export default function ChatMessageServices(props){
 
     const declineConsultaRapidaServices = async (id) => {
         try{
-            await sendRequest(
-                process.env.REACT_APP_ + `consultas-rapidas/desactive/${id}`,
-                'PATCH',
-                JSON.stringify({
-                    messageDoctor: "Consulta rapida rechazada, para mas informacion contactar a info@feelit.com",
-                }),
-                {
-                    'Content-Type': 'application/json'
-                },
-            )
+            if(props.data.date){
+                await sendRequest(
+                    process.env.REACT_APP_ + `agendar-cita/desactive/${id}`,
+                    'PATCH',
+                    JSON.stringify({
+                        messageDoctor: "Cita rechazada, para mas informacion contactar a info@feelit.com",
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                )
+            } else {
+                await sendRequest(
+                    process.env.REACT_APP_ + `consultas-rapidas/desactive/${id}`,
+                    'PATCH',
+                    JSON.stringify({
+                        messageDoctor: "Consulta rapida rechazada, para mas informacion contactar a info@feelit.com",
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    },
+                )
+            }
         } catch(err){
             alert({err})
         }
