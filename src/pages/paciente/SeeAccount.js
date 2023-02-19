@@ -102,7 +102,6 @@ export default function SeeAccount(){
         }
     }
 
-    console.log({getUser})
 
     return(
         <div className='class-SeeAccount'>

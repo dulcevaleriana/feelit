@@ -24,7 +24,7 @@ export default function ChatMessageServices(props){
                 },
             )
         } catch(err){
-            console.log({err})
+            alert({err})
         }
     }
 
@@ -41,7 +41,7 @@ export default function ChatMessageServices(props){
                 },
             )
         } catch(err){
-            console.log({err})
+            alert({err})
         }
     }
 
@@ -212,6 +212,8 @@ export default function ChatMessageServices(props){
             : null}
         </>}
     </div>
+
+    console.log({data:props.data})
 
     return element;
 }

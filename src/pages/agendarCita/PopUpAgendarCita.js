@@ -91,8 +91,6 @@ export default function PopUpAgendarCita(props){
         }
     }
 
-    console.log({formState,getDateDay,getDateTime})
-
     return <>
     <ModalComponent
         headerTitle='You can not access for now'

@@ -29,8 +29,6 @@ export default function Home() {
         // eslint-disable-next-line
     },[sendRequest, auth.rol, auth.userId, auth.isLoggedIn])
 
-    console.log({getSecondList})
-
     const proofFunction = (data) => {
         localStorage.setItem('servicesData', JSON.stringify({
             id:data._id,
