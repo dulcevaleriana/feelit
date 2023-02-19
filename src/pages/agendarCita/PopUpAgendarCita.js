@@ -39,6 +39,7 @@ const DATA_TEMPORAL = [
 export default function PopUpAgendarCita(props){
     const auth = useContext(AuthContext);
     let [step, setStep] = useState(0);
+    let [getDateDay, setGetDateDay] = useState(0);
 
     const closeModal = () => {
         props.handleClose();
@@ -56,7 +57,7 @@ export default function PopUpAgendarCita(props){
                 isValid: true
             },
             date: {
-                value: '',
+                value: getDateDay,
                 isValid: true
             },
             time: {
@@ -75,7 +76,7 @@ export default function PopUpAgendarCita(props){
         false
     );
 
-    console.log({horarioDoctor:props.horarioDoctor})
+    console.log({getDateDay})
 
     return <NestedModal
         className="class-PopUpAgendarCita"
@@ -89,7 +90,10 @@ export default function PopUpAgendarCita(props){
         cancelButton={false}
         body={<form className={step === 1 ? "class-gridChange" : ""}>
             { step === 0 ? <>
-                <CustomDay horarioDoctor={props.horarioDoctor}/>
+                <CustomDay
+                    getDate={(day)=>setGetDateDay(day)}
+                    horarioDoctor={props.horarioDoctor}
+                />
                 <TimeAvaiable/>
                 <Input
                     id="messagePaciente"

@@ -39,6 +39,11 @@ export default function CustomDay(props) {
     return isDisabled;
   };
 
+  const sendDateSelected = (newValue) => {
+    setDate(newValue)
+    props.getDate(JSON.stringify(newValue))
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <StaticDatePicker
@@ -46,7 +51,7 @@ export default function CustomDay(props) {
         openTo="day"
         value={date}
         shouldDisableDate={filteredDates}
-        onChange={(newValue) => setDate(newValue)}
+        onChange={(newValue) => sendDateSelected(newValue)}
         renderInput={(params) => <TextField {...params} />}
         disablePast={true}
       />
