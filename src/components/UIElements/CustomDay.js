@@ -31,7 +31,7 @@ export default function CustomDay(props) {
       setFormatDoctorDate(newArrayHorario)
     }
     filterDayNotAvaiable()
-  },[])
+  },[props.horarioDoctor])
 
   const filteredDates = (date) => {
     const day = date.day();

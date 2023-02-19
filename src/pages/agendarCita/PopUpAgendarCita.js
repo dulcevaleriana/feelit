@@ -76,8 +76,6 @@ export default function PopUpAgendarCita(props){
         false
     );
 
-    console.log({getDateDay})
-
     return <NestedModal
         className="class-PopUpAgendarCita"
         withButton={true}
@@ -94,7 +92,9 @@ export default function PopUpAgendarCita(props){
                     getDate={(day)=>setGetDateDay(day)}
                     horarioDoctor={props.horarioDoctor}
                 />
-                <TimeAvaiable/>
+                <TimeAvaiable
+                    horarioDoctor={props.horarioDoctor}
+                />
                 <Input
                     id="messagePaciente"
                     validators={[]}
