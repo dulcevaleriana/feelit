@@ -8,7 +8,6 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 export default function ChatMessageServices(props){
     const { sendRequest } = useHttpClient();
     const auth = useContext(AuthContext);
-    // const [getagendarCitaService, setGetagendarCitaService] = useState(null)
     const [getconsultaRapidaService, setGetconsultaRapidaService] = useState(null)
     // const [getenviarExamenesService, setGetenviarExamenesService] = useState(null)
 
@@ -184,6 +183,7 @@ export default function ChatMessageServices(props){
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {!(props.data.date) ? "Consulta rapida" : "agendar cita"}<br/>
+                    {props.data.date && <>{props.data.date} <br/></>}
                     {props.data.time} <br/>
                     RD${props.data.doctorPrice} || Estado: {props.data.status} / {props.data.paymentStatus === true ? "pagado" : "no pagado"}
                 </Typography>
@@ -193,7 +193,7 @@ export default function ChatMessageServices(props){
                 </Typography>
             </div>
             {auth.rol === "638f3ddd1af87455b52cf7d7" ? <Typography variant="body2" color="text.secondary">
-                status
+                {props.data.status ? props.data.status : "status"}
             </Typography>
             : auth.rol === "638f3dc51af87455b52cf7d4" ? <div className="class-buttonOptions">
                 {props.data.status === "Pendiente" ? <>

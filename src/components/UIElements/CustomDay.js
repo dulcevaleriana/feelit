@@ -40,8 +40,9 @@ export default function CustomDay(props) {
   };
 
   const sendDateSelected = (newValue) => {
+    let sendDate = new Date(newValue).toLocaleDateString()
     setDate(newValue)
-    props.getDate(JSON.stringify(newValue))
+    props.getDate(sendDate)
   }
 
   return (
