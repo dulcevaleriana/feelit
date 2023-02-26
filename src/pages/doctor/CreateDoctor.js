@@ -97,7 +97,9 @@ export default function CreatePaciente() {
               },
             )
             auth.login(responseData.doctorId, responseData.token, responseData.rol);
-        } catch(err){}
+        } catch(err){
+            alert(err)
+        }
         History.push('/')
     }
 

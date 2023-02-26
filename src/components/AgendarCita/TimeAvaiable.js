@@ -5,13 +5,15 @@ export default function TimeAvaiable(props){
     const [formatTime, setFormatTime] = useState([])
     const [selectedTime, setSelectedTime] = useState()
 
+    console.log({horarioDoctor:props.horarioDoctor})
+
     useEffect(()=>{
         const formatTime = () => {
             let newTimeFormatArray = props.horarioDoctor.map(data => {
                 let getEntrada = new Date(Date.parse(JSON.parse(data.entrada)))
                 let getSalida = new Date(Date.parse(JSON.parse(data.salida)))
-                let newFormatEntrada = `${getEntrada.getHours()}:${getEntrada.getMinutes()}`
-                let newFormatSalida = `${getSalida.getHours()}:${getSalida.getMinutes()}`
+                let newFormatEntrada = `${getEntrada.getHours().toString().length === 1 ? `0${getEntrada.getHours()}` : getEntrada.getHours()}:${getEntrada.getMinutes().toString().length === 1 ? `${getEntrada.getMinutes()}0` : getEntrada.getMinutes()}`
+                let newFormatSalida = `${getSalida.getHours().toString().length === 1 ? `0${getSalida.getHours()}` : getSalida.getHours()}:${getSalida.getMinutes().toString().length === 1 ? `${getSalida.getMinutes()}0` : getSalida.getMinutes()}`
                 const times = [];
 
                 function addMinutes(time, minutes) {
@@ -37,6 +39,8 @@ export default function TimeAvaiable(props){
         }
         formatTime()
     },[props.horarioDoctor])
+
+    console.log({formatTime})
 
     return <div className="class-TimeAvaiable">
         <h5>Selecciona un Tiempos Disponibles</h5>
