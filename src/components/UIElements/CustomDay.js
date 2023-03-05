@@ -43,6 +43,7 @@ export default function CustomDay(props) {
     let sendDate = new Date(newValue).toLocaleDateString()
     setDate(newValue)
     props.getDate(sendDate)
+    props.getDayNumber(newValue?.$W)
   }
 
   return (

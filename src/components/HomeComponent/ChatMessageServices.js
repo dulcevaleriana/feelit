@@ -239,7 +239,5 @@ export default function ChatMessageServices(props){
         </>}
     </div>
 
-    console.log({data:props.data})
-
     return element;
 }

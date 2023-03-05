@@ -4,8 +4,23 @@ import BasicButtons from "../UIElements/BasicButtons-MUI";
 export default function TimeAvaiable(props){
     const [formatTime, setFormatTime] = useState([])
     const [selectedTime, setSelectedTime] = useState()
+    const [getDay, setgetDay] = useState("")
 
-    console.log({horarioDoctor:props.horarioDoctor})
+    useEffect(()=>{
+        const geyDayFunction = () => {
+            let setNumberDay =
+                props.getDayNumber === 1 ? "Lun" :
+                props.getDayNumber === 2 ? "Mar" :
+                props.getDayNumber === 3 ? "Mir" :
+                props.getDayNumber === 4 ? "Jue" :
+                props.getDayNumber === 5 ? "Vie" :
+                props.getDayNumber === 6 ? "Sab" :
+                props.getDayNumber === 7 ? "Dom" : null;
+            setgetDay(setNumberDay)
+            console.log({getDay})
+        }
+        geyDayFunction()
+    },[props.getDayNumber,getDay])
 
     useEffect(()=>{
         const formatTime = () => {
@@ -40,12 +55,10 @@ export default function TimeAvaiable(props){
         formatTime()
     },[props.horarioDoctor])
 
-    console.log({formatTime})
-
     return <div className="class-TimeAvaiable">
         <h5>Selecciona un Tiempos Disponibles</h5>
         <div>
-            {formatTime.filter(day => day.dia === "Lun").map(data => data.timesBetween.map((index,key) => <BasicButtons
+            {getDay && formatTime && formatTime.filter(day => day.dia === getDay).map(data => data.timesBetween.map((index,key) => <BasicButtons
                 onClick={()=>{props.getTime(index.time);setSelectedTime(key)}}
                 variantName={selectedTime === key ? "contained" : "outlined"}
                 buttonName={index.time}

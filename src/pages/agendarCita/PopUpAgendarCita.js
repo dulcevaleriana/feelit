@@ -20,6 +20,7 @@ export default function PopUpAgendarCita(props){
     let [step, setStep] = useState(0);
     let [getDateDay, setGetDateDay] = useState('');
     let [getDateTime, setGetDateTime] = useState('');
+    const [getDayNumber, setgetDayNumber] = useState("");
     const [pacienteData, setPacienteData] = useState(null);
 
     useEffect(()=>{
@@ -113,10 +114,12 @@ export default function PopUpAgendarCita(props){
             { step === 0 ? <>
                 <CustomDay
                     getDate={(day)=>setGetDateDay(day)}
+                    getDayNumber={(numberDay)=>setgetDayNumber(numberDay)}
                     horarioDoctor={props.horarioDoctor}
                 />
                 <TimeAvaiable
                     horarioDoctor={props.horarioDoctor}
+                    getDayNumber={getDayNumber}
                     getTime={(time)=>setGetDateTime(time)}
                 />
                 <Input
