@@ -92,6 +92,8 @@ export default function PopUpAgendarCita(props){
         }
     }
 
+    console.log({horarioDoctor:props.horarioDoctor})
+
     return <>
     <ModalComponent
         headerTitle='You can not access for now'

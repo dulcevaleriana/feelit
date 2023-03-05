@@ -69,11 +69,15 @@ const DATA_TEMPORAL = [
     }
 ]
 
-export default function AgendarCita(){
+export default function AgendarCita(props){
     const [step, setStep] = useState(localStorage.stepLS ? 2 : 0);
     const [stepVerifyDate, setStepVerifyDate] = useState(false);
     const [codigo] = useState("")
     // , setCodigo
+
+    let [getDateDay, setGetDateDay] = useState('');
+    const [getDayNumber, setgetDayNumber] = useState("");
+    let [getDateTime, setGetDateTime] = useState('');
 
     useEffect(()=>{
         localStorage.removeItem("stepLS")
@@ -91,8 +95,46 @@ export default function AgendarCita(){
                 </FormControl>
                 <DoctorGallery/>
             </span>
-            <CustomDay/>
-            <TimeAvaiable/>
+            <CustomDay
+                getDate={(day)=>setGetDateDay(day)}
+                getDayNumber={(numberDay)=>setgetDayNumber(numberDay)}
+                horarioDoctor={[
+                    {
+                        "dia": "Lun",
+                        "entrada": "\"2023-03-05T13:00:00.986Z\"",
+                        "salida": "\"2023-03-05T16:15:00.238Z\"",
+                        "_id": "6404a1edc89f0411dd6a2be7",
+                        "id": "6404a1edc89f0411dd6a2be7"
+                    },
+                    {
+                        "dia": "Jue",
+                        "entrada": "\"2023-03-05T15:00:00.986Z\"",
+                        "salida": "\"2023-03-05T20:00:00.238Z\"",
+                        "_id": "6404a1edc89f0411dd6a2be8",
+                        "id": "6404a1edc89f0411dd6a2be8"
+                    }
+                ]}
+            />
+            <TimeAvaiable
+                horarioDoctor={[
+                    {
+                        "dia": "Lun",
+                        "entrada": "\"2023-03-05T13:00:00.986Z\"",
+                        "salida": "\"2023-03-05T16:15:00.238Z\"",
+                        "_id": "6404a1edc89f0411dd6a2be7",
+                        "id": "6404a1edc89f0411dd6a2be7"
+                    },
+                    {
+                        "dia": "Jue",
+                        "entrada": "\"2023-03-05T15:00:00.986Z\"",
+                        "salida": "\"2023-03-05T20:00:00.238Z\"",
+                        "_id": "6404a1edc89f0411dd6a2be8",
+                        "id": "6404a1edc89f0411dd6a2be8"
+                    }
+                ]}
+                getDayNumber={"Lun"}
+                getTime={(time)=>setGetDateTime(time)}
+            />
         </>}
         {step === 1 && <>
             <DoctorSelected/>
