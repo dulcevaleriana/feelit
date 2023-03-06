@@ -10,6 +10,13 @@ export default function DoctorGallery(props) {
     const [getList, setGetList] = useState(null);
     const {actualDay} = GetTodayDate();
 
+    const filterDoctor = props.functionFilter ? getList?.getAllDoctor?.filter((data)=>props.functionFilter(data)) : getList?.getAllDoctor;
+
+    useEffect(()=>{
+        filterDoctor && counterSelect === 0 && props.sendDoctor(filterDoctor[counterSelect])
+        // props.sendDoctor(filterDoctor[counterSelect])
+    },[filterDoctor])
+
     useEffect(()=>{
         const getUserFunction = async () => {
             const response = await sendRequest(process.env.REACT_APP_ + 'doctor/')
@@ -23,10 +30,12 @@ export default function DoctorGallery(props) {
             return setCounterSelect(0)
         }
         setCounterSelect(counterSelect - 1)
+        props.sendDoctor(filterDoctor[counterSelect - 1])
     }
 
     const nextFunction = () => {
         setCounterSelect(counterSelect + 1)
+        props.sendDoctor(filterDoctor[counterSelect + 1])
     }
 
     const GetSpecialtyName = (specialty) => {
@@ -44,8 +53,6 @@ export default function DoctorGallery(props) {
 
         return <h5>{getSpecialty?.getSpecialtyId?.specialtyName ? getSpecialty?.getSpecialtyId?.specialtyName : "N/A"}</h5>
     }
-
-    const filterDoctor = props.functionFilter ? getList?.getAllDoctor?.filter((data)=>props.functionFilter(data)) : getList?.getAllDoctor;
 
     return <div className="class-DoctorGallery">
         <h5>Elige tu medico de preferencia, fecha y hora de la cita</h5>
@@ -66,7 +73,6 @@ export default function DoctorGallery(props) {
                         ? "class-semi-view"
                         : " "
                     }
-                    onClick={()=>props.onClick(index)}
                 >
                     <div><img src={index.image ? index.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt={index.image ? index.image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}/></div>
                     {key === counterSelect && <>

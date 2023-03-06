@@ -75,6 +75,8 @@ export default function ConsultaRapida(){
         false
     );
 
+    console.log({getDoctor})
+
     const createPacienteWithoutLoging = async event => {
         event.preventDefault();
         try{
@@ -166,7 +168,7 @@ export default function ConsultaRapida(){
         {step === 0 && <>
             <DoctorGallery
                 functionFilter={data => data?.consultaRapidaPrice !== 0}
-                onClick={(doctor)=>setGetDoctor(doctor)}
+                sendDoctor={(doctor)=>setGetDoctor(doctor)}
                 time={time}
             />
             <StaticTimePickerDemo

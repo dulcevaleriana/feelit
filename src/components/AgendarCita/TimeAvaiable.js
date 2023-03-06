@@ -17,7 +17,6 @@ export default function TimeAvaiable(props){
                 props.getDayNumber === 6 ? "Sab" :
                 props.getDayNumber === 7 ? "Dom" : null;
             setgetDay(setNumberDay)
-            console.log({getDay})
         }
         geyDayFunction()
     },[props.getDayNumber,getDay])

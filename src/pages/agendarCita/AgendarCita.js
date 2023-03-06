@@ -78,6 +78,7 @@ export default function AgendarCita(props){
     let [getDateDay, setGetDateDay] = useState('');
     const [getDayNumber, setgetDayNumber] = useState("");
     let [getDateTime, setGetDateTime] = useState('');
+    const [getDoctor, setGetDoctor] = useState(null)
 
     useEffect(()=>{
         localStorage.removeItem("stepLS")
@@ -93,7 +94,10 @@ export default function AgendarCita(props){
                         filterArray={DUMfilterArray}
                     />
                 </FormControl>
-                <DoctorGallery/>
+                <DoctorGallery
+                    sendDoctor={(doctor)=>setGetDoctor(doctor)}
+                    functionFilter={data => data?.agendarCitaPrice !== 0}
+                />
             </span>
             <CustomDay
                 getDate={(day)=>setGetDateDay(day)}
