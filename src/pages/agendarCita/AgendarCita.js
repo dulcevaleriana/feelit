@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+
 import DoctorGallery from '../../components/ConsultaRapidaComponent/DoctorGallery';
 import DoctorSelected from '../../components/ConsultaRapidaComponent/DoctorSelected';
 import PacienteData from '../../components/ConsultaRapidaComponent/PacienteData';
@@ -22,8 +24,10 @@ import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from '../../shared/hooks/http-hook';
 
 import ModalComponent from '../../components/UIElements/ModalComponent';
+import { AuthContext } from "../../shared/context/auth-context";
 
-export default function AgendarCita(props){
+export default function AgendarCita(){
+    const auth = useContext(AuthContext);
     const [step, setStep] = useState(localStorage.stepLS ? 2 : 0);
     const [stepVerifyDate, setStepVerifyDate] = useState(false);
     const [codigo] = useState("")
@@ -35,6 +39,7 @@ export default function AgendarCita(props){
     let [getDateTime, setGetDateTime] = useState('');
     const [getDoctor, setGetDoctor] = useState(null);
 
+    const History = useHistory()
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     useEffect(()=>{
@@ -145,7 +150,11 @@ export default function AgendarCita(props){
         } catch(err){}
     }
 
-    console.log({getDoctor})
+    const loginAndSawServices = () => {
+        const getPaciente = JSON.parse(localStorage.getItem("savePacienteCreated"))
+        auth.login(getPaciente.pacienteId, getPaciente.token, getPaciente.rol);
+        History.push('/')
+    }
 
     return <>
     <ModalComponent
@@ -249,7 +258,7 @@ export default function AgendarCita(props){
             <FormPayment/>
         </>}
         {step === 2 && <>
-            <MessageComponent />
+            <MessageComponent onClick={loginAndSawServices}/>
         </>}
         {step !== 2 && <>
             {step !== 0 && <>
