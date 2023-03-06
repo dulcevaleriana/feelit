@@ -220,13 +220,17 @@ export default function AgendarCita(props){
                 ]}
             />
         </>}
-        {/* {step === 1 && <>
-            <DoctorSelected getDoctor={getDoctor}/>
-            <FormUserDataAgendarCita/>
-        </>} */}
         {step === 1 && <>
             <DoctorSelected/>
-            <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
+            <PacienteData
+                message={formState.inputs.messagePaciente.value}
+                pacienteData={{
+                    cedula: getCedula,
+                    email: formState.inputs.email.value,
+                    telefono: getTelephone,
+                    name: formState.inputs.name.value,
+                }}
+            />
             <FormPayment/>
         </>}
         {step === 2 && <>

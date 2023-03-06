@@ -48,30 +48,73 @@
 .class-AgendarCita-step2 {
     padding: 0px 5%;
     display: grid;
-    grid-template-columns: 25% auto;
+    grid-template-columns: 25% 25% auto;
     grid-gap: 20px;
     height: calc(100vh - 107px);
     align-content: center;
 
+    h4 {
+        font-weight: bold;
+    }
+
     > div:nth-child(2) {
         display: grid;
-        grid-template-columns: 50% auto;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+        grid-template-rows: repeat(5, 56px);
         gap: 20px;
 
-        > div:nth-last-child(2) {
+        h5,
+        > div:nth-child(4),
+        > div:nth-child(5) {
             grid-column: 1 / span 2;
+        }
+
+        > .css-xn6ruc > :not(style),
+        > div,
+        > div:nth-child(2) > div {
+            width: auto;
+            margin: 0;
         }
     }
 
-    > div:nth-child(3){
-        grid-column: 1;
+    > div:last-child {
+        display: grid;
+        grid-column: 2 / span 2;
+        grid-template-columns: auto auto;
+        gap: 20px;
+        justify-content: space-between;
     }
 
-    > div:last-child {
-        display: flex;
-        gap: 20px;
-        justify-content: right;
-    }
+    // padding: 0px 5%;
+    // display: grid;
+    // grid-template-columns: 25% auto;
+    // grid-gap: 20px;
+    // height: calc(100vh - 107px);
+    // align-content: center;
+
+    // > div:nth-child(2) {
+    //     display: grid;
+    //     grid-template-columns: 50% auto;
+    //     gap: 20px;
+
+    //     > div:nth-last-child(2) {
+    //         grid-column: 1 / span 2;
+    //     }
+    // }
+
+    // > div:nth-child(3){
+    //     grid-column: 1;
+    // }
+
+    // > div:last-child {
+    //     display: flex;
+    //     gap: 20px;
+    //     justify-content: right;
+    // }
 }
 
 .class-AgendarCita-step3 {
