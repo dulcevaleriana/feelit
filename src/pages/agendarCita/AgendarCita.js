@@ -11,9 +11,7 @@ import BasicButtons from "../../components/UIElements/BasicButtons-MUI";
 import { faAnglesRight, faMoneyBillTransfer, faAnglesLeft, faClock, faX, faSearch, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import FormControl from '@mui/material/FormControl';
-import BasicSelect from "../../components/UIElements/BasicSelect";
 import CustomDay from "../../components/UIElements/CustomDay";
-import FormUserDataAgendarCita from "../../components/AgendarCita/FormUserDataAgendarCita";
 import NestedModal from "../../components/UIElements/NestedModal";
 
 import InputLabel from '@mui/material/InputLabel';
@@ -21,56 +19,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 import FormUserDataCreateUser from "../../components/paciente/FormUserDataCreateUser";
 import { useForm } from "../../shared/hooks/form-hook";
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
-const DUMfilterArray = [
-    {
-        value:10,
-        name:"nombre especialidad"
-    },
-    {
-        value:20,
-        name:"nombre especialidad"
-    },
-    {
-        value:30,
-        name:"nombre especialidad"
-    },
-    {
-        value:40,
-        name:"nombre especialidad"
-    },
-    {
-        value:50,
-        name:"nombre especialidad"
-    },
-    {
-        value:60,
-        name:"nombre especialidad"
-    },
-]
-
-const DATA_TEMPORAL = [
-    {
-        title:'Nombre',
-        data:'Juana Perez'
-    },
-    {
-        title:'Teléfono',
-        data:'000-000-0000'
-    },
-    {
-        title:'Correo',
-        data:'juana.perez@gmail.com'
-    },
-    {
-        title:'Tipo de cita',
-        data:'Terapia inicial'
-    },
-    {
-        title:'Este es mi mensaje',
-        data:'Hola solo quiero decir que...'
-    }
-]
+import ModalComponent from '../../components/UIElements/ModalComponent';
 
 export default function AgendarCita(props){
     const [step, setStep] = useState(localStorage.stepLS ? 2 : 0);
@@ -82,7 +33,9 @@ export default function AgendarCita(props){
     let [getDateDay, setGetDateDay] = useState('');
     const [getDayNumber, setgetDayNumber] = useState("");
     let [getDateTime, setGetDateTime] = useState('');
-    const [getDoctor, setGetDoctor] = useState(null)
+    const [getDoctor, setGetDoctor] = useState(null);
+
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     useEffect(()=>{
         localStorage.removeItem("stepLS")
@@ -139,9 +92,71 @@ export default function AgendarCita(props){
         false
     );
 
+    const createPacienteWithoutLoging = async event => {
+        event.preventDefault();
+        try{
+            const responseData = await sendRequest(
+                process.env.REACT_APP_ + "paciente/createPaciente",
+                'POST',
+                JSON.stringify({
+                    cedula: getCedula,
+                    email: formState.inputs.email.value,
+                    password: formState.inputs.password.value,
+                    telefono: getTelephone,
+                    name: formState.inputs.name.value,
+                }),
+                {
+                    'Content-Type': 'application/json'
+                },
+            )
+            localStorage.setItem("savePacienteCreated",JSON.stringify({
+                pacienteId:responseData.pacienteId,
+                token:responseData.token,
+                rol:responseData.rol
+            }))
+            setStep(step + 1)
+            // auth.login(responseData.pacienteId, responseData.token, responseData.rol);
+        } catch(err){}
+    }
+
+    const createAgendarCitaWithoutLoging = async event => {
+        event.preventDefault();
+
+        const getPaciente = JSON.parse(localStorage.getItem("savePacienteCreated"))
+
+        try{
+            await sendRequest(
+                process.env.REACT_APP_ + "agendar-cita/createDate",
+                'POST',
+                JSON.stringify({
+                  idPaciente: getPaciente.pacienteId,
+                  idDoctor: getDoctor?.id,
+                  date: getDateDay,
+                  time: getDateTime,
+                  messagePaciente: formState.inputs.messagePaciente.value,
+                  doctorPrice: getDoctor?.consultaRapidaPrice
+                }),
+                {
+                  'Content-Type': 'application/json'
+                },
+            )
+            setStep(step + 1)
+            // auth.login(responseData.pacienteId, responseData.token, responseData.rol);
+        } catch(err){}
+    }
+
     console.log({getDoctor})
 
-    return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : "class-ConsultaRapida-step3"}>
+    return <>
+    <ModalComponent
+        headerTitle='You can not access for now'
+        show={error}
+        onCancel={clearError}
+    >
+        {error}
+    </ModalComponent>
+    {isLoading && <h1>Loading...</h1>}
+    <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
             <DoctorGallery
                 sendDoctor={(doctor)=>setGetDoctor(doctor)}
@@ -295,7 +310,7 @@ export default function AgendarCita(props){
                     />
             </>}
             <BasicButtons
-                onClick={()=>setStep(step + 1)}
+                onClick={step === 0 ? createPacienteWithoutLoging : createAgendarCitaWithoutLoging}
                 variantName="contained"
                 buttonName={step === 0 ? "Siguiente" : step >= 1 ? "Pagar ahora" : ""}
                 iconName={step === 0 ? faAnglesRight : step >= 1 ? faMoneyBillTransfer : ""}
@@ -303,4 +318,5 @@ export default function AgendarCita(props){
             </div>
         </>}
     </div>
+    </>
 }

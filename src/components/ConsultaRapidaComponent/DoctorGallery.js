@@ -15,7 +15,7 @@ export default function DoctorGallery(props) {
     useEffect(()=>{
         filterDoctor && counterSelect === 0 && props.sendDoctor(filterDoctor[counterSelect])
         // props.sendDoctor(filterDoctor[counterSelect])
-    },[filterDoctor])
+    },[filterDoctor,counterSelect,props])
 
     useEffect(()=>{
         const getUserFunction = async () => {
