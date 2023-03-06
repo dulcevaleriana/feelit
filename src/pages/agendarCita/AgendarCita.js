@@ -19,6 +19,9 @@ import NestedModal from "../../components/UIElements/NestedModal";
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 
+import FormUserDataCreateUser from "../../components/paciente/FormUserDataCreateUser";
+import { useForm } from "../../shared/hooks/form-hook";
+
 const DUMfilterArray = [
     {
         value:10,
@@ -74,7 +77,8 @@ export default function AgendarCita(props){
     const [stepVerifyDate, setStepVerifyDate] = useState(false);
     const [codigo] = useState("")
     // , setCodigo
-
+    const [getTelephone, setGetTelephone] = useState("");
+    const [getCedula, setGetCedula] = useState("");
     let [getDateDay, setGetDateDay] = useState('');
     const [getDayNumber, setgetDayNumber] = useState("");
     let [getDateTime, setGetDateTime] = useState('');
@@ -84,9 +88,62 @@ export default function AgendarCita(props){
         localStorage.removeItem("stepLS")
     },[step])
 
-    return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : step === 2 ? "class-AgendarCita-step3" : "class-ConsultaRapida-step3"}>
+    const [formState, inputHandler] = useForm(
+        {
+            name: {
+                value: '',
+                isValid: false
+            },
+            password: {
+                value: '',
+                isValid: false
+            },
+            cedula: {
+                value: getCedula,
+                isValid: false
+            },
+            email: {
+                value: '',
+                isValid: false
+            },
+            telefono: {
+                value: getTelephone,
+                isValid: false
+            },
+    
+            idPaciente: {
+                value: '',
+                isValid: true
+            },
+            idDoctor: {
+                value: getDoctor?.id,
+                isValid: true
+            },
+            date: {
+                value: getDateDay,
+                isValid: true
+            },
+            time: {
+                value: getDateTime,
+                isValid: true
+            },
+            messagePaciente: {
+                value: '',
+                isValid: false
+            },
+            doctorPrice: {
+                value: getDoctor?.agendarCitaPrice,
+                isValid: true
+            }
+        },
+        false
+    );
+
+    console.log({getDoctor})
+
+    return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
-            <span>
+            {/* <span>
                 <FormControl>
                     <label>Elige tu medico de preferencia, fecha y hora de la cita</label>
                     <BasicSelect
@@ -98,61 +155,97 @@ export default function AgendarCita(props){
                     sendDoctor={(doctor)=>setGetDoctor(doctor)}
                     functionFilter={data => data?.agendarCitaPrice !== 0}
                 />
-            </span>
-            <CustomDay
-                getDate={(day)=>setGetDateDay(day)}
-                getDayNumber={(numberDay)=>setgetDayNumber(numberDay)}
-                horarioDoctor={[
-                    {
-                        "dia": "Lun",
-                        "entrada": "\"2023-03-05T13:00:00.986Z\"",
-                        "salida": "\"2023-03-05T16:15:00.238Z\"",
-                        "_id": "6404a1edc89f0411dd6a2be7",
-                        "id": "6404a1edc89f0411dd6a2be7"
-                    },
-                    {
-                        "dia": "Jue",
-                        "entrada": "\"2023-03-05T15:00:00.986Z\"",
-                        "salida": "\"2023-03-05T20:00:00.238Z\"",
-                        "_id": "6404a1edc89f0411dd6a2be8",
-                        "id": "6404a1edc89f0411dd6a2be8"
-                    }
-                ]}
+            </span> */}
+            <DoctorGallery
+                sendDoctor={(doctor)=>setGetDoctor(doctor)}
+                functionFilter={data => data?.agendarCitaPrice !== 0}
             />
-            <TimeAvaiable
-                horarioDoctor={[
+            {getDoctor && <span>
+                <CustomDay
+                    getDate={(day)=>setGetDateDay(day)}
+                    getDayNumber={(numberDay)=>setgetDayNumber(numberDay)}
+                    horarioDoctor={getDoctor.horario}
+                />
+                <TimeAvaiable
+                    horarioDoctor={getDoctor.horario}
+                    getDayNumber={getDayNumber}
+                    getTime={(time)=>setGetDateTime(time)}
+                />
+            </span>}
+            <FormUserDataCreateUser
+                arrayInputs={[
                     {
-                        "dia": "Lun",
-                        "entrada": "\"2023-03-05T13:00:00.986Z\"",
-                        "salida": "\"2023-03-05T16:15:00.238Z\"",
-                        "_id": "6404a1edc89f0411dd6a2be7",
-                        "id": "6404a1edc89f0411dd6a2be7"
+                        element:"input",
+                        id:"name",
+                        type:"text",
+                        label:"Nombre",
+                        validators:[],
+                        errorText:"Please enter a valid Nombre.",
+                        onInput:inputHandler
                     },
                     {
-                        "dia": "Jue",
-                        "entrada": "\"2023-03-05T15:00:00.986Z\"",
-                        "salida": "\"2023-03-05T20:00:00.238Z\"",
-                        "_id": "6404a1edc89f0411dd6a2be8",
-                        "id": "6404a1edc89f0411dd6a2be8"
+                        element:"mask",
+                        id:"cedula",
+                        type:"text",
+                        label:"Cédula",
+                        validators:[],
+                        errorText:"Please enter a valid Cédula.",
+                        onInput:inputHandler,
+                        passData: (data)=>setGetCedula(data),
+                        mask:"000-0000000-0"
+                    },
+                    {
+                        element:"mask",
+                        id:"telefono",
+                        type:"text",
+                        label:"Teléfono",
+                        validators:[],
+                        errorText:"Please enter a valid Teléfono.",
+                        onInput:inputHandler,
+                        passData: (data)=>setGetTelephone(data),
+                        mask:"000-000-0000"
+                    },
+                    {
+                        element:"input",
+                        id:"email",
+                        type:"email",
+                        label:"Correo",
+                        validators:[],
+                        errorText:"Please enter a valid Correo.",
+                        onInput:inputHandler
+                    },
+                    {
+                        element:'password',
+                        id:"password",
+                        type:"password",
+                        label:"Contraseña",
+                        validators:[],
+                        errorText:"Please enter a valid Contraseña.",
+                        onInput:inputHandler
+                    },
+                    {
+                        id:"messagePaciente",
+                        label:"Mensaje",
+                        validators:[],
+                        errorText:"Please enter a valid Message.",
+                        onInput:inputHandler
                     }
                 ]}
-                getDayNumber={"Lun"}
-                getTime={(time)=>setGetDateTime(time)}
             />
         </>}
-        {step === 1 && <>
-            <DoctorSelected/>
+        {/* {step === 1 && <>
+            <DoctorSelected getDoctor={getDoctor}/>
             <FormUserDataAgendarCita/>
-        </>}
-        {step === 2 && <>
+        </>} */}
+        {step === 1 && <>
             <DoctorSelected/>
             <PacienteData DATATEMPORAL={DATA_TEMPORAL}/>
             <FormPayment/>
         </>}
-        {step === 3 && <>
+        {step === 2 && <>
             <MessageComponent />
         </>}
-        {step !== 3 && <>
+        {step !== 2 && <>
             {step !== 0 && <>
                 <BasicButtons
                     onClick={()=>setStep(step - 1)}

@@ -75,8 +75,6 @@ export default function ConsultaRapida(){
         false
     );
 
-    console.log({getDoctor})
-
     const createPacienteWithoutLoging = async event => {
         event.preventDefault();
         try{
