@@ -143,19 +143,6 @@ export default function AgendarCita(props){
 
     return <div className={step === 0 ? "class-AgendarCita-step1" : step === 1 ? "class-AgendarCita-step2" : "class-ConsultaRapida-step3"}>
         {step === 0 && <>
-            {/* <span>
-                <FormControl>
-                    <label>Elige tu medico de preferencia, fecha y hora de la cita</label>
-                    <BasicSelect
-                        name="Filtrar por especialidad"
-                        filterArray={DUMfilterArray}
-                    />
-                </FormControl>
-                <DoctorGallery
-                    sendDoctor={(doctor)=>setGetDoctor(doctor)}
-                    functionFilter={data => data?.agendarCitaPrice !== 0}
-                />
-            </span> */}
             <DoctorGallery
                 sendDoctor={(doctor)=>setGetDoctor(doctor)}
                 functionFilter={data => data?.agendarCitaPrice !== 0}
